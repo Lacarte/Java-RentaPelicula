@@ -323,26 +323,14 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="txtNom">
-          <Properties>
-            <Property name="focusCycleRoot" type="boolean" value="true"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtApe">
-          <Properties>
-            <Property name="focusCycleRoot" type="boolean" value="true"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel4">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="N&#xb0; Cedula/ *"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="txtCed">
           <Properties>
             <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
               <Format format="###-#######-#" subtype="-1" type="5"/>
             </Property>
-            <Property name="focusCycleRoot" type="boolean" value="true"/>
           </Properties>
           <Events>
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCedKeyReleased"/>
@@ -358,13 +346,59 @@
                 <StringItem index="2" value="F"/>
               </StringArray>
             </Property>
-            <Property name="focusCycleRoot" type="boolean" value="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JCheckBox" name="chcEstado">
           <Properties>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Activo"/>
+          </Properties>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="jdcFecNac">
+          <Properties>
+            <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="txtTel">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
+              <Format format="(###) ###-####" subtype="-1" type="5"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTelKeyTyped"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="txtCor">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCorFocusLost"/>
+          </Events>
+        </Component>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTextPane" name="txtDir">
+            </Component>
+          </SubComponents>
+        </Container>
+        <Component class="javax.swing.JComboBox" name="cmbSuc">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="3">
+                <StringItem index="0" value="////////////////////////"/>
+                <StringItem index="1" value="M"/>
+                <StringItem index="2" value="F"/>
+              </StringArray>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel4">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="N&#xb0; Cedula/ *"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
@@ -392,17 +426,6 @@
             <Property name="text" type="java.lang.String" value="Detalle Direccion *"/>
           </Properties>
         </Component>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane3">
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JTextPane" name="txtDir">
-            </Component>
-          </SubComponents>
-        </Container>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
             <Property name="text" type="java.lang.String" value="Sexo *"/>
@@ -412,29 +435,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Telefono *"/>
           </Properties>
-        </Component>
-        <Component class="com.toedter.calendar.JDateChooser" name="jdcFecNac">
-          <Properties>
-            <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JFormattedTextField" name="txtTel">
-          <Properties>
-            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-              <Format format="(###) ###-####" subtype="-1" type="5"/>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTelKeyTyped"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JFormattedTextField" name="txtCor">
-          <Properties>
-            <Property name="focusCycleRoot" type="boolean" value="true"/>
-          </Properties>
-          <Events>
-            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCorFocusLost"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel12">
           <Properties>
@@ -449,18 +449,6 @@
         <Component class="javax.swing.JLabel" name="jLabel13">
           <Properties>
             <Property name="text" type="java.lang.String" value="Estado *"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="cmbSuc">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="3">
-                <StringItem index="0" value="////////////////////////"/>
-                <StringItem index="1" value="M"/>
-                <StringItem index="2" value="F"/>
-              </StringArray>
-            </Property>
-            <Property name="focusCycleRoot" type="boolean" value="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel14">

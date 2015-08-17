@@ -1,15 +1,15 @@
 package principal;
 
-import connection_utilies.ConnectionManager;
-import connection_utilies.DBSql;
-import connection_utilies.DataJlist;
-import connection_utilies.DatajCombobox;
-import connection_utilies.InsertUpdateDeleteCopia;
-import connection_utilies.InsertDeleteSubtituloActor;
-import connection_utilies.LimitTextfield;
-import connection_utilies.ResultsetTable;
-import connection_utilies.TimeValidator;
-import connection_utilies.YearValidator;
+import utilities.ConnectionManager;
+import utilities.DBSql;
+import utilities.DataJlist;
+import utilities.DatajCombobox;
+import utilities.InsertUpdateDeleteCopia;
+import utilities.InsertDeleteSubtituloActor;
+import utilities.LimitTextfield;
+import utilities.ResultsetTable;
+import utilities.TimeValidator;
+import utilities.YearValidator;
 import java.awt.Dimension;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;

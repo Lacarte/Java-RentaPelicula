@@ -1,4 +1,4 @@
-package connection_utilies;
+package utilities;
 
 
 
@@ -12,15 +12,16 @@ package connection_utilies;
  *
  * @author LCRT
  */
-public class DataJlist {
+public class InsertDeleteSubtituloActor {
 
-        private int id;  
-        private String description;  
+        private int id; 
+        //true insert ,false delete
+        private boolean state;  
   
-        public DataJlist(int id, String description)  
+        public InsertDeleteSubtituloActor(int id, boolean state)  
         {  
             this.id = id;  
-            this.description = description;  
+            this.state = state;  
         }  
   
         public int getId()  
@@ -28,14 +29,10 @@ public class DataJlist {
             return id;  
         }  
   
-        public String getDescription()  
+        public boolean getState()  
         {  
-            return description;  
+            return state;  
         }  
-  
-        public String toString()  
-        {  
-            return description;  
-        }  
+ 
     
 }

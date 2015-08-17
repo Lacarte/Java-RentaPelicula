@@ -1,12 +1,12 @@
 package principal;
 
-import connection_utilies.ConnectionManager;
-import connection_utilies.DBSql;
-import connection_utilies.DatajCombobox;
-import connection_utilies.EmailValidator;
-import connection_utilies.LimitTextfield;
-import connection_utilies.ResultsetTable;
-import connection_utilies.TimeValidator;
+import utilities.ConnectionManager;
+import utilities.DBSql;
+import utilities.DatajCombobox;
+import utilities.EmailValidator;
+import utilities.LimitTextfield;
+import utilities.ResultsetTable;
+import utilities.TimeValidator;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
@@ -406,26 +406,26 @@ public class Man_emp extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         txtNom = new javax.swing.JTextField();
         txtApe = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
         txtCed = new javax.swing.JFormattedTextField();
         cmbSex = new javax.swing.JComboBox();
         chcEstado = new javax.swing.JCheckBox();
+        jdcFecNac = new com.toedter.calendar.JDateChooser();
+        txtTel = new javax.swing.JFormattedTextField();
+        txtCor = new javax.swing.JFormattedTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtDir = new javax.swing.JTextPane();
+        cmbSuc = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txtDir = new javax.swing.JTextPane();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jdcFecNac = new com.toedter.calendar.JDateChooser();
-        txtTel = new javax.swing.JFormattedTextField();
-        txtCor = new javax.swing.JFormattedTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        cmbSuc = new javax.swing.JComboBox();
         jLabel14 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -546,18 +546,11 @@ public class Man_emp extends javax.swing.JInternalFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Del empleado"));
         jPanel2.setFocusCycleRoot(true);
 
-        txtNom.setFocusCycleRoot(true);
-
-        txtApe.setFocusCycleRoot(true);
-
-        jLabel4.setText("N° Cedula/ *");
-
         try {
             txtCed.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-#######-#")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        txtCed.setFocusCycleRoot(true);
         txtCed.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtCedKeyReleased(evt);
@@ -568,26 +561,9 @@ public class Man_emp extends javax.swing.JInternalFrame {
         });
 
         cmbSex.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "////////////////////////", "M", "F" }));
-        cmbSex.setFocusCycleRoot(true);
 
         chcEstado.setSelected(true);
         chcEstado.setText("Activo");
-
-        jLabel2.setText("Nombre *");
-
-        jLabel3.setText("Apellido *");
-
-        jLabel1.setText("<html>N° Empleado</html>");
-
-        jLabel8.setText("////////////////////////////////////");
-
-        jLabel9.setText("Detalle Direccion *");
-
-        jScrollPane3.setViewportView(txtDir);
-
-        jLabel10.setText("Sexo *");
-
-        jLabel11.setText("Telefono *");
 
         jdcFecNac.setDateFormatString("dd/MM/yyyy");
 
@@ -602,21 +578,37 @@ public class Man_emp extends javax.swing.JInternalFrame {
             }
         });
 
-        txtCor.setFocusCycleRoot(true);
         txtCor.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtCorFocusLost(evt);
             }
         });
 
+        jScrollPane3.setViewportView(txtDir);
+
+        cmbSuc.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "////////////////////////", "M", "F" }));
+
+        jLabel4.setText("N° Cedula/ *");
+
+        jLabel2.setText("Nombre *");
+
+        jLabel3.setText("Apellido *");
+
+        jLabel1.setText("<html>N° Empleado</html>");
+
+        jLabel8.setText("////////////////////////////////////");
+
+        jLabel9.setText("Detalle Direccion *");
+
+        jLabel10.setText("Sexo *");
+
+        jLabel11.setText("Telefono *");
+
         jLabel12.setText("Fecha de Nacimiento *");
 
         jLabel6.setText("Email *");
 
         jLabel13.setText("Estado *");
-
-        cmbSuc.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "////////////////////////", "M", "F" }));
-        cmbSuc.setFocusCycleRoot(true);
 
         jLabel14.setText("Sucursal *");
 

@@ -1,8 +1,8 @@
 package principal;
 
-import connection_utilies.DBSql;
-import connection_utilies.LimitTextfield;
-import connection_utilies.ResultsetTable;
+import utilities.DBSql;
+import utilities.LimitTextfield;
+import utilities.ResultsetTable;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;

@@ -1,4 +1,4 @@
-package connection_utilies;
+package utilities;
 
 import java.util.Calendar;
 import javax.swing.JLabel;

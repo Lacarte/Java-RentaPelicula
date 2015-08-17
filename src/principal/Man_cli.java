@@ -1,11 +1,11 @@
 package principal;
 
-import connection_utilies.ConnectionManager;
-import connection_utilies.DBSql;
-import connection_utilies.EmailValidator;
-import connection_utilies.LimitTextfield;
-import connection_utilies.ResultsetTable;
-import connection_utilies.TimeValidator;
+import utilities.ConnectionManager;
+import utilities.DBSql;
+import utilities.EmailValidator;
+import utilities.LimitTextfield;
+import utilities.ResultsetTable;
+import utilities.TimeValidator;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package connection_utilies;
+package utilities;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;

@@ -1,9 +1,9 @@
 package principal;
 
-import connection_utilies.DBSql;
-import connection_utilies.DataJlist;
-import connection_utilies.LimitTextfield;
-import connection_utilies.ResultsetTable;
+import utilities.DBSql;
+import utilities.DataJlist;
+import utilities.LimitTextfield;
+import utilities.ResultsetTable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

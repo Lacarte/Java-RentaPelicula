@@ -5,8 +5,8 @@
  */
 package principal;
 
-import connection_utilies.DBSql;
-import connection_utilies.LimitTextfield;
+import utilities.DBSql;
+import utilities.LimitTextfield;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;

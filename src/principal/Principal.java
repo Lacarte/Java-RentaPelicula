@@ -1,7 +1,7 @@
 package principal;
 
-import connection_utilies.Clock;
-import connection_utilies.ConnectionManager;
+import utilities.Clock;
+import utilities.ConnectionManager;
 import java.awt.Dimension;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.KeyEventDispatcher;
