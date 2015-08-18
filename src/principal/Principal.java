@@ -1,12 +1,11 @@
 package principal;
 
-import utilities.Clock;
-import utilities.ConnectionManager;
 import java.awt.Dimension;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.KeyEventDispatcher;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -18,6 +17,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import static javax.swing.UIManager.getLookAndFeel;
 import javax.swing.UnsupportedLookAndFeelException;
+import utilities.Clock;
+import utilities.ConnectionManager;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -53,6 +54,45 @@ public class Principal extends javax.swing.JFrame {
 
     }
 
+    public Principal(LinkedList userdata) {
+
+        initComponents();
+        jmAdmin.setVisible(true);
+        clock(jlabelInfotop);
+
+        //re setup the look and feel NimbusLookAndFeel after using the transpa rency in the  login
+        try {
+            //Set the required look and feel
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            //Update the component tree - associate the look and feel with the given frame.
+            SwingUtilities.updateComponentTreeUI(this);
+        }//end try
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }//end catch
+
+        ////////////Data from login
+      /* linkedlist data*/
+        //exist
+        //codter
+        //nombre
+        //usuario
+        //tipousuario
+        System.out.println("name " + userdata.get(2));
+        System.out.println("type" + userdata.get(4));
+        lblUsername.setText((String) userdata.get(2));
+
+        if (userdata.get(4).equals("Administrador")) {
+            jmAdmin.setVisible(true);
+            System.out.println("Admin log");
+        } else {
+            System.out.println("other log");
+
+            jmAdmin.setVisible(false);
+        }
+
+    }
+
 ////////////////// clock/////////////////////
     public void clock(JLabel jb) {
         Clock c1 = new Clock(jb);
@@ -84,7 +124,7 @@ public class Principal extends javax.swing.JFrame {
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jlabelInfotop = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblUsername = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -152,9 +192,9 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel1.setText("///>                        Sistema de Renta de Pelicula ( Mr Movies V1.0)");
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_d83d(18)_24.png"))); // NOI18N
-        jLabel2.setText("USUARIO:TEST");
+        lblUsername.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblUsername.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_d83d(18)_24.png"))); // NOI18N
+        lblUsername.setText("USUARIO:TEST");
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_2692(65)_48.png"))); // NOI18N
         jMenu1.setText("Mantenimiento");
@@ -225,10 +265,10 @@ public class Principal extends javax.swing.JFrame {
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_e70a(43)_48.png"))); // NOI18N
         jMenu3.setText("Consulta/Reportes");
 
-        jMenuItem22.setText("Clientes");
+        jMenuItem22.setText("Gen>>");
         jMenu3.add(jMenuItem22);
 
-        jMenuItem23.setText("Clientes Parametrizado");
+        jMenuItem23.setText("Clientes ");
         jMenu3.add(jMenuItem23);
 
         jMenuBar1.add(jMenu3);
@@ -386,9 +426,9 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jlabelInfotop, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 772, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -397,7 +437,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlabelInfotop, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(lblUsername))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jDesktopPane1))
         );
@@ -692,7 +732,6 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu2;
@@ -731,6 +770,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JLabel jlabelInfotop;
     private javax.swing.JMenu jmAdmin;
+    private javax.swing.JLabel lblUsername;
     // End of variables declaration//GEN-END:variables
 
     private String getLookAndFeelClassName(String nimbus) {

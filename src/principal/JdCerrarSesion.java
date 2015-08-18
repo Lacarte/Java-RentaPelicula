@@ -21,14 +21,14 @@ public class JdCerrarSesion extends javax.swing.JDialog {
      * Creates new form JdCerrarSesion
      */
     DBSql sql = null;
-    LinkedList existResultSendData = null;
+    LinkedList userdata = null;
 
     public JdCerrarSesion(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
         sql = new DBSql();
-        existResultSendData = new LinkedList();
+        userdata = new LinkedList();
         txtUsuario.setDocument(new LimitTextfield(24));
         txtPassword.setDocument(new LimitTextfield(24));
         txtUsuario.setText("USUARIO");
@@ -146,7 +146,7 @@ public class JdCerrarSesion extends javax.swing.JDialog {
         boolean exist = (boolean) llResult.get(0);
 
         if (exist) {
-            existResultSendData = llResult;
+            userdata = llResult;
             lblInfo.setText("Bienvenido  ////> ");
 
             timer1.start();
@@ -192,7 +192,7 @@ public class JdCerrarSesion extends javax.swing.JDialog {
     private void timer2OnTime(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timer2OnTime
         // TODO add your handling code here:
 
-        Principal prnl = new Principal();
+        Principal prnl = new Principal(userdata);
         prnl.setExtendedState(MAXIMIZED_BOTH);
         prnl.setVisible(true);
         timer2.stop();

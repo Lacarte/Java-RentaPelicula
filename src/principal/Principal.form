@@ -96,12 +96,12 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem22">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Clientes"/>
+                <Property name="text" type="java.lang.String" value="Gen&gt;&gt;"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem23">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Clientes Parametrizado"/>
+                <Property name="text" type="java.lang.String" value="Clientes "/>
               </Properties>
             </MenuItem>
           </SubComponents>
@@ -308,9 +308,9 @@
           <Group type="102" attributes="0">
               <Component id="jlabelInfotop" min="-2" pref="181" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" pref="772" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jLabel2" pref="165" max="32767" attributes="0"/>
+              <Component id="jLabel1" min="-2" pref="731" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="lblUsername" pref="198" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -321,7 +321,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jlabelInfotop" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblUsername" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jDesktopPane1" max="32767" attributes="0"/>
@@ -371,7 +371,7 @@
         <Property name="text" type="java.lang.String" value="///&gt;                        Sistema de Renta de Pelicula ( Mr Movies V1.0)"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="lblUsername">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">

@@ -480,7 +480,7 @@ public class Man_tipPag extends javax.swing.JInternalFrame {
             if (PromptResult == JOptionPane.YES_OPTION) {
 
                 if (sql.deleteWithIdColname(tableName, idColname, rowIdData)) {
-                    //JOptionPane.showMessageDialog(null,"Borrado exitosamente");
+                    JOptionPane.showMessageDialog(null,"Borrado exitosamente");
                     clearNew();
                     confirmStringToDelete = null;
                     rowIdData = 0;

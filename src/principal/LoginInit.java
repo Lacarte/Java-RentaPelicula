@@ -23,13 +23,13 @@ public class LoginInit extends javax.swing.JFrame implements Runnable {
      * Creates new form LOGIN
      */
     DBSql sql = null;
-    LinkedList existResultSendData = null;
+    LinkedList UserData = null;
 
     
     public LoginInit() {
         initComponents();
         sql = new DBSql();
-        existResultSendData = new LinkedList();
+        UserData = new LinkedList();
         txtUsuario.setDocument(new LimitTextfield(24));
         txtPassword.setDocument(new LimitTextfield(24));
         txtUsuario.setText("USUARIO");
@@ -182,11 +182,18 @@ public class LoginInit extends javax.swing.JFrame implements Runnable {
         LinkedList llResult = new LinkedList();
 
         llResult = sql.Authentification(txtUsuario.getText().trim(), txtPassword.getText().trim(), sqlQuery);
-
+        
+        //linkedlist data
+        //exist
+        //codter
+        //nombre
+        //usuario
+        //tipousuario
+        
         boolean exist = (boolean) llResult.get(0);
 
         if (exist) {
-            existResultSendData = llResult;
+            UserData = llResult;
             lblInfo.setText("Bienvenido  ////> ");
 
             timer1.start();
@@ -208,7 +215,7 @@ public class LoginInit extends javax.swing.JFrame implements Runnable {
         // TODO add your handling code here:
         System.out.println("Welcome");
         this.dispose();
-        Principal prnl = new Principal();
+        Principal prnl = new Principal(UserData);
         prnl.setExtendedState(MAXIMIZED_BOTH);
         prnl.setVisible(true);
         
