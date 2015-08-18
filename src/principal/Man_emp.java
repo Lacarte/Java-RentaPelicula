@@ -38,17 +38,17 @@ public class Man_emp extends javax.swing.JInternalFrame {
     java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd/MM/yyyy");
     java.util.Date fechaDate;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    
-  
-private static Connection transCon = ConnectionManager.getInstance().getConnection();
+
+    private static Connection transCon = ConnectionManager.getInstance().getConnection();
 
 /////////
     EmailValidator emailValidator = new EmailValidator();
 
     DBSql sql = null;
     int progVal = 0;
-    int rowIdData = 0;
+    public static int rowIdData = 0;
     int lastInsertedId = 0;
+    public static boolean yacliente = false;
     String confirmStringToDelete = null;
 
     String tableName = "tbtercero";
@@ -74,8 +74,7 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
 
         txtBusqueda.setDocument(new LimitTextfield(32));
 
-        txtCed.setDocument(new LimitTextfield(13));
-
+        // txtCed.setDocument(new LimitTextfield(13));
         txtCor.setDocument(new LimitTextfield(64));
 
         txtNom.requestFocus();
@@ -85,9 +84,6 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
 
         comboboxDisplay(cmbSuc, "tbsucursal", "codsuc", "dessuc");
 
-        
-        
-        
         ////tab index order
 //        IndexedFocusTraversalPolicy policy = new IndexedFocusTraversalPolicy();
 //policy.addIndexedComponent(jTextField1);
@@ -98,8 +94,6 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
 //policy.addIndexedComponent(jTextField6);
 //setFocusTraversalPolicy(policy);
 //        
-        
-        
     }
 
 ///////////////////////event for function keys///////////////////////
@@ -164,7 +158,7 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
         populateEmpleado();
         txtNom.requestFocus();
         cmbSex.setSelectedIndex(0);
-      
+        cmbSuc.setSelectedIndex(0);
 
         //  lstSubtituloModel.clear();
         // lstActorModel.clear();
@@ -212,9 +206,7 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
         tblCliente.getColumnModel().getColumn(9).setMaxWidth(0);
         tblCliente.getColumnModel().getColumn(9).setWidth(0);
 
-        
-        
-          tblCliente.getColumnModel().getColumn(10).setMinWidth(0);
+        tblCliente.getColumnModel().getColumn(10).setMinWidth(0);
         tblCliente.getColumnModel().getColumn(10).setMaxWidth(0);
         tblCliente.getColumnModel().getColumn(10).setWidth(0);
 
@@ -310,7 +302,7 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
                 chcEstado.setSelected(false);
             }
 
-             //  selectedValueCombobox(cmbSuc, tblCliente.getModel().getValueAt(selectedRow, 9));
+            //  selectedValueCombobox(cmbSuc, tblCliente.getModel().getValueAt(selectedRow, 9));
             ///Date convertion
             String inputDateStr = tblCliente.getModel().getValueAt(selectedRow, 9).toString();
             DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -517,9 +509,9 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -527,9 +519,11 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
             .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 1, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtBusqueda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         tblCliente.setModel(new javax.swing.table.DefaultTableModel(
@@ -622,7 +616,8 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
 
         jLabel14.setText("Sucursal *");
 
-        jButton1.setText("Cliente>>");
+        jButton1.setText("Ya Cliente");
+        jButton1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/zoom_icon&24.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -767,15 +762,15 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblInfo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -827,116 +822,137 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
 
             } else {
 
-                ///////////////pass/////////////////
-                //check if the id is already the to update it
-                if (sql.checkidWithIdColname(tableName, idColname, rowIdData)) {
-                    //System.err.println("li la deja");
-                    //  String sqlQuerytercero = "UPDATE " + tableName + " SET  nomter "='" + txtDescrip.getText() + "',precio='" + txtPrecio.getText() + "' WHERE " + idColname + "=" + rowIdData;
+                if (cmbSuc.getSelectedIndex() == 0) {
 
-                    //update persone
-                    String sqlQueryUpdateTercero = "UPDATE `rentapelicula`.`tbtercero` SET `nomter` = '" + txtNom.getText() + "', `fecnac` = '" + sdf.format(jdcFecNac.getDate()) + "', `telter` = '" + txtTel.getText().trim() + "', `corter` = '" + txtCor.getText().trim() + "', `fecreg` = CURRENT_TIMESTAMP, `dirter` = '" + txtDir.getText().trim() + "'  WHERE `tbtercero`.`codter` = " + rowIdData + ";";
-                    System.out.println("sql>>" + sqlQueryUpdateTercero);
-
-                    if (!setTransaction(sqlQueryUpdateTercero)) {
-                        todoBien = false;
-
-                    }
-
-                    String sqlQueryUpdatePersona = "UPDATE `rentapelicula`.`tbpersona` SET `apeper` = '" + txtApe.getText().trim() + "', `sexper` = '" + cmbSex.getSelectedItem().toString() + "', `cedper` = '" + txtCed.getText().trim() + "' WHERE `tbpersona`.`codper` = " + rowIdData + ";";
-                    System.out.println("sql>>" + sqlQueryUpdatePersona);
-
-                    if (!setTransaction(sqlQueryUpdatePersona)) {
-
-                        todoBien = false;
-                    }
-
-                    String sqlQueryUpdateEmpleado = "UPDATE `rentapelicula`.`tbempleado` SET `codest` = " + chcEstado.isSelected() + ", codsuc=" + codsuc.getId() + " WHERE `tbempleado`.`codemp` = " + rowIdData + ";";
-                    System.out.println("sql>>" + sqlQueryUpdateEmpleado);
-
-                    if (!setTransaction(sqlQueryUpdateEmpleado)) {
-                        todoBien = false;
-                    }
-
-                    if (todoBien) {
-
-                        //if all the transactions are ok commit
-                        if (todoBien) {
-                            try {
-                                transCon.commit();
-                                JOptionPane.showMessageDialog(this, "Actualizado exitosamente");
-                                clearNew();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                        } else {
-                            JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
-
-                            JOptionPane.showMessageDialog(this, "Ocurre Un error minetras actualizando ");
-                            try {
-                                System.out.println("Rollback");
-                                transCon.rollback();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Man_emp.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                        }
-
-                    }
+                    JOptionPane.showMessageDialog(this, "Por favor define el Sucursal");
 
                 } else {
-                    //save tercero
-                    String sqlQuerytercero = "INSERT INTO `rentapelicula`.`tbtercero` (`codter`, `nomter`, `fecnac`, `telter` ,`corter`, `fecreg`, `dirter`) VALUES (NULL, '" + txtNom.getText().trim() + "', '" + sdf.format(jdcFecNac.getDate()) + "', '" + txtTel.getText().trim() + "','" + txtCor.getText().trim() + "', CURRENT_TIMESTAMP, '" + txtDir.getText().trim() + "');";
-                    System.out.println("sql>>" + sqlQuerytercero);
 
-                    if (!insertLeaderTransaction(sqlQuerytercero)) {
-
-                        todoBien = false;
+                    if (txtCed.getText().trim().length() < 13) {
+                        JOptionPane.showMessageDialog(this, "Introduce una Cedula valida");
 
                     } else {
-                        //save persona
-                        String sqlQuerypersona = "INSERT INTO `rentapelicula`.`tbpersona` (`codper`, `apeper`, `sexper`, `cedper`) VALUES ('" + lastInsertedId + "', '" + txtApe.getText().trim() + "', '" + cmbSex.getSelectedItem().toString() + "', '" + txtCed.getText().trim() + "');";
 
-                        if (!setTransaction(sqlQuerypersona)) {
-                            todoBien = false;
-                        }
+                    ///////////////pass/////////////////
+                        //check if the id is already the to update it
+                        if (sql.checkidWithIdColname(tableName, idColname, rowIdData)) {
+                    //System.err.println("li la deja");
+                            //  String sqlQuerytercero = "UPDATE " + tableName + " SET  nomter "='" + txtDescrip.getText() + "',precio='" + txtPrecio.getText() + "' WHERE " + idColname + "=" + rowIdData;
 
-                        //save cliente
-                        String sqlQueryempleado = "INSERT INTO `rentapelicula`.`tbempleado` (`codemp`,`codest`,`codsuc`) VALUES ('" + lastInsertedId + "'," + chcEstado.isSelected() + "," + codsuc.getId() + ");";
-                        if (!setTransaction(sqlQueryempleado)) {
-                            todoBien = false;
-                        }
+                            //update persone
+                            String sqlQueryUpdateTercero = "UPDATE `rentapelicula`.`tbtercero` SET `nomter` = '" + txtNom.getText() + "', `fecnac` = '" + sdf.format(jdcFecNac.getDate()) + "', `telter` = '" + txtTel.getText().trim() + "', `corter` = '" + txtCor.getText().trim() + "', `fecreg` = CURRENT_TIMESTAMP, `dirter` = '" + txtDir.getText().trim() + "'  WHERE `tbtercero`.`codter` = " + rowIdData + ";";
+                            System.out.println("sql>>" + sqlQueryUpdateTercero);
 
-                        //if all the transactions are ok commit
-                        if (todoBien) {
-                            try {
-                                transCon.commit();
+                            if (!setTransaction(sqlQueryUpdateTercero)) {
+                                System.out.println("false sqlQueryUpdateTercero");
 
-                                JOptionPane.showMessageDialog(this, "Guardado exitosamente");
-                                clearNew();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
+                                todoBien = false;
+
+                            }
+
+                            String sqlQueryUpdatePersona = "UPDATE `rentapelicula`.`tbpersona` SET `apeper` = '" + txtApe.getText().trim() + "', `sexper` = '" + cmbSex.getSelectedItem().toString() + "', `cedper` = '" + txtCed.getText().trim() + "' WHERE `tbpersona`.`codper` = " + rowIdData + ";";
+                            System.out.println("sql>>" + sqlQueryUpdatePersona);
+
+                            if (!setTransaction(sqlQueryUpdatePersona)) {
+                                System.out.println("false sqlQueryUpdatePersona");
+
+                                todoBien = false;
+                            }
+
+                            String sqlQueryUpdateEmpleado = "UPDATE `rentapelicula`.`tbempleado` SET `codest` = " + chcEstado.isSelected() + ", codsuc=" + codsuc.getId() + " WHERE `tbempleado`.`codemp` = " + rowIdData + ";";
+
+                            if (yacliente && !sql.checkidWithIdColname("tbempleado", "codemp", rowIdData)) {
+                                sqlQueryUpdateEmpleado = "INSERT INTO `rentapelicula`.`tbempleado` (`codemp`,`codest`,`codsuc`) VALUES ('" + rowIdData + "'," + chcEstado.isSelected() + "," + codsuc.getId() + ");";
+                            }
+                            System.out.println("sql>>" + sqlQueryUpdateEmpleado);
+
+                            if (!setTransaction(sqlQueryUpdateEmpleado)) {
+                                todoBien = false;
+                                System.out.println("false sqlQueryUpdateEmpleado");
+
+                            }
+
+                            if (todoBien) {
+
+                                //if all the transactions are ok commit
+                                if (todoBien) {
+                                    try {
+                                        transCon.commit();
+                                        JOptionPane.showMessageDialog(this, "Actualizado exitosamente");
+                                        clearNew();
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
+
+                                    JOptionPane.showMessageDialog(this, "Ocurre Un error minetras actualizando ");
+                                    try {
+                                        System.out.println("Rollback");
+                                        transCon.rollback();
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(Man_emp.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+
+                                }
+
                             }
 
                         } else {
-                            JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
+                            //save tercero
+                            String sqlQuerytercero = "INSERT INTO `rentapelicula`.`tbtercero` (`codter`, `nomter`, `fecnac`, `telter` ,`corter`, `fecreg`, `dirter`) VALUES (NULL, '" + txtNom.getText().trim() + "', '" + sdf.format(jdcFecNac.getDate()) + "', '" + txtTel.getText().trim() + "','" + txtCor.getText().trim() + "', CURRENT_TIMESTAMP, '" + txtDir.getText().trim() + "');";
+                            System.out.println("sql>>" + sqlQuerytercero);
 
-                            try {
-                                System.out.println("Rollback");
-                                transCon.rollback();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Man_emp.class.getName()).log(Level.SEVERE, null, ex);
+                            if (!insertLeaderTransaction(sqlQuerytercero)) {
+
+                                todoBien = false;
+
+                            } else {
+                                //save persona
+                                String sqlQuerypersona = "INSERT INTO `rentapelicula`.`tbpersona` (`codper`, `apeper`, `sexper`, `cedper`) VALUES ('" + lastInsertedId + "', '" + txtApe.getText().trim() + "', '" + cmbSex.getSelectedItem().toString() + "', '" + txtCed.getText().trim() + "');";
+
+                                if (!setTransaction(sqlQuerypersona)) {
+                                    todoBien = false;
+                                }
+
+                                //save cliente
+                                String sqlQueryempleado = "INSERT INTO `rentapelicula`.`tbempleado` (`codemp`,`codest`,`codsuc`) VALUES ('" + lastInsertedId + "'," + chcEstado.isSelected() + "," + codsuc.getId() + ");";
+                                if (!setTransaction(sqlQueryempleado)) {
+                                    todoBien = false;
+                                }
+
+                                //if all the transactions are ok commit
+                                if (todoBien) {
+                                    try {
+                                        transCon.commit();
+
+                                        JOptionPane.showMessageDialog(this, "Guardado exitosamente");
+                                        clearNew();
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
+
+                                    try {
+                                        System.out.println("Rollback");
+                                        transCon.rollback();
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(Man_emp.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+
+                                }
+
                             }
 
                         }
-
                     }
 
                 }
             }
-
         }
-
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -1042,8 +1058,10 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        JdTodoLosClientes todocli=new JdTodoLosClientes(null, closable);
-             todocli.setVisible(true);
+        JdTodoLosClientes todocli = new JdTodoLosClientes(null, closable);
+        todocli.setModal(true);
+        todocli.setLocationRelativeTo(this);
+        todocli.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
@@ -1051,8 +1069,8 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JCheckBox chcEstado;
-    private javax.swing.JComboBox cmbSex;
+    public static javax.swing.JCheckBox chcEstado;
+    public static javax.swing.JComboBox cmbSex;
     private javax.swing.JComboBox cmbSuc;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -1072,16 +1090,16 @@ private static Connection transCon = ConnectionManager.getInstance().getConnecti
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private com.toedter.calendar.JDateChooser jdcFecNac;
+    public static com.toedter.calendar.JDateChooser jdcFecNac;
     private javax.swing.JLabel lblInfo;
     private javax.swing.JTable tblCliente;
-    private javax.swing.JTextField txtApe;
+    public static javax.swing.JTextField txtApe;
     private javax.swing.JTextField txtBusqueda;
-    private javax.swing.JFormattedTextField txtCed;
-    private javax.swing.JFormattedTextField txtCor;
-    private javax.swing.JTextPane txtDir;
-    private javax.swing.JTextField txtNom;
-    private javax.swing.JFormattedTextField txtTel;
+    public static javax.swing.JFormattedTextField txtCed;
+    public static javax.swing.JFormattedTextField txtCor;
+    public static javax.swing.JTextPane txtDir;
+    public static javax.swing.JTextField txtNom;
+    public static javax.swing.JFormattedTextField txtTel;
     // End of variables declaration//GEN-END:variables
 
 }

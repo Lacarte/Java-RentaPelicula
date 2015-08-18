@@ -76,8 +76,7 @@ public class Man_cli extends javax.swing.JInternalFrame {
 
         txtBusqueda.setDocument(new LimitTextfield(32));
 
-        txtCed.setDocument(new LimitTextfield(13));
-
+      //  txtCed.setDocument(new LimitTextfield(13));
         txtCor.setDocument(new LimitTextfield(64));
 
         txtNom.requestFocus();
@@ -180,7 +179,7 @@ public class Man_cli extends javax.swing.JInternalFrame {
 
     public void populateCliente() {
 
-        String sqlQuery = "SELECT * FROM (SELECT tercli.codter AS CODCLI,tercli.nomter AS NOMBRE, per.apeper  AS APELLIDO,per.cedper AS CEDULA, tercli.telter AS TEL,cli.codest AS ACTIVO,tercli.corter AS CORREO,tercli.dirter,sexper,tercli.fecnac FROM (SELECT * FROM tbtercero ter WHERE codter IN(SELECT codter FROM tbcliente)) AS tercli INNER JOIN tbpersona per ON tercli.codter=per.codper INNER JOIN tbcliente cli ON cli.codter=tercli.codter)AS vtb";
+        String sqlQuery = "SELECT * FROM (SELECT tercli.codter AS CODCLI,tercli.nomter AS NOMBRE, per.apeper  AS APELLIDO,per.cedper AS CEDULA, tercli.telter AS TEL,cli.codest AS ACTIVO,tercli.corter AS CORREO,tercli.dirter,sexper,tercli.fecnac FROM (SELECT * FROM tbtercero ter WHERE codter IN(SELECT codter FROM tbcliente)) AS tercli INNER JOIN tbpersona per ON tercli.codter=per.codper INNER JOIN tbcliente cli ON cli.codter=tercli.codter)AS vtb ORDER BY CODCLI DESC";
 
         ResultSet rs = sql.displaytb(tableName, sqlQuery);
 
@@ -201,7 +200,7 @@ public class Man_cli extends javax.swing.JInternalFrame {
 
     public void populateClienteViaFilter() {
 
-        String sqlQuery = "SELECT * FROM (SELECT tercli.codter AS CODCLI,tercli.nomter AS NOMBRE, per.apeper  AS APELLIDO,per.cedper AS CEDULA, tercli.telter AS TEL,cli.codest AS ACTIVO,tercli.corter AS CORREO,tercli.dirter,sexper,tercli.fecnac FROM (SELECT * FROM tbtercero ter WHERE codter IN(SELECT codter FROM tbcliente)) AS tercli INNER JOIN tbpersona per ON tercli.codter=per.codper INNER JOIN tbcliente cli ON cli.codter=tercli.codter)AS vtb  WHERE cedula LIKE '%" + txtBusqueda.getText().trim() + "%'";
+        String sqlQuery = "SELECT * FROM (SELECT tercli.codter AS CODCLI,tercli.nomter AS NOMBRE, per.apeper  AS APELLIDO,per.cedper AS CEDULA, tercli.telter AS TEL,cli.codest AS ACTIVO,tercli.corter AS CORREO,tercli.dirter,sexper,tercli.fecnac FROM (SELECT * FROM tbtercero ter WHERE codter IN(SELECT codter FROM tbcliente)) AS tercli INNER JOIN tbpersona per ON tercli.codter=per.codper INNER JOIN tbcliente cli ON cli.codter=tercli.codter)AS vtb  WHERE cedula LIKE '%" + txtBusqueda.getText().trim() + "%'  ORDER BY CODCLI DESC";
 
         ResultSet rs = sql.displaytb(tableName, sqlQuery);
 
@@ -687,15 +686,15 @@ public class Man_cli extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblInfo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -731,6 +730,7 @@ public class Man_cli extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
 
+            // System.out.println("formated"+txtCed.getText().trim().length());
         boolean todoBien = true;
 
         if (txtNom.getText().isEmpty() || txtApe.getText().isEmpty() || txtCed.getText().isEmpty() || txtCor.getText().isEmpty() || txtDir.getText().isEmpty() || txtTel.getText().isEmpty()) {
@@ -745,117 +745,122 @@ public class Man_cli extends javax.swing.JInternalFrame {
 
             } else {
 
-                ///////////////pass/////////////////
-                //check if the id is already the to update it
-                if (sql.checkidWithIdColname(tableName, idColname, rowIdData)) {
-                    //System.err.println("li la deja");
-                    //  String sqlQuerytercero = "UPDATE " + tableName + " SET  nomter "='" + txtDescrip.getText() + "',precio='" + txtPrecio.getText() + "' WHERE " + idColname + "=" + rowIdData;
-
-                    //update persone
-                    String sqlQueryUpdateTercero = "UPDATE `rentapelicula`.`tbtercero` SET `nomter` = '" + txtNom.getText() + "', `fecnac` = '" + sdf.format(jdcFecNac.getDate()) + "', `telter` = '" + txtTel.getText().trim() + "', `corter` = '" + txtCor.getText().trim() + "', `fecreg` = CURRENT_TIMESTAMP, `dirter` = '" + txtDir.getText().trim() + "'  WHERE `tbtercero`.`codter` = " + rowIdData + ";";
-                    System.out.println("sql>>" + sqlQueryUpdateTercero);
-
-                    if (!setTransaction(sqlQueryUpdateTercero)) {
-                        todoBien = false;
-
-                    }
-
-                    String sqlQueryUpdatePersona = "UPDATE `rentapelicula`.`tbpersona` SET `apeper` = '" + txtApe.getText().trim() + "', `sexper` = '" + cmbSex.getSelectedItem().toString() + "', `cedper` = '" + txtCed.getText().trim() + "' WHERE `tbpersona`.`codper` = " + rowIdData + ";";
-                    System.out.println("sql>>" + sqlQueryUpdatePersona);
-
-                    if (!setTransaction(sqlQueryUpdatePersona)) {
-
-                        todoBien = false;
-                    }
-
-                    String sqlQueryUpdateCliente = "UPDATE `rentapelicula`.`tbcliente` SET `codest` = " + chcEstado.isSelected() + " WHERE `tbcliente`.`codter` = " + rowIdData + ";";
-                    System.out.println("sql>>" + sqlQueryUpdateCliente);
-
-                    if (!setTransaction(sqlQueryUpdateCliente)) {
-                        todoBien = false;
-                    }
-
-                    if (todoBien) {
-
-                        //if all the transactions are ok commit
-                        if (todoBien) {
-                            try {
-                                transCon.commit();
-                                JOptionPane.showMessageDialog(this, "Actualizado exitosamente");
-                                clearNew();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                        } else {
-                            JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
-
-                            JOptionPane.showMessageDialog(this, "Ocurre Un error minetras actualizando ");
-                            try {
-                                System.out.println("Rollback");
-                                transCon.rollback();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Man_cli.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                        }
-
-                    }
+                //cedula length shoud be 13
+                if (txtCed.getText().trim().length() < 13) {
+                JOptionPane.showMessageDialog(this, "Introduce una Cedula valida");
 
                 } else {
-                    //save tercero
-                    String sqlQuerytercero = "INSERT INTO `rentapelicula`.`tbtercero` (`codter`, `nomter`, `fecnac`, `telter` ,`corter`, `fecreg`, `dirter`) VALUES (NULL, '" + txtNom.getText().trim() + "', '" + sdf.format(jdcFecNac.getDate()) + "', '" + txtTel.getText().trim() + "','" + txtCor.getText().trim() + "', CURRENT_TIMESTAMP, '" + txtDir.getText().trim() + "');";
-                    System.out.println("sql>>" + sqlQuerytercero);
+                ///////////////pass/////////////////
+                    //check if the id is already the to update it
+                    if (sql.checkidWithIdColname(tableName, idColname, rowIdData)) {
+                    //System.err.println("li la deja");
+                        //  String sqlQuerytercero = "UPDATE " + tableName + " SET  nomter "='" + txtDescrip.getText() + "',precio='" + txtPrecio.getText() + "' WHERE " + idColname + "=" + rowIdData;
 
-                    if (!insertLeaderTransaction(sqlQuerytercero)) {
+                        //update persone
+                        String sqlQueryUpdateTercero = "UPDATE `rentapelicula`.`tbtercero` SET `nomter` = '" + txtNom.getText() + "', `fecnac` = '" + sdf.format(jdcFecNac.getDate()) + "', `telter` = '" + txtTel.getText().trim() + "', `corter` = '" + txtCor.getText().trim() + "', `fecreg` = CURRENT_TIMESTAMP, `dirter` = '" + txtDir.getText().trim() + "'  WHERE `tbtercero`.`codter` = " + rowIdData + ";";
+                        System.out.println("sql>>" + sqlQueryUpdateTercero);
 
-                        todoBien = false;
+                        if (!setTransaction(sqlQueryUpdateTercero)) {
+                            todoBien = false;
 
-                    } else {
-                        //save persona
-                        String sqlQuerypersona = "INSERT INTO `rentapelicula`.`tbpersona` (`codper`, `apeper`, `sexper`, `cedper`) VALUES ('" + lastInsertedId + "', '" + txtApe.getText().trim() + "', '" + cmbSex.getSelectedItem().toString() + "', '" + txtCed.getText().trim() + "');";
+                        }
 
-                        if (!setTransaction(sqlQuerypersona)) {
+                        String sqlQueryUpdatePersona = "UPDATE `rentapelicula`.`tbpersona` SET `apeper` = '" + txtApe.getText().trim() + "', `sexper` = '" + cmbSex.getSelectedItem().toString() + "', `cedper` = '" + txtCed.getText().trim() + "' WHERE `tbpersona`.`codper` = " + rowIdData + ";";
+                        System.out.println("sql>>" + sqlQueryUpdatePersona);
+
+                        if (!setTransaction(sqlQueryUpdatePersona)) {
+
                             todoBien = false;
                         }
 
-                        //save cliente
-                        String sqlQueryCliente = "INSERT INTO `rentapelicula`.`tbcliente` (`codter`,`codest`) VALUES ('" + lastInsertedId + "',"+chcEstado.isSelected()+");";
-                        if (!setTransaction(sqlQueryCliente)) {
+                        String sqlQueryUpdateCliente = "UPDATE `rentapelicula`.`tbcliente` SET `codest` = " + chcEstado.isSelected() + " WHERE `tbcliente`.`codter` = " + rowIdData + ";";
+                        System.out.println("sql>>" + sqlQueryUpdateCliente);
+
+                        if (!setTransaction(sqlQueryUpdateCliente)) {
                             todoBien = false;
                         }
 
-                        //if all the transactions are ok commit
                         if (todoBien) {
-                            try {
-                                transCon.commit();
-                                
-                                JOptionPane.showMessageDialog(this, "Guardado exitosamente");
-                                clearNew();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
+
+                            //if all the transactions are ok commit
+                            if (todoBien) {
+                                try {
+                                    transCon.commit();
+                                    JOptionPane.showMessageDialog(this, "Actualizado exitosamente");
+                                    clearNew();
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+
+                            } else {
+                                JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
+
+                                JOptionPane.showMessageDialog(this, "Ocurre Un error minetras actualizando ");
+                                try {
+                                    System.out.println("Rollback");
+                                    transCon.rollback();
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(Man_cli.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+
                             }
 
-                        } else {
-                            JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
+                        }
 
-                            try {
-                                   System.out.println("Rollback");
-                                transCon.rollback();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Man_cli.class.getName()).log(Level.SEVERE, null, ex);
+                    } else {
+                        //save tercero
+                        String sqlQuerytercero = "INSERT INTO `rentapelicula`.`tbtercero` (`codter`, `nomter`, `fecnac`, `telter` ,`corter`, `fecreg`, `dirter`) VALUES (NULL, '" + txtNom.getText().trim() + "', '" + sdf.format(jdcFecNac.getDate()) + "', '" + txtTel.getText().trim() + "','" + txtCor.getText().trim() + "', CURRENT_TIMESTAMP, '" + txtDir.getText().trim() + "');";
+                        System.out.println("sql>>" + sqlQuerytercero);
+
+                        if (!insertLeaderTransaction(sqlQuerytercero)) {
+
+                            todoBien = false;
+
+                        } else {
+                            //save persona
+                            String sqlQuerypersona = "INSERT INTO `rentapelicula`.`tbpersona` (`codper`, `apeper`, `sexper`, `cedper`) VALUES ('" + lastInsertedId + "', '" + txtApe.getText().trim() + "', '" + cmbSex.getSelectedItem().toString() + "', '" + txtCed.getText().trim() + "');";
+
+                            if (!setTransaction(sqlQuerypersona)) {
+                                todoBien = false;
+                            }
+
+                            //save cliente
+                            String sqlQueryCliente = "INSERT INTO `rentapelicula`.`tbcliente` (`codter`,`codest`) VALUES ('" + lastInsertedId + "'," + chcEstado.isSelected() + ");";
+                            if (!setTransaction(sqlQueryCliente)) {
+                                todoBien = false;
+                            }
+
+                            //if all the transactions are ok commit
+                            if (todoBien) {
+                                try {
+                                    transCon.commit();
+
+                                    JOptionPane.showMessageDialog(this, "Guardado exitosamente");
+                                    clearNew();
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+
+                            } else {
+                                JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
+
+                                try {
+                                    System.out.println("Rollback");
+                                    transCon.rollback();
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(Man_cli.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+
                             }
 
                         }
 
                     }
-
                 }
+
             }
 
         }
-
-
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated

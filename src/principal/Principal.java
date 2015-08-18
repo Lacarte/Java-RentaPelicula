@@ -36,35 +36,23 @@ public class Principal extends javax.swing.JFrame {
     /*CONSTRUCTOR*/
     public Principal() {
 
-        
-        
-        
-        
-            initComponents();
-            jmAdmin.setVisible(true);
-            clock(jlabelInfotop);
-            
+        initComponents();
+        jmAdmin.setVisible(true);
+        clock(jlabelInfotop);
 
-    //re setup the look and feel NimbusLookAndFeel after using the transpa rency in the  login
-     try
-    {
-        //Set the required look and feel
-        UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-        //Update the component tree - associate the look and feel with the given frame.
-        SwingUtilities.updateComponentTreeUI(this);
-    }//end try
-    catch(Exception ex)
-    {
-        ex.printStackTrace();
-    }//end catch
-    
-    
+        //re setup the look and feel NimbusLookAndFeel after using the transpa rency in the  login
+        try {
+            //Set the required look and feel
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            //Update the component tree - associate the look and feel with the given frame.
+            SwingUtilities.updateComponentTreeUI(this);
+        }//end try
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }//end catch
 
     }
 
-
-    
-    
 ////////////////// clock/////////////////////
     public void clock(JLabel jb) {
         Clock c1 = new Clock(jb);
@@ -81,7 +69,7 @@ public class Principal extends javax.swing.JFrame {
         int width = (desktopSize.width - jInternalFrameSize.width) / 2;
         int height = (desktopSize.height - jInternalFrameSize.height) / 2;
         jif.setLocation(width, height);
-  // jif.setVisible(true);
+        // jif.setVisible(true);
     }
 
     /**
@@ -484,6 +472,7 @@ public class Principal extends javax.swing.JFrame {
         this.jDesktopPane1.removeAll();
         this.jDesktopPane1.repaint();
         this.jDesktopPane1.add(mu);
+        centerJIF(mu);
         mu.show();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
@@ -603,7 +592,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
         // TODO add your handling code here:
-      Man_cla mc = new Man_cla();
+        Man_cla mc = new Man_cla();
         this.jDesktopPane1.removeAll();
         this.jDesktopPane1.repaint();
         this.jDesktopPane1.add(mc);
@@ -619,7 +608,7 @@ public class Principal extends javax.swing.JFrame {
         String ObjButtons[] = {"Si", "No"};
         int PromptResult = JOptionPane.showOptionDialog(this, "Desea Cambiar de Sesion?", "Cerrar?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, ObjButtons, ObjButtons[1]);
         if (PromptResult == JOptionPane.YES_OPTION) {
-         // ConnectionManager.getInstance().close();
+            // ConnectionManager.getInstance().close();
             // System.exit(0);
             JdCerrarSesion jdsesion = new JdCerrarSesion(this, true);
             jdsesion.setModal(true);
@@ -645,7 +634,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
         // TODO add your handling code here:
-        
+
         Man_suc ma = new Man_suc();
         this.jDesktopPane1.removeAll();
         this.jDesktopPane1.repaint();
@@ -685,7 +674,7 @@ public class Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-              //  new Principal().setVisible(true);
+                //  new Principal().setVisible(true);
 
                 try {
                     //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

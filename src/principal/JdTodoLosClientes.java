@@ -6,8 +6,11 @@ import utilities.LimitTextfield;
 import utilities.ResultsetTable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -22,66 +25,50 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author LCRT
  */
-
-
-
     //don't forget to add this code in windos active to repopulate the subtitle tale
-    //populateIdioma(tableName);
-
-
+//populateIdioma(tableName);
 public class JdTodoLosClientes extends javax.swing.JDialog {
 
     DBSql sql = null;
-    String tableName = "tbactor";
-    String idColname = "codact";
-    String descriptionColname = "nomact";
-   
+    String tableName = "tbtercero";
+    String idColname = "codter";
+    String confirmStringToDelete = null;
+
     ArrayList<Integer> arrlIdAlreadyAdded = null;
     ArrayList<Integer> indexTodelete = null;
-    
+
     int progVal = 1;
-    
-    
+    int rowIdData = 0;
+
     public JdTodoLosClientes(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         sql = new DBSql();
-        
+
         arrlIdAlreadyAdded = new ArrayList<Integer>();
         indexTodelete = new ArrayList<Integer>();
-        
+
         int progVal = 1;
-
-        
         txtBusqueda.requestFocus();
-        populateActor(tableName);
-       jLabel2.setVisible(false);
-
-        
+        populateCliente();
+        jLabel2.setVisible(false);
         txtBusqueda.setDocument(new LimitTextfield(24));
-        
+
     }
 
-    
-    
-    
-    
-    
-    
-    
-       public void populateCliente() {
+    public void populateCliente() {
 
         String sqlQuery = "SELECT * FROM (SELECT tercli.codter AS CODCLI,tercli.nomter AS NOMBRE, per.apeper  AS APELLIDO,per.cedper AS CEDULA, tercli.telter AS TEL,cli.codest AS ACTIVO,tercli.corter AS CORREO,tercli.dirter,sexper,tercli.fecnac FROM (SELECT * FROM tbtercero ter WHERE codter IN(SELECT codter FROM tbcliente)) AS tercli INNER JOIN tbpersona per ON tercli.codter=per.codper INNER JOIN tbcliente cli ON cli.codter=tercli.codter)AS vtb";
 
         ResultSet rs = sql.displaytb(tableName, sqlQuery);
 
         ResultsetTable rst = new ResultsetTable();
-        tblClientes.remove(this);
+        tblCliente.remove(this);
         try {
-            tblClientes.setModel(rst.rstomodel(rs));
-            lblInfo.setText("Ctd : " + tblClientes.getRowCount());
+            tblCliente.setModel(rst.rstomodel(rs));
+            lblInfo.setText("Ctd : " + tblCliente.getRowCount());
 
-           // hideColTable();
+            hideColTable();
 
         } catch (SQLException ex) {
             Logger.getLogger(Man_gen.class
@@ -89,26 +76,48 @@ public class JdTodoLosClientes extends javax.swing.JDialog {
         }
 
     }
-    
-    
-       
-       
-       
-       
-       
-       public void populateViaFilterCliente() {
+
+    void hideColTable() {
+
+        
+                tblCliente.getColumnModel().getColumn(4).setMinWidth(0);
+        tblCliente.getColumnModel().getColumn(4).setMaxWidth(0);
+        tblCliente.getColumnModel().getColumn(4).setWidth(0);
+
+        tblCliente.getColumnModel().getColumn(5).setMinWidth(0);
+        tblCliente.getColumnModel().getColumn(5).setMaxWidth(0);
+        tblCliente.getColumnModel().getColumn(5).setWidth(0);
+
+        tblCliente.getColumnModel().getColumn(6).setMinWidth(0);
+        tblCliente.getColumnModel().getColumn(6).setMaxWidth(0);
+        tblCliente.getColumnModel().getColumn(6).setWidth(0);
+        
+        tblCliente.getColumnModel().getColumn(7).setMinWidth(0);
+        tblCliente.getColumnModel().getColumn(7).setMaxWidth(0);
+        tblCliente.getColumnModel().getColumn(7).setWidth(0);
+
+        tblCliente.getColumnModel().getColumn(8).setMinWidth(0);
+        tblCliente.getColumnModel().getColumn(8).setMaxWidth(0);
+        tblCliente.getColumnModel().getColumn(8).setWidth(0);
+
+        tblCliente.getColumnModel().getColumn(9).setMinWidth(0);
+        tblCliente.getColumnModel().getColumn(9).setMaxWidth(0);
+        tblCliente.getColumnModel().getColumn(9).setWidth(0);
+
+    }
+
+    public void populateClienteViaFilter() {
 
         String sqlQuery = "SELECT * FROM (SELECT tercli.codter AS CODCLI,tercli.nomter AS NOMBRE, per.apeper  AS APELLIDO,per.cedper AS CEDULA, tercli.telter AS TEL,cli.codest AS ACTIVO,tercli.corter AS CORREO,tercli.dirter,sexper,tercli.fecnac FROM (SELECT * FROM tbtercero ter WHERE codter IN(SELECT codter FROM tbcliente)) AS tercli INNER JOIN tbpersona per ON tercli.codter=per.codper INNER JOIN tbcliente cli ON cli.codter=tercli.codter)AS vtb  WHERE cedula LIKE '%" + txtBusqueda.getText().trim() + "%'";
 
         ResultSet rs = sql.displaytb(tableName, sqlQuery);
 
         ResultsetTable rst = new ResultsetTable();
-        tblClientes.remove(this);
+        tblCliente.remove(this);
         try {
-            tblClientes.setModel(rst.rstomodel(rs));
-            lblInfo.setText("Ctd : " + tblClientes.getRowCount());
-
-           // hideColTable();
+            tblCliente.setModel(rst.rstomodel(rs));
+            lblInfo.setText("Ctd : " + tblCliente.getRowCount());
+            hideColTable();
 
         } catch (SQLException ex) {
             Logger.getLogger(Man_gen.class
@@ -116,106 +125,59 @@ public class JdTodoLosClientes extends javax.swing.JDialog {
         }
 
     }
-    
-    
-    
-    
-    //////////////////populate table////////////////////
-    public void populateActor(String tblname) {
 
-        
-        String SqlQuery="SELECT codact AS ID ,CONCAT(nomact,' ' ,apeact) AS NOMBRE FROM tbactor";
-        
-        ResultSet rs = sql.displaytb(tblname, SqlQuery);
-
-        ResultsetTable rst = new ResultsetTable();
-        tblClientes.remove(this);
-  //////////////////////try//////////////
-                try {
-
-            DefaultTableModel tm = (DefaultTableModel) rst.rstomodel(rs);
-            System.out.println(" size of jlist element : " + arrlIdAlreadyAdded.size() + " rowCount:  " + tm.getRowCount());
-            for (int i = tm.getRowCount() - 1; i >= 0; i--) {
-
-                for (int j = arrlIdAlreadyAdded.size() - 1; j >= 0; j--) {
-                    //the id values of the database table
-                    int outId = Integer.parseInt(tm.getValueAt(i, 0).toString());
-                    //the id values of the table in the main class
-                    int inId = arrlIdAlreadyAdded.get(j);
-                    
-                    //if they are equal they row should be removed
-                    if (outId == inId) {
-                        //indexes of the row that should be reorder(sort)   
-                        indexTodelete.add(i);
-                        System.out.println("egal --- " + outId + " " + inId);
-                    }
-
-                }
-
-            }
-
-            //reorder(sort) to delete them from the highest to the lowest
-            Collections.sort(indexTodelete);
-
-            for (int i = indexTodelete.size() - 1; i >= 0; i--) {
-                System.out.println("Sort" + indexTodelete.get(i));
-                tm.removeRow(indexTodelete.get(i));
-            }
-
-            tm.fireTableDataChanged();
-            tblClientes.repaint();
-
-            //reassign de modify model to the table 
-            tblClientes.setModel(tm);
-            //old
-            //jtCars.setModel(rst.rstomodel(rs));
-            lblInfo.setText("Ctd : " + tblClientes.getRowCount());
-        } catch (SQLException ex) {
-            Logger.getLogger(JdTodoLosClientes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-
- //////////////////////end try/////////////////      
-        
-    }
-
-     void detectIdAlreadyAdded() {
-        // System.out.println("boomfsdfsdfsd");
-        arrlIdAlreadyAdded.clear();
-
-        for (int i = 0; i < Man_pel.lstActorModel.getSize(); i++) {
-            DataJlist selected_item = (DataJlist) Man_pel.lstActorModel.elementAt(i);
-            System.out.println("Id FOUND : " + selected_item.getId());
-            arrlIdAlreadyAdded.add(selected_item.getId());
-        }
-
-        System.out.println("size: " + arrlIdAlreadyAdded.size());
-    }
-
-     
-     
-     
-  
-    public void populateGeneroViaFilter(String tblname) {
-
-       String SqlQuery="SELECT * FROM (SELECT codact As CODACT,CONCAT(nomact,\" \",apeact) AS NOMBRE FROM tbactor) AS VTBL WHERE (CODACT LIKE '%" + txtBusqueda.getText() + "%')  OR (NOMBRE  LIKE '%" + txtBusqueda.getText() + "%')";
-        System.out.println(SqlQuery);
-        ResultSet rs = sql.displaytb(tblname, SqlQuery);
-
-        ResultsetTable rst = new ResultsetTable();
-        tblClientes.remove(this);
+    public void getSelectRowIdData() {
         try {
-            tblClientes.setModel(rst.rstomodel(rs));
-            lblInfo.setText("Ctd : " + tblClientes.getRowCount());
+            int selectedRow = tblCliente.getSelectedRow();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(JdTodoLosClientes.class.getName()).log(Level.SEVERE, null, ex);
+            int idData = Integer.parseInt((tblCliente.getModel().getValueAt(selectedRow, 0).toString()));
+
+            rowIdData = idData;
+
+            /////////////////////////////set combobox////////////////////////
+            //selectedValueCombobox(cmbGenero, tblPelicula.getModel().getValueAt(selectedRow, 2));
+            /////////////////for update//////////////////       
+            ////////mete string lan nan textfield la///////////////
+            Man_emp.txtNom.setText(tblCliente.getModel().getValueAt(selectedRow, 1).toString());
+            Man_emp.txtApe.setText(tblCliente.getModel().getValueAt(selectedRow, 2).toString());
+            Man_emp.txtCed.setText(tblCliente.getModel().getValueAt(selectedRow, 3).toString());
+            Man_emp.txtTel.setText(tblCliente.getModel().getValueAt(selectedRow, 4).toString());
+
+            Man_emp.txtCor.setText(tblCliente.getModel().getValueAt(selectedRow, 6).toString());
+
+            Man_emp.txtDir.setText(tblCliente.getModel().getValueAt(selectedRow, 7).toString());
+
+            Man_emp.cmbSex.setSelectedItem(tblCliente.getModel().getValueAt(selectedRow, 8).toString());
+
+            String chk = tblCliente.getModel().getValueAt(selectedRow, 5).toString();
+
+            //checkbox
+            if (chk.equalsIgnoreCase("1")) {
+                Man_emp.chcEstado.setSelected(true);
+            } else {
+                Man_emp.chcEstado.setSelected(false);
+            }
+
+            ///Date convertion
+            String inputDateStr = tblCliente.getModel().getValueAt(selectedRow, 9).toString();
+            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat outputFormat = new SimpleDateFormat("dd/MM/YYYY");
+            ///////////////////////////
+            Date date = inputFormat.parse(inputDateStr);
+            String outputDateStr = outputFormat.format(date);
+
+            //System.out.println(">>++"+outputDateStr);
+            //add outputDateStr  to format and convert it to date 
+            Man_emp.jdcFecNac.setDate((Date) new SimpleDateFormat("dd/MM/yyyy").parse(outputDateStr));
+
+            //fecha
+            //  txtCed.setYear(Integer.parseInt((String) tblPelicula.getModel().getValueAt(selectedRow, 4)));
+            ///////////////////pran tout string ki nan row la///////////////////
+        } catch (Exception e) {
         }
 
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -227,7 +189,7 @@ public class JdTodoLosClientes extends javax.swing.JDialog {
 
         timer1 = new org.netbeans.examples.lib.timerbean.Timer();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblClientes = new javax.swing.JTable();
+        tblCliente = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
         lblInfo = new javax.swing.JLabel();
@@ -242,7 +204,7 @@ public class JdTodoLosClientes extends javax.swing.JDialog {
         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Actor(es)");
+        setTitle("Clientes");
         setModal(true);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -251,7 +213,7 @@ public class JdTodoLosClientes extends javax.swing.JDialog {
             }
         });
 
-        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tblCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -262,15 +224,15 @@ public class JdTodoLosClientes extends javax.swing.JDialog {
                 "Title 1", "Title 2"
             }
         ));
-        tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblClientesMouseClicked(evt);
+        tblCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tblClienteMouseReleased(evt);
             }
         });
-        jScrollPane1.setViewportView(tblClientes);
+        jScrollPane1.setViewportView(tblCliente);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Cliente > Empleado");
+        jLabel1.setText("Clientes");
 
         txtBusqueda.setText("Buscar por #Cedula");
         txtBusqueda.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -303,8 +265,10 @@ public class JdTodoLosClientes extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel1)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtBusqueda))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -339,9 +303,9 @@ public class JdTodoLosClientes extends javax.swing.JDialog {
     private void txtBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaKeyReleased
         // TODO add your handling code here:
         txtBusqueda.setText(txtBusqueda.getText().trim());
-        populateGeneroViaFilter(tableName);
+        populateClienteViaFilter();
         if (txtBusqueda.getText().isEmpty()) {
-           populateActor(tableName);
+            populateCliente();
         }
     }//GEN-LAST:event_txtBusquedaKeyReleased
 
@@ -352,76 +316,69 @@ public class JdTodoLosClientes extends javax.swing.JDialog {
 
     private void txtBusquedaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBusquedaFocusLost
         // TODO add your handling code here:
-        txtBusqueda.setText("Buscar");
+        txtBusqueda.setText("Buscar por #Cedula");
     }//GEN-LAST:event_txtBusquedaFocusLost
-
-    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
-        // TODO add your handling code here:
-        System.out.println("boom");
-        if (evt.getClickCount() == 2) {
-            //sendData(); 
-            //evt.
-
-            if (tblClientes.getSelectedRow() > -1) {
-
-                boolean exist = false;
-                // print first column value from selected row
-                int id = Integer.parseInt(tblClientes.getValueAt(tblClientes.getSelectedRow(), 0).toString());
-                String data = tblClientes.getValueAt(tblClientes.getSelectedRow(), 1).toString();
-
-                // DataJlist selected _item = (DataJlist) Man_pel.jlSutitulo.getse;
-                // DataJlist selected_item = (DataJlist) Man_pel.jlSutitulo.getSelectedValuesList();
-                // System.out.println(selected_item);         
-                //Man_pel.jlSubtituloModel.getElementAt(id);
-                //System.out.println("sfgfdsg>>"+Man_pel.jlSubtituloModel.elementAt(0));
-                //System.out.println(">>"+Man_pel.jlSubtituloModel.getElementAt(1));
-                for (int i = 0; i < Man_pel.lstActorModel.getSize(); i++) {
-                    DataJlist selected_item = (DataJlist) Man_pel.lstActorModel.elementAt(i);
-                    //System.out.println("BOOM>>"+selected_item.getId());
-                    if (selected_item.getId() == id) {
-                        exist = true;
-                    }
-                }
-
-                if (exist) {
-                    JOptionPane.showMessageDialog(this.getOwner(), "Ya existe este Subtitulo.");
-
-                } else {
-                    //if it does not exit add it   
-                    ////false delete and true for insert
-                    Man_pel.addRemoveElementFromActor(id, true);
-                    Man_pel.lstActorModel.addElement(new DataJlist(id, data));
-                   
-                    timer1.start();
-                }
-
-            }
-
-        }
-
-    }//GEN-LAST:event_tblClientesMouseClicked
 
     private void timer1OnTime(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timer1OnTime
         // TODO add your handling code here:
-                jProgressBar1.setValue(progVal++);
+        jProgressBar1.setValue(progVal++);
 
         if (progVal >= jProgressBar1.getMaximum()) {
             // Man_pel.lblSubtitulo.setText("Subtitulo : "+Man_pel.lstSubtitulo.getModel().getSize());
-          Man_pel.PnlActor.setBorder(javax.swing.BorderFactory.createTitledBorder("Autor(es): "+Man_pel.lstActor.getModel().getSize()));
+            Man_pel.PnlActor.setBorder(javax.swing.BorderFactory.createTitledBorder("Autor(es): " + Man_pel.lstActor.getModel().getSize()));
 
-            
-          
             this.dispose();
             timer1.stop();
         }
-        
+
     }//GEN-LAST:event_timer1OnTime
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-                populateActor(tableName);
+        populateCliente();
 
     }//GEN-LAST:event_formWindowActivated
+
+    private void tblClienteMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClienteMouseReleased
+        // TODO add your handling code here:
+
+        System.out.println("boom");
+
+        int selectedRow = tblCliente.getSelectedRow();
+
+        if (evt.getClickCount() == 2) {
+            //sendData(); 
+            //evt.
+
+            if (tblCliente.getSelectedRow() > -1) {
+
+                confirmStringToDelete = "";
+                for (int i = 0; i < 4; i++) {
+
+                    String strData = (tblCliente.getModel().getValueAt(selectedRow, i).toString()) + " ";
+                    //System.out.println(""+strData);
+                    confirmStringToDelete += strData;
+                }
+
+                String ObjButtons[] = {"Si", "No"};
+                int PromptResult = JOptionPane.showOptionDialog(this, "Desea Convertir el cliente en empleado? [ " + confirmStringToDelete + " ]", "Confirmacion...?", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, ObjButtons, ObjButtons[0]);
+
+                if (PromptResult == JOptionPane.YES_OPTION) {
+
+                    Man_emp.yacliente = true;
+                    int idData = Integer.parseInt((tblCliente.getModel().getValueAt(selectedRow, 0).toString()));
+                   Man_emp.rowIdData = idData;
+
+                    getSelectRowIdData();
+
+                    confirmStringToDelete = null;
+                    rowIdData = 0;
+                    this.dispose();
+                }
+            }
+
+        }
+    }//GEN-LAST:event_tblClienteMouseReleased
 
     /**
      * @param args the command line arguments
@@ -471,7 +428,7 @@ public class JdTodoLosClientes extends javax.swing.JDialog {
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblInfo;
-    private javax.swing.JTable tblClientes;
+    private javax.swing.JTable tblCliente;
     private org.netbeans.examples.lib.timerbean.Timer timer1;
     private javax.swing.JTextField txtBusqueda;
     // End of variables declaration//GEN-END:variables
