@@ -194,21 +194,21 @@ public class Man_emp extends javax.swing.JInternalFrame {
 
     void hideColTable() {
 
-        tblCliente.getColumnModel().getColumn(7).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(7).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(7).setWidth(0);
+        tblEmpleado.getColumnModel().getColumn(7).setMinWidth(0);
+        tblEmpleado.getColumnModel().getColumn(7).setMaxWidth(0);
+        tblEmpleado.getColumnModel().getColumn(7).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(8).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(8).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(8).setWidth(0);
+        tblEmpleado.getColumnModel().getColumn(8).setMinWidth(0);
+        tblEmpleado.getColumnModel().getColumn(8).setMaxWidth(0);
+        tblEmpleado.getColumnModel().getColumn(8).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(9).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(9).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(9).setWidth(0);
+        tblEmpleado.getColumnModel().getColumn(9).setMinWidth(0);
+        tblEmpleado.getColumnModel().getColumn(9).setMaxWidth(0);
+        tblEmpleado.getColumnModel().getColumn(9).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(10).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(10).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(10).setWidth(0);
+        tblEmpleado.getColumnModel().getColumn(10).setMinWidth(0);
+        tblEmpleado.getColumnModel().getColumn(10).setMaxWidth(0);
+        tblEmpleado.getColumnModel().getColumn(10).setWidth(0);
 
     }
 
@@ -219,10 +219,10 @@ public class Man_emp extends javax.swing.JInternalFrame {
         ResultSet rs = sql.displaytb(tableName, sqlQuery);
 
         ResultsetTable rst = new ResultsetTable();
-        tblCliente.remove(this);
+        tblEmpleado.remove(this);
         try {
-            tblCliente.setModel(rst.rstomodel(rs));
-            lblInfo.setText("Ctd : " + tblCliente.getRowCount());
+            tblEmpleado.setModel(rst.rstomodel(rs));
+            lblInfo.setText("Ctd : " + tblEmpleado.getRowCount());
 
             hideColTable();
 
@@ -233,17 +233,17 @@ public class Man_emp extends javax.swing.JInternalFrame {
 
     }
 
-    public void populateClienteViaFilter() {
+    public void populateEmpleadoViaFilter() {
 
         String sqlQuery = "SELECT * FROM (SELECT teremp.codter AS CODEMP,teremp.nomter AS NOMBRE, per.apeper  AS APELLIDO,per.cedper AS CEDULA, teremp.telter AS TEL,emp.codest AS ACTIVO,teremp.corter AS CORREO,teremp.dirter,sexper,teremp.fecnac,su.dessuc FROM (SELECT * FROM tbtercero ter WHERE codter IN(SELECT codter FROM tbempleado)) AS teremp INNER JOIN tbpersona per ON teremp.codter=per.codper INNER JOIN tbempleado emp ON emp.codemp=teremp.codter INNER JOIN tbsucursal su  ON su.codsuc=emp.codsuc)AS vtb WHERE cedula LIKE '%" + txtBusqueda.getText().trim() + "%'  ORDER BY CODEMP DESC";
 
         ResultSet rs = sql.displaytb(tableName, sqlQuery);
 
         ResultsetTable rst = new ResultsetTable();
-        tblCliente.remove(this);
+        tblEmpleado.remove(this);
         try {
-            tblCliente.setModel(rst.rstomodel(rs));
-            lblInfo.setText("Ctd : " + tblCliente.getRowCount());
+            tblEmpleado.setModel(rst.rstomodel(rs));
+            lblInfo.setText("Ctd : " + tblEmpleado.getRowCount());
             hideColTable();
 
         } catch (SQLException ex) {
@@ -270,9 +270,9 @@ public class Man_emp extends javax.swing.JInternalFrame {
 
     public void getSelectRowIdData() {
         try {
-            int selectedRow = tblCliente.getSelectedRow();
+            int selectedRow = tblEmpleado.getSelectedRow();
 
-            int idData = Integer.parseInt((tblCliente.getModel().getValueAt(selectedRow, 0).toString()));
+            int idData = Integer.parseInt((tblEmpleado.getModel().getValueAt(selectedRow, 0).toString()));
 
             rowIdData = idData;
 
@@ -280,20 +280,20 @@ public class Man_emp extends javax.swing.JInternalFrame {
             //selectedValueCombobox(cmbGenero, tblPelicula.getModel().getValueAt(selectedRow, 2));
             /////////////////for update//////////////////       
             ////////mete string lan nan textfield la///////////////
-            txtNom.setText(tblCliente.getModel().getValueAt(selectedRow, 1).toString());
-            txtApe.setText(tblCliente.getModel().getValueAt(selectedRow, 2).toString());
-            txtCed.setText(tblCliente.getModel().getValueAt(selectedRow, 3).toString());
-            txtTel.setText(tblCliente.getModel().getValueAt(selectedRow, 4).toString());
+            txtNom.setText(tblEmpleado.getModel().getValueAt(selectedRow, 1).toString());
+            txtApe.setText(tblEmpleado.getModel().getValueAt(selectedRow, 2).toString());
+            txtCed.setText(tblEmpleado.getModel().getValueAt(selectedRow, 3).toString());
+            txtTel.setText(tblEmpleado.getModel().getValueAt(selectedRow, 4).toString());
 
-            txtCor.setText(tblCliente.getModel().getValueAt(selectedRow, 6).toString());
+            txtCor.setText(tblEmpleado.getModel().getValueAt(selectedRow, 6).toString());
 
-            txtDir.setText(tblCliente.getModel().getValueAt(selectedRow, 7).toString());
+            txtDir.setText(tblEmpleado.getModel().getValueAt(selectedRow, 7).toString());
 
-            cmbSex.setSelectedItem(tblCliente.getModel().getValueAt(selectedRow, 8).toString());
+            cmbSex.setSelectedItem(tblEmpleado.getModel().getValueAt(selectedRow, 8).toString());
 
-            selectedValueCombobox(cmbSuc, tblCliente.getModel().getValueAt(selectedRow, 10).toString());
+            selectedValueCombobox(cmbSuc, tblEmpleado.getModel().getValueAt(selectedRow, 10).toString());
 
-            String chk = tblCliente.getModel().getValueAt(selectedRow, 5).toString();
+            String chk = tblEmpleado.getModel().getValueAt(selectedRow, 5).toString();
 
             //checkbox
             if (chk.equalsIgnoreCase("1")) {
@@ -304,7 +304,7 @@ public class Man_emp extends javax.swing.JInternalFrame {
 
             //  selectedValueCombobox(cmbSuc, tblCliente.getModel().getValueAt(selectedRow, 9));
             ///Date convertion
-            String inputDateStr = tblCliente.getModel().getValueAt(selectedRow, 9).toString();
+            String inputDateStr = tblEmpleado.getModel().getValueAt(selectedRow, 9).toString();
             DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
             DateFormat outputFormat = new SimpleDateFormat("dd/MM/YYYY");
             ///////////////////////////
@@ -319,9 +319,9 @@ public class Man_emp extends javax.swing.JInternalFrame {
             //  txtCed.setYear(Integer.parseInt((String) tblPelicula.getModel().getValueAt(selectedRow, 4)));
             ///////////////////pran tout string ki nan row la///////////////////
             confirmStringToDelete = "";
-            for (int i = 0; i < tblCliente.getColumnCount(); i++) {
+            for (int i = 0; i < tblEmpleado.getColumnCount(); i++) {
 
-                String strData = (tblCliente.getModel().getValueAt(selectedRow, i).toString()) + " ";
+                String strData = (tblEmpleado.getModel().getValueAt(selectedRow, i).toString()) + " ";
                 //System.out.println(""+strData);
                 confirmStringToDelete += strData;
             }
@@ -404,7 +404,7 @@ public class Man_emp extends javax.swing.JInternalFrame {
         btnNuevo = new javax.swing.JButton();
         txtBusqueda = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCliente = new javax.swing.JTable();
+        tblEmpleado = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         txtNom = new javax.swing.JTextField();
         txtApe = new javax.swing.JTextField();
@@ -526,7 +526,7 @@ public class Man_emp extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        tblCliente.setModel(new javax.swing.table.DefaultTableModel(
+        tblEmpleado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -537,15 +537,15 @@ public class Man_emp extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tblCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblEmpleado.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblClienteMouseClicked(evt);
+                tblEmpleadoMouseClicked(evt);
             }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                tblClienteMouseReleased(evt);
+                tblEmpleadoMouseReleased(evt);
             }
         });
-        jScrollPane1.setViewportView(tblCliente);
+        jScrollPane1.setViewportView(tblEmpleado);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Del empleado"));
         jPanel2.setFocusCycleRoot(true);
@@ -779,7 +779,7 @@ public class Man_emp extends javax.swing.JInternalFrame {
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
         String ObjButtons[] = {"Si", "No"};
-        int PromptResult = JOptionPane.showOptionDialog(null, "Desea Salir?", "Salir?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, ObjButtons, ObjButtons[1]);
+        int PromptResult = JOptionPane.showOptionDialog(this, "Desea Salir?", "Salir?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, ObjButtons, ObjButtons[1]);
         if (PromptResult == JOptionPane.YES_OPTION) {
             // ConnectionManager.getInstance().close();
             this.dispose();
@@ -1009,24 +1009,24 @@ public class Man_emp extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtCedKeyTyped
 
-    private void tblClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClienteMouseClicked
+    private void tblEmpleadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEmpleadoMouseClicked
         // TODO add your handling code here:
         getSelectRowIdData();
 
-    }//GEN-LAST:event_tblClienteMouseClicked
+    }//GEN-LAST:event_tblEmpleadoMouseClicked
 
-    private void tblClienteMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClienteMouseReleased
+    private void tblEmpleadoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEmpleadoMouseReleased
         // TODO add your handling code here:
 
         ///polulate subtitulo
         getSelectRowIdData();
 
-    }//GEN-LAST:event_tblClienteMouseReleased
+    }//GEN-LAST:event_tblEmpleadoMouseReleased
 
     private void txtBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaKeyReleased
         // TODO add your handling code here:
 
-        populateClienteViaFilter();
+        populateEmpleadoViaFilter();
 
     }//GEN-LAST:event_txtBusquedaKeyReleased
 
@@ -1034,7 +1034,7 @@ public class Man_emp extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
         if (rowIdData == 0) {
-            JOptionPane.showMessageDialog(null, "Por favor elige el elemento a borrar");
+            JOptionPane.showMessageDialog(this, "Por favor elige el elemento a borrar");
         } else {
 
             String ObjButtons[] = {"Si", "No"};
@@ -1042,7 +1042,7 @@ public class Man_emp extends javax.swing.JInternalFrame {
 
             if (PromptResult == JOptionPane.YES_OPTION) {
 
-                if (sql.deleteWithIdColname("tbcliente", "codter", rowIdData)) {
+                if (sql.deleteWithIdColname("tbempleado", "codemp", rowIdData)) {
                     //JOptionPane.showMessageDialog(null,"Borrado exitosamente");
                     clearNew();
                     confirmStringToDelete = null;
@@ -1092,7 +1092,7 @@ public class Man_emp extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane3;
     public static com.toedter.calendar.JDateChooser jdcFecNac;
     private javax.swing.JLabel lblInfo;
-    private javax.swing.JTable tblCliente;
+    private javax.swing.JTable tblEmpleado;
     public static javax.swing.JTextField txtApe;
     private javax.swing.JTextField txtBusqueda;
     public static javax.swing.JFormattedTextField txtCed;

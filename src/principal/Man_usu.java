@@ -51,8 +51,8 @@ public class Man_usu extends javax.swing.JInternalFrame {
     public static boolean yacliente = false;
     String confirmStringToDelete = null;
 
-    String tableName = "tbtercero";
-    String idColname = "codter";
+    String tableName = "tbusuario";
+    String idColname = "codusu";
     // String descriptionColname = "titpel";
 
     /**
@@ -74,13 +74,12 @@ public class Man_usu extends javax.swing.JInternalFrame {
 
         txtBusqueda.setDocument(new LimitTextfield(32));
 
-
         txtNom.requestFocus();
-        populateEmpleado();
+        populateUsuario();
 
-        txtBusqueda.setText("Busqueda /f3 (CEDULA)");
+        txtBusqueda.setText("Busqueda /f3 (CEDULA O por Nombre)");
 
-  //      comboboxDisplay(cmbSuc, "tbsucursal", "codsuc", "dessuc");
+        comboboxDisplay(cmbTipUsu, "tb_tipo_usuario", "codtipusu", "destipusu");
 
         ////tab index order
 //        IndexedFocusTraversalPolicy policy = new IndexedFocusTraversalPolicy();
@@ -147,15 +146,17 @@ public class Man_usu extends javax.swing.JInternalFrame {
 
         txtNom.setText(null);
         txtCon.setText(null);
-     //   txtCed.setText(null);
-       // txtCor.setText(null);
-       // txtTel.setText(null);
-       // txtDir.setText(null);
+        //   txtCed.setText(null);
+        // txtCor.setText(null);
+        // txtTel.setText(null);
+        // txtDir.setText(null);
 
         chcEstado.setSelected(true);
-        populateEmpleado();
+        populateUsuario();
         txtNom.requestFocus();
         cmbTipUsu.setSelectedIndex(0);
+        lblNombreCompleto.setText("[]");
+        lblcodEmp.setText("/////////////////////");
        // cmbSuc.setSelectedIndex(0);
 
         //  lstSubtituloModel.clear();
@@ -191,36 +192,39 @@ public class Man_usu extends javax.swing.JInternalFrame {
     }
 
     void hideColTable() {
+        /*
+         tblUsu.getColumnModel().getColumn(7).setMinWidth(0);
+         tblUsu.getColumnModel().getColumn(7).setMaxWidth(0);
+         tblUsu.getColumnModel().getColumn(7).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(7).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(7).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(7).setWidth(0);
+         tblUsu.getColumnModel().getColumn(8).setMinWidth(0);
+         tblUsu.getColumnModel().getColumn(8).setMaxWidth(0);
+         tblUsu.getColumnModel().getColumn(8).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(8).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(8).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(8).setWidth(0);
+         tblUsu.getColumnModel().getColumn(9).setMinWidth(0);
+         tblUsu.getColumnModel().getColumn(9).setMaxWidth(0);
+         tblUsu.getColumnModel().getColumn(9).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(9).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(9).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(9).setWidth(0);
-
-        tblCliente.getColumnModel().getColumn(10).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(10).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(10).setWidth(0);
-
+         tblUsu.getColumnModel().getColumn(10).setMinWidth(0);
+         tblUsu.getColumnModel().getColumn(10).setMaxWidth(0);
+         tblUsu.getColumnModel().getColumn(10).setWidth(0);
+         */
     }
 
-    public void populateEmpleado() {
+    public void populateUsuario() {
 
-        String sqlQuery = "SELECT * FROM (SELECT teremp.codter AS CODEMP,teremp.nomter AS NOMBRE, per.apeper  AS APELLIDO,per.cedper AS CEDULA, teremp.telter AS TEL,emp.codest AS ACTIVO,teremp.corter AS CORREO,teremp.dirter,sexper,teremp.fecnac,su.dessuc FROM (SELECT * FROM tbtercero ter WHERE codter IN(SELECT codter FROM tbempleado)) AS teremp INNER JOIN tbpersona per ON teremp.codter=per.codper INNER JOIN tbempleado emp ON emp.codemp=teremp.codter INNER JOIN tbsucursal su  ON su.codsuc=emp.codsuc)AS vtb ORDER BY CODEMP DESC";
+        String sqlQuery = "SELECT * FROM (SELECT usu.codusu AS CODUSU,usu.nomusu as 'NOMBRE USUARIO',usu.conusu as 'CONTRASENA',tipusu.destipusu as 'TIPO USUARIO',CONCAT(ter.nomter,' ',per.apeper) as 'NOMBRE COMPLETO',per.cedper AS 'CEDULA',usu.codest 'ESTADO' FROM tbtercero ter INNER JOIN tbpersona per ON ter.codter=per.codper\n"
+                + "INNER JOIN tbempleado emp ON per.codper=emp.codemp INNER JOIN tbusuario usu ON\n"
+                + "usu.codusu=emp.codemp INNER JOIN tb_tipo_usuario tipusu ON tipusu.codtipusu=usu.codtipusu\n"
+                + "LEFT JOIN tbsucursal suc ON suc.codsuc=emp.codsuc) AS vtb";
 
         ResultSet rs = sql.displaytb(tableName, sqlQuery);
 
         ResultsetTable rst = new ResultsetTable();
-        tblCliente.remove(this);
+        tblUsu.remove(this);
         try {
-            tblCliente.setModel(rst.rstomodel(rs));
-            lblInfo.setText("Ctd : " + tblCliente.getRowCount());
+            tblUsu.setModel(rst.rstomodel(rs));
+            lblInfo.setText("Ctd : " + tblUsu.getRowCount());
 
             hideColTable();
 
@@ -231,17 +235,20 @@ public class Man_usu extends javax.swing.JInternalFrame {
 
     }
 
-    public void populateClienteViaFilter() {
+    public void populateUsuarioViaFilter() {
 
-        String sqlQuery = "SELECT * FROM (SELECT teremp.codter AS CODEMP,teremp.nomter AS NOMBRE, per.apeper  AS APELLIDO,per.cedper AS CEDULA, teremp.telter AS TEL,emp.codest AS ACTIVO,teremp.corter AS CORREO,teremp.dirter,sexper,teremp.fecnac,su.dessuc FROM (SELECT * FROM tbtercero ter WHERE codter IN(SELECT codter FROM tbempleado)) AS teremp INNER JOIN tbpersona per ON teremp.codter=per.codper INNER JOIN tbempleado emp ON emp.codemp=teremp.codter INNER JOIN tbsucursal su  ON su.codsuc=emp.codsuc)AS vtb WHERE cedula LIKE '%" + txtBusqueda.getText().trim() + "%'  ORDER BY CODEMP DESC";
+        String sqlQuery = "SELECT * FROM (SELECT usu.codusu AS CODUSU,usu.nomusu as 'NOMBRE USUARIO',usu.conusu as 'CONTRASENA',tipusu.destipusu as 'TIPO USUARIO',CONCAT(ter.nomter,' ',per.apeper) as 'NOMBRE COMPLETO',per.cedper AS 'CEDULA',usu.codest 'ESTADO' FROM tbtercero ter INNER JOIN tbpersona per ON ter.codter=per.codper\n"
+                + "INNER JOIN tbempleado emp ON per.codper=emp.codemp INNER JOIN tbusuario usu ON\n"
+                + "usu.codusu=emp.codemp INNER JOIN tb_tipo_usuario tipusu ON tipusu.codtipusu=usu.codtipusu\n"
+                + "LEFT JOIN tbsucursal suc ON suc.codsuc=emp.codsuc) AS vtb WHERE cedula LIKE '%" + txtBusqueda.getText().trim() + "%'  OR `NOMBRE USUARIO` LIKE '%" + txtBusqueda.getText().trim() + "%'  ORDER BY CODUSU DESC";
 
         ResultSet rs = sql.displaytb(tableName, sqlQuery);
 
         ResultsetTable rst = new ResultsetTable();
-        tblCliente.remove(this);
+        tblUsu.remove(this);
         try {
-            tblCliente.setModel(rst.rstomodel(rs));
-            lblInfo.setText("Ctd : " + tblCliente.getRowCount());
+            tblUsu.setModel(rst.rstomodel(rs));
+            lblInfo.setText("Ctd : " + tblUsu.getRowCount());
             hideColTable();
 
         } catch (SQLException ex) {
@@ -267,32 +274,16 @@ public class Man_usu extends javax.swing.JInternalFrame {
     }
 
     public void getSelectRowIdData() {
-        try {
-            int selectedRow = tblCliente.getSelectedRow();
 
-            int idData = Integer.parseInt((tblCliente.getModel().getValueAt(selectedRow, 0).toString()));
+        try {
+            int selectedRow = tblUsu.getSelectedRow();
+
+            int idData = Integer.parseInt((tblUsu.getModel().getValueAt(selectedRow, 0).toString()));
 
             rowIdData = idData;
 
-            /////////////////////////////set combobox////////////////////////
-            //selectedValueCombobox(cmbGenero, tblPelicula.getModel().getValueAt(selectedRow, 2));
-            /////////////////for update//////////////////       
-            ////////mete string lan nan textfield la///////////////
-            txtNom.setText(tblCliente.getModel().getValueAt(selectedRow, 1).toString());
-            txtCon.setText(tblCliente.getModel().getValueAt(selectedRow, 2).toString());
-         //   txtCed.setText(tblCliente.getModel().getValueAt(selectedRow, 3).toString());
-          //  txtTel.setText(tblCliente.getModel().getValueAt(selectedRow, 4).toString());
-
-           // txtCor.setText(tblCliente.getModel().getValueAt(selectedRow, 6).toString());
-
-           // txtDir.setText(tblCliente.getModel().getValueAt(selectedRow, 7).toString());
-
-            cmbTipUsu.setSelectedItem(tblCliente.getModel().getValueAt(selectedRow, 8).toString());
-
-           // selectedValueCombobox(cmbSuc, tblCliente.getModel().getValueAt(selectedRow, 10).toString());
-
-            String chk = tblCliente.getModel().getValueAt(selectedRow, 5).toString();
-
+            String chk = tblUsu.getModel().getValueAt(selectedRow, 6).toString();
+            //System.out.println("hello check" + chk);
             //checkbox
             if (chk.equalsIgnoreCase("1")) {
                 chcEstado.setSelected(true);
@@ -300,26 +291,40 @@ public class Man_usu extends javax.swing.JInternalFrame {
                 chcEstado.setSelected(false);
             }
 
+            
+             selectedValueCombobox(cmbTipUsu, tblUsu.getModel().getValueAt(selectedRow, 3));
+            /////////////////////////////set combobox////////////////////////
+            //selectedValueCombobox(cmbGenero, tblPelicula.getModel().getValueAt(selectedRow, 2));
+            /////////////////for update//////////////////       
+            ////////mete string lan nan textfield la///////////////
+            lblNombreCompleto.setText(tblUsu.getModel().getValueAt(selectedRow, 4).toString());
+            lblcodEmp.setText("" + idData);
+
+            txtNom.setText(tblUsu.getModel().getValueAt(selectedRow, 1).toString());
+            txtCon.setText(tblUsu.getModel().getValueAt(selectedRow, 2).toString());
+            // txtDir.setText(tblCliente.getModel().getValueAt(selectedRow, 7).toString());
+            cmbTipUsu.setSelectedItem(tblUsu.getModel().getValueAt(selectedRow, 8).toString());
+
             //  selectedValueCombobox(cmbSuc, tblCliente.getModel().getValueAt(selectedRow, 9));
             ///Date convertion
-            String inputDateStr = tblCliente.getModel().getValueAt(selectedRow, 9).toString();
+            String inputDateStr = tblUsu.getModel().getValueAt(selectedRow, 9).toString();
             DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
             DateFormat outputFormat = new SimpleDateFormat("dd/MM/YYYY");
             ///////////////////////////
             Date date = inputFormat.parse(inputDateStr);
             String outputDateStr = outputFormat.format(date);
 
+            
             //System.out.println(">>++"+outputDateStr);
             //add outputDateStr  to format and convert it to date 
-           // jdcFecNac.setDate((Date) new SimpleDateFormat("dd/MM/yyyy").parse(outputDateStr));
-
+            // jdcFecNac.setDate((Date) new SimpleDateFormat("dd/MM/yyyy").parse(outputDateStr));
             //fecha
             //  txtCed.setYear(Integer.parseInt((String) tblPelicula.getModel().getValueAt(selectedRow, 4)));
             ///////////////////pran tout string ki nan row la///////////////////
             confirmStringToDelete = "";
-            for (int i = 0; i < tblCliente.getColumnCount(); i++) {
+            for (int i = 0; i < tblUsu.getColumnCount(); i++) {
 
-                String strData = (tblCliente.getModel().getValueAt(selectedRow, i).toString()) + " ";
+                String strData = (tblUsu.getModel().getValueAt(selectedRow, i).toString()) + " ";
                 //System.out.println(""+strData);
                 confirmStringToDelete += strData;
             }
@@ -402,7 +407,7 @@ public class Man_usu extends javax.swing.JInternalFrame {
         btnNuevo = new javax.swing.JButton();
         txtBusqueda = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCliente = new javax.swing.JTable();
+        tblUsu = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         txtNom = new javax.swing.JTextField();
         txtCon = new javax.swing.JTextField();
@@ -411,10 +416,12 @@ public class Man_usu extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        lblcodEmp = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        lblNombreCompleto = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         lblInfo = new javax.swing.JLabel();
 
@@ -468,7 +475,7 @@ public class Man_usu extends javax.swing.JInternalFrame {
             }
         });
 
-        txtBusqueda.setText("Buscar /f3");
+        txtBusqueda.setText("Buscar /f3 Cedula O Por Nombre");
         txtBusqueda.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtBusquedaFocusGained(evt);
@@ -509,7 +516,7 @@ public class Man_usu extends javax.swing.JInternalFrame {
                     .addComponent(txtBusqueda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        tblCliente.setModel(new javax.swing.table.DefaultTableModel(
+        tblUsu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -520,31 +527,29 @@ public class Man_usu extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tblCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblUsu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblClienteMouseClicked(evt);
+                tblUsuMouseClicked(evt);
             }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                tblClienteMouseReleased(evt);
+                tblUsuMouseReleased(evt);
             }
         });
-        jScrollPane1.setViewportView(tblCliente);
+        jScrollPane1.setViewportView(tblUsu);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Del Usuario"));
         jPanel2.setFocusCycleRoot(true);
 
-        cmbTipUsu.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "////////////////////////", "M", "F" }));
-
         chcEstado.setSelected(true);
         chcEstado.setText("Activo");
 
-        jLabel2.setText("Nombre *");
+        jLabel2.setText("Nombre Usuario *");
 
         jLabel3.setText("Contraseña *");
 
-        jLabel1.setText("<html>N° USuario</html>");
+        jLabel1.setText("<html>N° Empleado(Usuario)</html>");
 
-        jLabel8.setText("////////////////////////////////////");
+        lblcodEmp.setText("////////////////////////////////////");
 
         jLabel10.setText("Tipo Usuario");
 
@@ -558,35 +563,49 @@ public class Man_usu extends javax.swing.JInternalFrame {
             }
         });
 
+        lblNombreCompleto.setText("[]");
+
+        jLabel6.setText("Nombre Completo");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(284, 284, 284)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(284, 284, 284)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(18, 18, 18)
+                                .addComponent(cmbTipUsu, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(chcEstado))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(247, 247, 247)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel6)
+                                .addGap(22, 22, 22)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNom)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblcodEmp, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29)
                                 .addComponent(jButton1))
-                            .addComponent(txtCon, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbTipUsu, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chcEstado)))
+                            .addComponent(txtCon, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                            .addComponent(lblNombreCompleto, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -595,10 +614,13 @@ public class Man_usu extends javax.swing.JInternalFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNombreCompleto)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
+                    .addComponent(lblcodEmp)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -620,7 +642,7 @@ public class Man_usu extends javax.swing.JInternalFrame {
         );
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel5.setText("Mannenimiento Usuario");
+        jLabel5.setText("Mantenimiento Usuario");
 
         lblInfo.setText("lbInfo");
 
@@ -670,7 +692,7 @@ public class Man_usu extends javax.swing.JInternalFrame {
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
         String ObjButtons[] = {"Si", "No"};
-        int PromptResult = JOptionPane.showOptionDialog(null, "Desea Salir?", "Salir?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, ObjButtons, ObjButtons[1]);
+        int PromptResult = JOptionPane.showOptionDialog(this, "Desea Salir?", "Salir?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, ObjButtons, ObjButtons[1]);
         if (PromptResult == JOptionPane.YES_OPTION) {
             // ConnectionManager.getInstance().close();
             this.dispose();
@@ -686,7 +708,7 @@ public class Man_usu extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
 
-        DatajCombobox codsuc = (DatajCombobox) cmbTipUsu.getSelectedItem();
+        DatajCombobox codtipusu = (DatajCombobox) cmbTipUsu.getSelectedItem();
 
         boolean todoBien = true;
 
@@ -702,44 +724,26 @@ public class Man_usu extends javax.swing.JInternalFrame {
 
             } else {
 
-    
-/*
-                    ///////////////pass/////////////////
+                if (rowIdData == 0) {
+
+                    JOptionPane.showMessageDialog(this, "Por favor Elige un Empleado");
+
+                } else {
+
+              
+                        ///////////////pass/////////////////
                         //check if the id is already the to update it
                         if (sql.checkidWithIdColname(tableName, idColname, rowIdData)) {
-                    //System.err.println("li la deja");
-                            //  String sqlQuerytercero = "UPDATE " + tableName + " SET  nomter "='" + txtDescrip.getText() + "',precio='" + txtPrecio.getText() + "' WHERE " + idColname + "=" + rowIdData;
+                            //System.err.println("li la deja");
+                            //update Usuario
+                            // 
+                            String sqlQueryUpdateUsuario = "UPDATE `tbusuario` SET `nomusu`='" + txtNom.getText() + "',conusu='" + txtCon.getText().trim() + "',codest=" + chcEstado.isSelected() + ",codtipusu=" + codtipusu.getId() + " WHERE `codusu`=" + rowIdData + "";
+                            System.out.println("sql>>" + sqlQueryUpdateUsuario);
 
-                            //update persone
-                            String sqlQueryUpdateTercero = "UPDATE `rentapelicula`.`tbtercero` SET `nomter` = '" + txtNom.getText() + "', `fecnac` = '" + sdf.format(jdcFecNac.getDate()) + "', `telter` = '" + txtTel.getText().trim() + "', `corter` = '" + txtCor.getText().trim() + "', `fecreg` = CURRENT_TIMESTAMP, `dirter` = '" + txtDir.getText().trim() + "'  WHERE `tbtercero`.`codter` = " + rowIdData + ";";
-                            System.out.println("sql>>" + sqlQueryUpdateTercero);
-
-                            if (!setTransaction(sqlQueryUpdateTercero)) {
-                                System.out.println("false sqlQueryUpdateTercero");
-
-                                todoBien = false;
-
-                            }
-
-                            String sqlQueryUpdatePersona = "UPDATE `rentapelicula`.`tbpersona` SET `apeper` = '" + txtCon.getText().trim() + "', `sexper` = '" + cmbTipUsu.getSelectedItem().toString() + "', `cedper` = '" + txtCed.getText().trim() + "' WHERE `tbpersona`.`codper` = " + rowIdData + ";";
-                            System.out.println("sql>>" + sqlQueryUpdatePersona);
-
-                            if (!setTransaction(sqlQueryUpdatePersona)) {
-                                System.out.println("false sqlQueryUpdatePersona");
+                            if (!setTransaction(sqlQueryUpdateUsuario)) {
+                                System.out.println("false sqlQueryUpdateUsuario");
 
                                 todoBien = false;
-                            }
-
-                            String sqlQueryUpdateEmpleado = "UPDATE `rentapelicula`.`tbempleado` SET `codest` = " + chcEstado.isSelected() + ", codsuc=" + codsuc.getId() + " WHERE `tbempleado`.`codemp` = " + rowIdData + ";";
-
-                            if (yacliente && !sql.checkidWithIdColname("tbempleado", "codemp", rowIdData)) {
-                                sqlQueryUpdateEmpleado = "INSERT INTO `rentapelicula`.`tbempleado` (`codemp`,`codest`,`codsuc`) VALUES ('" + rowIdData + "'," + chcEstado.isSelected() + "," + codsuc.getId() + ");";
-                            }
-                            System.out.println("sql>>" + sqlQueryUpdateEmpleado);
-
-                            if (!setTransaction(sqlQueryUpdateEmpleado)) {
-                                todoBien = false;
-                                System.out.println("false sqlQueryUpdateEmpleado");
 
                             }
 
@@ -756,7 +760,7 @@ public class Man_usu extends javax.swing.JInternalFrame {
                                     }
 
                                 } else {
-                                    JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
+                                    JOptionPane.showMessageDialog(this, "No se ha podido Guardar");
 
                                     JOptionPane.showMessageDialog(this, "Ocurre Un error minetras actualizando ");
                                     try {
@@ -771,57 +775,53 @@ public class Man_usu extends javax.swing.JInternalFrame {
                             }
 
                         } else {
-                            //save tercero
-                            String sqlQuerytercero = "INSERT INTO `rentapelicula`.`tbtercero` (`codter`, `nomter`, `fecnac`, `telter` ,`corter`, `fecreg`, `dirter`) VALUES (NULL, '" + txtNom.getText().trim() + "', '" + sdf.format(jdcFecNac.getDate()) + "', '" + txtTel.getText().trim() + "','" + txtCor.getText().trim() + "', CURRENT_TIMESTAMP, '" + txtDir.getText().trim() + "');";
-                            System.out.println("sql>>" + sqlQuerytercero);
+                            
+                            //insert 
+                            //save usuario//
+                         
+                                  if (sql.dataDescriptionExist(tableName, "nomusu", txtNom.getText().trim())) {
+                        JOptionPane.showMessageDialog(this, "Ya , existe este Nombre de Usuario elige otro");
 
-                            if (!insertLeaderTransaction(sqlQuerytercero)) {
+                    } else {
+
+                            
+                            String sqlQueryInsertUsuario = "INSERT INTO `tbusuario` (`codusu`, `nomusu`, `conusu`, `codest`, `codtipusu`) VALUES ('" + rowIdData + "', '" + txtNom.getText() + "', '" + txtCon.getText().trim() + "', " + chcEstado.isSelected() + ", " + codtipusu.getId() + ")";
+                            System.out.println("sql>>" + sqlQueryInsertUsuario);
+
+                            if (!setTransaction(sqlQueryInsertUsuario)) {
+                                System.out.println("false sqlQueryInsertUsuario");
 
                                 todoBien = false;
+                            }
+
+                            //if all the transactions are ok commit
+                            if (todoBien) {
+                                try {
+                                    transCon.commit();
+
+                                    JOptionPane.showMessageDialog(this, "Guardado exitosamente");
+                                    clearNew();
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
+                                }
 
                             } else {
-                                //save persona
-                                String sqlQuerypersona = "INSERT INTO `rentapelicula`.`tbpersona` (`codper`, `apeper`, `sexper`, `cedper`) VALUES ('" + lastInsertedId + "', '" + txtCon.getText().trim() + "', '" + cmbTipUsu.getSelectedItem().toString() + "', '" + txtCed.getText().trim() + "');";
+                                JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
 
-                                if (!setTransaction(sqlQuerypersona)) {
-                                    todoBien = false;
-                                }
-
-                                //save cliente
-                                String sqlQueryempleado = "INSERT INTO `rentapelicula`.`tbempleado` (`codemp`,`codest`,`codsuc`) VALUES ('" + lastInsertedId + "'," + chcEstado.isSelected() + "," + codsuc.getId() + ");";
-                                if (!setTransaction(sqlQueryempleado)) {
-                                    todoBien = false;
-                                }
-
-                                //if all the transactions are ok commit
-                                if (todoBien) {
-                                    try {
-                                        transCon.commit();
-
-                                        JOptionPane.showMessageDialog(this, "Guardado exitosamente");
-                                        clearNew();
-                                    } catch (SQLException ex) {
-                                        Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
-
-                                } else {
-                                    JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
-
-                                    try {
-                                        System.out.println("Rollback");
-                                        transCon.rollback();
-                                    } catch (SQLException ex) {
-                                        Logger.getLogger(Man_usu.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
-
+                                try {
+                                    System.out.println("Rollback");
+                                    transCon.rollback();
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(Man_usu.class.getName()).log(Level.SEVERE, null, ex);
                                 }
 
                             }
 
                         }
-*/
                     }
-    
+                }
+            }
+
         }
 
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -846,28 +846,28 @@ public class Man_usu extends javax.swing.JInternalFrame {
 
     private void txtBusquedaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBusquedaFocusLost
         // TODO add your handling code here:
-        txtBusqueda.setText("Busqueda /f3");
+        txtBusqueda.setText("Buscar /f3 Cedula O Por Nombre");
 
     }//GEN-LAST:event_txtBusquedaFocusLost
 
-    private void tblClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClienteMouseClicked
+    private void tblUsuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsuMouseClicked
         // TODO add your handling code here:
         getSelectRowIdData();
 
-    }//GEN-LAST:event_tblClienteMouseClicked
+    }//GEN-LAST:event_tblUsuMouseClicked
 
-    private void tblClienteMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClienteMouseReleased
+    private void tblUsuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsuMouseReleased
         // TODO add your handling code here:
 
         ///polulate subtitulo
         getSelectRowIdData();
 
-    }//GEN-LAST:event_tblClienteMouseReleased
+    }//GEN-LAST:event_tblUsuMouseReleased
 
     private void txtBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaKeyReleased
         // TODO add your handling code here:
 
-        populateClienteViaFilter();
+        populateUsuarioViaFilter();
 
     }//GEN-LAST:event_txtBusquedaKeyReleased
 
@@ -899,10 +899,10 @@ public class Man_usu extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        JdTodoLosClientes todocli = new JdTodoLosClientes(null, closable);
-        todocli.setModal(true);
-        todocli.setLocationRelativeTo(this);
-        todocli.setVisible(true);
+        JdTodoLosEmpleados todoemp = new JdTodoLosEmpleados(null, closable);
+        todoemp.setModal(true);
+        todoemp.setLocationRelativeTo(this);
+        todoemp.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
@@ -919,12 +919,14 @@ public class Man_usu extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblInfo;
-    private javax.swing.JTable tblCliente;
+    public static javax.swing.JLabel lblNombreCompleto;
+    public static javax.swing.JLabel lblcodEmp;
+    private javax.swing.JTable tblUsu;
     private javax.swing.JTextField txtBusqueda;
     public static javax.swing.JTextField txtCon;
     public static javax.swing.JTextField txtNom;

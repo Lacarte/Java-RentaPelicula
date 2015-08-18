@@ -703,7 +703,7 @@ public class Man_cli extends javax.swing.JInternalFrame {
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
         String ObjButtons[] = {"Si", "No"};
-        int PromptResult = JOptionPane.showOptionDialog(null, "Desea Salir?", "Salir?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, ObjButtons, ObjButtons[1]);
+        int PromptResult = JOptionPane.showOptionDialog(this, "Desea Salir?", "Salir?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, ObjButtons, ObjButtons[1]);
         if (PromptResult == JOptionPane.YES_OPTION) {
             // ConnectionManager.getInstance().close();
             this.dispose();
