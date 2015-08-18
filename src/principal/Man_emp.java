@@ -6,7 +6,6 @@ import utilities.DatajCombobox;
 import utilities.EmailValidator;
 import utilities.LimitTextfield;
 import utilities.ResultsetTable;
-import utilities.TimeValidator;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
@@ -18,16 +17,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import static principal.Man_pel.llstAddRemoveCopia;
-import static principal.Man_pel.lstActorModel;
-import static principal.Man_pel.lstSubtituloModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -44,8 +38,9 @@ public class Man_emp extends javax.swing.JInternalFrame {
     java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd/MM/yyyy");
     java.util.Date fechaDate;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-    private static Connection transCon = ConnectionManager.getInstance().getConnection();
+    
+  
+private static Connection transCon = ConnectionManager.getInstance().getConnection();
 
 /////////
     EmailValidator emailValidator = new EmailValidator();
@@ -90,6 +85,21 @@ public class Man_emp extends javax.swing.JInternalFrame {
 
         comboboxDisplay(cmbSuc, "tbsucursal", "codsuc", "dessuc");
 
+        
+        
+        
+        ////tab index order
+//        IndexedFocusTraversalPolicy policy = new IndexedFocusTraversalPolicy();
+//policy.addIndexedComponent(jTextField1);
+//policy.addIndexedComponent(jTextField2);
+//policy.addIndexedComponent(jTextField3);
+//policy.addIndexedComponent(jTextField4);
+//policy.addIndexedComponent(jTextField5);
+//policy.addIndexedComponent(jTextField6);
+//setFocusTraversalPolicy(policy);
+//        
+        
+        
     }
 
 ///////////////////////event for function keys///////////////////////
