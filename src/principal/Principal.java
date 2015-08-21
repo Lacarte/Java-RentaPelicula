@@ -34,12 +34,15 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
+    public static String userName = null;
+    public static String userCode = null;
+
     /*CONSTRUCTOR*/
     public Principal() {
 
         initComponents();
         jmAdmin.setVisible(true);
-        clock(jlabelInfotop);
+        clock(lblDateTime);
 
         //re setup the look and feel NimbusLookAndFeel after using the transpa rency in the  login
         try {
@@ -58,7 +61,7 @@ public class Principal extends javax.swing.JFrame {
 
         initComponents();
         jmAdmin.setVisible(true);
-        clock(jlabelInfotop);
+        clock(lblDateTime);
 
         //re setup the look and feel NimbusLookAndFeel after using the transpa rency in the  login
         try {
@@ -82,12 +85,14 @@ public class Principal extends javax.swing.JFrame {
         System.out.println("type" + userdata.get(4));
         lblUsername.setText((String) userdata.get(2));
 
+        userName = (String) userdata.get(2);
+        userCode = (String) userdata.get(1);
+
         if (userdata.get(4).equals("Administrador")) {
             jmAdmin.setVisible(true);
             System.out.println("Admin log");
         } else {
             System.out.println("other log");
-
             jmAdmin.setVisible(false);
         }
 
@@ -122,9 +127,13 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
-        jlabelInfotop = new javax.swing.JLabel();
+        lblDateTime = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         lblUsername = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -184,17 +193,69 @@ public class Principal extends javax.swing.JFrame {
             .addGap(0, 526, Short.MAX_VALUE)
         );
 
-        jlabelInfotop.setBackground(new java.awt.Color(153, 153, 153));
-        jlabelInfotop.setFont(new java.awt.Font("Arial Unicode MS", 0, 14)); // NOI18N
-        jlabelInfotop.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jlabelInfotop.setText("00:00:00");
-        jlabelInfotop.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        lblDateTime.setBackground(new java.awt.Color(153, 153, 153));
+        lblDateTime.setFont(new java.awt.Font("Arial Unicode MS", 0, 14)); // NOI18N
+        lblDateTime.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblDateTime.setText("00:00:00");
+        lblDateTime.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         jLabel1.setText("///>                        Sistema de Renta de Pelicula ( Mr Movies V1.0)");
 
         lblUsername.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblUsername.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_d83d(18)_24.png"))); // NOI18N
         lblUsername.setText("USUARIO:TEST");
+
+        jButton1.setText("P.DUCT");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("RENTA");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("PELICULA");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(141, 141, 141)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(173, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(21, 21, 21)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(408, Short.MAX_VALUE)))
+        );
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_2692(65)_48.png"))); // NOI18N
         jMenu1.setText("Mantenimiento");
@@ -255,6 +316,11 @@ public class Principal extends javax.swing.JFrame {
         jMenu2.setText("Transaciones");
 
         jMenuItem4.setText("Renta");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem4);
 
         jMenuItem14.setText("No entregado/Vigencia");
@@ -422,24 +488,29 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jlabelInfotop, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(lblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addComponent(lblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jDesktopPane1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlabelInfotop, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblUsername))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDesktopPane1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDesktopPane1)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
@@ -684,6 +755,44 @@ public class Principal extends javax.swing.JFrame {
         ma.show();
     }//GEN-LAST:event_jMenuItem21ActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        Tra_ren ren = new Tra_ren();
+        this.jDesktopPane1.removeAll();
+        this.jDesktopPane1.repaint();
+        this.jDesktopPane1.add(ren);
+        //to center the jinternalframe
+        centerJIF(ren);
+        ren.show();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+
+        // TODO add your handling code here:
+        Tra_ren ren = new Tra_ren();
+        this.jDesktopPane1.removeAll();
+        this.jDesktopPane1.repaint();
+        this.jDesktopPane1.add(ren);
+        //to center the jinternalframe
+        centerJIF(ren);
+        ren.show();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        Man_pel mp = new Man_pel();
+        this.jDesktopPane1.removeAll();
+        this.jDesktopPane1.repaint();
+        this.jDesktopPane1.add(mp);
+        centerJIF(mp);
+        mp.show();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -730,6 +839,9 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
@@ -763,13 +875,14 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
-    private javax.swing.JLabel jlabelInfotop;
     private javax.swing.JMenu jmAdmin;
+    private javax.swing.JLabel lblDateTime;
     private javax.swing.JLabel lblUsername;
     // End of variables declaration//GEN-END:variables
 

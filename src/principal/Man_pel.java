@@ -295,7 +295,7 @@ public class Man_pel extends javax.swing.JInternalFrame {
             tblCopia.getColumnModel().getColumn(0).setPreferredWidth(100);
             tblCopia.getColumnModel().getColumn(1).setPreferredWidth(250);
             tblCopia.setAutoResizeMode(tblCopia.AUTO_RESIZE_LAST_COLUMN);
-                //kache denye colon lan 
+            //kache denye colon lan 
             //some issues with this code      
             //tblCopia.removeColumn(tblCopia.getColumnModel().getColumn(2));
             tblCopia.getColumnModel().getColumn(2).setMinWidth(0);
@@ -454,7 +454,7 @@ public class Man_pel extends javax.swing.JInternalFrame {
             } else {
                 if ((comboBox.getItemAt(i).toString()).equalsIgnoreCase(value.toString())) {
                     comboBox.setSelectedIndex(i);
-                     break;
+                    break;
                 }
             }
         }
@@ -1391,15 +1391,20 @@ public class Man_pel extends javax.swing.JInternalFrame {
 
                                             if (!insertDelete_IN_VS_table(llstAddRemoveSubtitulo, "tb_subtitulo_vs_pelicula", "codidi", "codpel")) {
                                                 todoBien = false;
+                                                System.out.println("false : insertDelete_IN_VS_table : tb_subtitulo_vs_pelicula ");
                                             }
 
                                             if (!insertDelete_IN_VS_table(llstAddRemoveActor, "tb_actor_vs_pelicula", "codact", "codpel")) {
                                                 todoBien = false;
+                                                System.out.println("false : insertDelete_IN_VS_table : tb_actor_vs_pelicula ");
                                             }
 
                                             ///////////////insert copia//////////////////////
                                             if (!insertUpdateDelete_Pel_VS_Copia(llstAddRemoveCopia, "tbpelicula_copia", "codpel", "numcopia")) {
                                                 todoBien = false;
+
+                                                System.out.println("false : insertUpdateDelete_Pel_VS_Copia : tbpelicula_copia ");
+
                                             }
 
                                             System.out.println("Check if todoBien: " + todoBien);
@@ -1415,6 +1420,7 @@ public class Man_pel extends javax.swing.JInternalFrame {
                                                 llstAddRemoveActor.clear();
                                                 llstAddRemoveSubtitulo.clear();
                                                 llstAddRemoveCopia.clear();
+                                                System.out.println("commit ");
 
                                             } catch (SQLException ex) {
                                                 Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
@@ -1423,6 +1429,8 @@ public class Man_pel extends javax.swing.JInternalFrame {
                                         } else {
                                             try {
                                                 transCon.rollback();
+                                                System.out.println("roll back ");
+
                                             } catch (SQLException ex) {
                                                 Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
                                             }
@@ -1442,10 +1450,14 @@ public class Man_pel extends javax.swing.JInternalFrame {
 
                                         if (!insertDelete_IN_VS_table(llstAddRemoveSubtitulo, "tb_subtitulo_vs_pelicula", "codidi", "codpel")) {
                                             todoBien = false;
+                                            System.out.println("insertDelete_IN_VS_table : tb_subtitulo_vs_pelicula ");
+
                                         }
 
                                         if (!insertDelete_IN_VS_table(llstAddRemoveActor, "tb_actor_vs_pelicula", "codact", "codpel")) {
                                             todoBien = false;
+                                            System.out.println("insertDelete_IN_VS_table : tb_actor_vs_pelicula ");
+
                                         }
 
                                         System.out.println("Check if todoBien: " + todoBien);
@@ -1453,6 +1465,8 @@ public class Man_pel extends javax.swing.JInternalFrame {
                                         ///////////////insert copia//////////////////////
                                         if (!insertUpdateDelete_Pel_VS_Copia(llstAddRemoveCopia, "tbpelicula_copia", "codpel", "numcopia")) {
                                             todoBien = false;
+                                            System.out.println("insertUpdateDelete_Pel_VS_Copia : tbpelicula_copia ");
+
                                         }
 
                                     }
@@ -1461,6 +1475,7 @@ public class Man_pel extends javax.swing.JInternalFrame {
                                     if (todoBien) {
                                         try {
                                             transCon.commit();
+                                            System.out.println("comit");
                                             JOptionPane.showMessageDialog(this, "Guardado exitosamente");
                                             clearNew();
                                             llstAddRemoveActor.clear();
@@ -1470,11 +1485,26 @@ public class Man_pel extends javax.swing.JInternalFrame {
                                             Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
                                         }
 
+                                    } else {
+                                        try {
+                                            transCon.rollback();
+                                            System.out.println("roll back ");
+
+                                        } catch (SQLException ex) {
+                                            Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
                                     }
 
                                 } else {
                                     todoBien = false;
                                     JOptionPane.showMessageDialog(this, "No se ha podido Guardar");
+                                    try {
+                                        transCon.rollback();
+                                        System.out.println("roll back ");
+
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(Man_pel.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
                                 }
 
                             }

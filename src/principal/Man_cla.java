@@ -450,7 +450,7 @@ public class Man_cla extends javax.swing.JInternalFrame {
             if (sql.dataDescriptionExist(tableName, descriptionColname, txtDescrip.getText().trim())) {
 
                 if (sql.executeQuery(sqlQuery)) {
-                    JOptionPane.showMessageDialog(null, "Actualizado exitosamente");
+                    JOptionPane.showMessageDialog(this, "Actualizado exitosamente");
                     clearNew();
 
                 }
@@ -471,10 +471,10 @@ public class Man_cla extends javax.swing.JInternalFrame {
                 String sqlQuery = "INSERT INTO " + tableName + " VALUES(NULL,'" + txtDescrip.getText() + "','" + txtPrecio.getText() + "')";
                 System.out.println("sql>>" + sqlQuery);
                 if (sql.executeQuery(sqlQuery)) {
-                    JOptionPane.showMessageDialog(null, "Guardado exitosamente");
+                    JOptionPane.showMessageDialog(this, "Guardado exitosamente");
                     clearNew();
                 } else {
-                    JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
+                    JOptionPane.showMessageDialog(this, "No se ha podido Guardar");
                 }
 
             }
@@ -511,7 +511,7 @@ public class Man_cla extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         if (rowIdData == 0) {
-            JOptionPane.showMessageDialog(null, "Por favor elige el elemento a borrar");
+            JOptionPane.showMessageDialog(this, "Por favor elige el elemento a borrar");
         } else {
 
             String ObjButtons[] = {"Si", "No"};
