@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import utilities.ObjPeliculaCopelNumcopia;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -56,6 +57,25 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
 
     }
 
+    ////compare codpe numcopia to the other codpe numcopia  and remove the copia
+    void removeAlreadyAddedPelicula() {
+
+        DefaultTableModel tm = (DefaultTableModel) tblPelicula.getModel();
+
+        for (int i = 0; i < Tra_ren.llstAddRemovePelicula.size(); i++) {
+            ObjPeliculaCopelNumcopia opcn = (ObjPeliculaCopelNumcopia) Tra_ren.llstAddRemovePelicula.get(i);
+            System.out.println(">>DATAZ <> codpel:" + opcn.getCodpel() + " numcopia:" + opcn.getNumcopia());
+            for (int j = 0; j < tblPelicula.getRowCount(); j++) {
+                if (opcn.getCodpel() == Integer.parseInt((String) tblPelicula.getValueAt(j, 0)) && opcn.getNumcopia() == Integer.parseInt((String) tblPelicula.getValueAt(j, 2))) {
+                    System.out.println("boom remove this row");
+                    tm.removeRow(j);
+                }
+                System.out.println("comparison>> " + opcn.getCodpel() + " -- " + tblPelicula.getValueAt(j, 0) + " <> " + opcn.getNumcopia() + " -- " + tblPelicula.getValueAt(j, 2));
+            }
+
+        }
+    }
+
     void hideColTable() {
 
         /* 
@@ -67,33 +87,33 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
          tblCliente.getColumnModel().getColumn(5).setMaxWidth(0);
          tblCliente.getColumnModel().getColumn(5).setWidth(0);
          */
-        tblCliente.getColumnModel().getColumn(6).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(6).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(6).setWidth(0);
+        tblPelicula.getColumnModel().getColumn(6).setMinWidth(0);
+        tblPelicula.getColumnModel().getColumn(6).setMaxWidth(0);
+        tblPelicula.getColumnModel().getColumn(6).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(7).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(7).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(7).setWidth(0);
+        tblPelicula.getColumnModel().getColumn(7).setMinWidth(0);
+        tblPelicula.getColumnModel().getColumn(7).setMaxWidth(0);
+        tblPelicula.getColumnModel().getColumn(7).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(8).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(8).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(8).setWidth(0);
+        tblPelicula.getColumnModel().getColumn(8).setMinWidth(0);
+        tblPelicula.getColumnModel().getColumn(8).setMaxWidth(0);
+        tblPelicula.getColumnModel().getColumn(8).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(9).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(9).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(9).setWidth(0);
+        tblPelicula.getColumnModel().getColumn(9).setMinWidth(0);
+        tblPelicula.getColumnModel().getColumn(9).setMaxWidth(0);
+        tblPelicula.getColumnModel().getColumn(9).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(10).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(10).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(10).setWidth(0);
+        tblPelicula.getColumnModel().getColumn(10).setMinWidth(0);
+        tblPelicula.getColumnModel().getColumn(10).setMaxWidth(0);
+        tblPelicula.getColumnModel().getColumn(10).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(11).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(11).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(11).setWidth(0);
+        tblPelicula.getColumnModel().getColumn(11).setMinWidth(0);
+        tblPelicula.getColumnModel().getColumn(11).setMaxWidth(0);
+        tblPelicula.getColumnModel().getColumn(11).setWidth(0);
 
-        tblCliente.getColumnModel().getColumn(12).setMinWidth(0);
-        tblCliente.getColumnModel().getColumn(12).setMaxWidth(0);
-        tblCliente.getColumnModel().getColumn(12).setWidth(0);
+        tblPelicula.getColumnModel().getColumn(12).setMinWidth(0);
+        tblPelicula.getColumnModel().getColumn(12).setMaxWidth(0);
+        tblPelicula.getColumnModel().getColumn(12).setWidth(0);
 
     }
 
@@ -117,17 +137,16 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
                 + "								INNER JOIN tb_estado_pelicula estpel ON estpel.codestpel=pelcop.codestado\n"
                 + ") as vtb " + Where + "  ORDER BY codpel DESC";
 
-        System.out.println("populate sql" + sqlQuery);
-
+        //   System.out.println("populate sql" + sqlQuery);
         ResultSet rs = sql.displaytb(tableName, sqlQuery);
 
         ResultsetTable rst = new ResultsetTable();
-        tblCliente.remove(this);
+        tblPelicula.remove(this);
         try {
-            tblCliente.setModel(rst.rstomodel(rs));
-            lblInfo.setText("Ctd : " + tblCliente.getRowCount());
-
+            tblPelicula.setModel(rst.rstomodel(rs));
+            lblInfo.setText("Ctd : " + tblPelicula.getRowCount());
             hideColTable();
+            removeAlreadyAddedPelicula();
 
         } catch (SQLException ex) {
             Logger.getLogger(Man_gen.class
@@ -156,17 +175,17 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
                 + "								INNER JOIN tb_estado_pelicula estpel ON estpel.codestpel=pelcop.codestado\n"
                 + ") as vtb  " + Where + " `TITUTO PELICULA` LIKE '%" + txtBusqueda.getText().trim() + "%' ORDER BY codpel DESC";
 
-        System.out.println("populate sql" + sqlQuery);
-        
+        // System.out.println("populate sql" + sqlQuery);
         ResultSet rs = sql.displaytb(tableName, sqlQuery);
 
         ResultsetTable rst = new ResultsetTable();
-        tblCliente.remove(this);
+        tblPelicula.remove(this);
         try {
-            tblCliente.setModel(rst.rstomodel(rs));
-            lblInfo.setText("Ctd : " + tblCliente.getRowCount());
-            hideColTable();
+            tblPelicula.setModel(rst.rstomodel(rs));
+            lblInfo.setText("Ctd : " + tblPelicula.getRowCount());
 
+            hideColTable();
+            removeAlreadyAddedPelicula();
         } catch (SQLException ex) {
             Logger.getLogger(Man_gen.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -176,9 +195,9 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
 
     public void getSelectRowIdData() {
         try {
-            int selectedRow = tblCliente.getSelectedRow();
+            int selectedRow = tblPelicula.getSelectedRow();
 
-            int idData = Integer.parseInt((tblCliente.getModel().getValueAt(selectedRow, 0).toString()));
+            int idData = Integer.parseInt((tblPelicula.getModel().getValueAt(selectedRow, 0).toString()));
 
             rowIdData = idData;
 
@@ -186,18 +205,18 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
             //selectedValueCombobox(cmbGenero, tblPelicula.getModel().getValueAt(selectedRow, 2));
             /////////////////for update//////////////////       
             ////////mete string lan nan textfield la///////////////
-            Man_emp.txtNom.setText(tblCliente.getModel().getValueAt(selectedRow, 1).toString());
-            Man_emp.txtApe.setText(tblCliente.getModel().getValueAt(selectedRow, 2).toString());
-            Man_emp.txtCed.setText(tblCliente.getModel().getValueAt(selectedRow, 3).toString());
-            Man_emp.txtTel.setText(tblCliente.getModel().getValueAt(selectedRow, 4).toString());
+            Man_emp.txtNom.setText(tblPelicula.getModel().getValueAt(selectedRow, 1).toString());
+            Man_emp.txtApe.setText(tblPelicula.getModel().getValueAt(selectedRow, 2).toString());
+            Man_emp.txtCed.setText(tblPelicula.getModel().getValueAt(selectedRow, 3).toString());
+            Man_emp.txtTel.setText(tblPelicula.getModel().getValueAt(selectedRow, 4).toString());
 
-            Man_emp.txtCor.setText(tblCliente.getModel().getValueAt(selectedRow, 6).toString());
+            Man_emp.txtCor.setText(tblPelicula.getModel().getValueAt(selectedRow, 6).toString());
 
-            Man_emp.txtDir.setText(tblCliente.getModel().getValueAt(selectedRow, 7).toString());
+            Man_emp.txtDir.setText(tblPelicula.getModel().getValueAt(selectedRow, 7).toString());
 
-            Man_emp.cmbSex.setSelectedItem(tblCliente.getModel().getValueAt(selectedRow, 8).toString());
+            Man_emp.cmbSex.setSelectedItem(tblPelicula.getModel().getValueAt(selectedRow, 8).toString());
 
-            String chk = tblCliente.getModel().getValueAt(selectedRow, 5).toString();
+            String chk = tblPelicula.getModel().getValueAt(selectedRow, 5).toString();
 
             //checkbox
             if (chk.equalsIgnoreCase("1")) {
@@ -207,7 +226,7 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
             }
 
             ///Date convertion
-            String inputDateStr = tblCliente.getModel().getValueAt(selectedRow, 9).toString();
+            String inputDateStr = tblPelicula.getModel().getValueAt(selectedRow, 9).toString();
             DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
             DateFormat outputFormat = new SimpleDateFormat("dd/MM/YYYY");
             ///////////////////////////
@@ -238,7 +257,7 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
         timer1 = new org.netbeans.examples.lib.timerbean.Timer();
         buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCliente = new javax.swing.JTable();
+        tblPelicula = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
         lblInfo = new javax.swing.JLabel();
@@ -264,7 +283,7 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
             }
         });
 
-        tblCliente.setModel(new javax.swing.table.DefaultTableModel(
+        tblPelicula.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -275,13 +294,13 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
                 "Title 1", "Title 2"
             }
         ));
-        tblCliente.getTableHeader().setReorderingAllowed(false);
-        tblCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblPelicula.getTableHeader().setReorderingAllowed(false);
+        tblPelicula.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblClienteMouseClicked(evt);
+                tblPeliculaMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblCliente);
+        jScrollPane1.setViewportView(tblPelicula);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Peliculas");
@@ -335,27 +354,27 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 256, Short.MAX_VALUE)
                         .addComponent(rdoDisponible)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(rdoTodas)
                         .addGap(50, 50, 50)
                         .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 554, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jProgressBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jProgressBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(11, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -365,7 +384,6 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
                 .addComponent(lblInfo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -424,24 +442,23 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
         populatePelicula();
     }//GEN-LAST:event_rdoTodasActionPerformed
 
-    private void tblClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClienteMouseClicked
+    private void tblPeliculaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPeliculaMouseClicked
         // TODO add your handling code here:
-       
 
-        int selectedRow = tblCliente.getSelectedRow();
+        int selectedRow = tblPelicula.getSelectedRow();
 
         if (evt.getClickCount() == 2) {
             //sendData(); 
             //evt.
- 
-             System.out.println("boom double click");
-             
-            if (tblCliente.getSelectedRow() > -1) {
+
+            System.out.println("boom double click");
+
+            if (tblPelicula.getSelectedRow() > -1) {
 
                 confirmStringToDelete = "";
                 for (int i = 0; i < 4; i++) {
 
-                    String strData = (tblCliente.getModel().getValueAt(selectedRow, i).toString()) + " ";
+                    String strData = (tblPelicula.getModel().getValueAt(selectedRow, i).toString()) + " ";
                     //System.out.println(""+strData);
                     confirmStringToDelete += strData;
                 }
@@ -451,18 +468,14 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
 
                 if (PromptResult == JOptionPane.YES_OPTION) {
 
-                  
-                    int codpel = Integer.parseInt((tblCliente.getModel().getValueAt(selectedRow, 0).toString()));
-                    
-                    int numcopia = Integer.parseInt((tblCliente.getModel().getValueAt(selectedRow, 2).toString()));
-                    
-                    
+                    int codpel = Integer.parseInt((tblPelicula.getModel().getValueAt(selectedRow, 0).toString()));
+
+                    int numcopia = Integer.parseInt((tblPelicula.getModel().getValueAt(selectedRow, 2).toString()));
+
                     Tra_ren.AddRowToModel(Tra_ren.dias, codpel, numcopia);
-                    
-                    
-                    System.out.println(">>>"+Tra_ren.dias+" "+codpel+" "+numcopia);
-      
-      
+
+                    System.out.println(">>>" + Tra_ren.dias + " " + codpel + " " + numcopia);
+
                     getSelectRowIdData();
 
                     confirmStringToDelete = null;
@@ -472,7 +485,7 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
             }
 
         }
-    }//GEN-LAST:event_tblClienteMouseClicked
+    }//GEN-LAST:event_tblPeliculaMouseClicked
 
     /**
      * @param args the command line arguments
@@ -525,7 +538,7 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
     private javax.swing.JLabel lblInfo;
     private javax.swing.JRadioButton rdoDisponible;
     private javax.swing.JRadioButton rdoTodas;
-    private javax.swing.JTable tblCliente;
+    private javax.swing.JTable tblPelicula;
     private org.netbeans.examples.lib.timerbean.Timer timer1;
     private javax.swing.JTextField txtBusqueda;
     // End of variables declaration//GEN-END:variables

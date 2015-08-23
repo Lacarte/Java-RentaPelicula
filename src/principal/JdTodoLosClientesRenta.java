@@ -80,7 +80,7 @@ public class JdTodoLosClientesRenta extends javax.swing.JDialog {
     void hideColTable() {
 
         
-                tblCliente.getColumnModel().getColumn(4).setMinWidth(0);
+        tblCliente.getColumnModel().getColumn(4).setMinWidth(0);
         tblCliente.getColumnModel().getColumn(4).setMaxWidth(0);
         tblCliente.getColumnModel().getColumn(4).setWidth(0);
 
