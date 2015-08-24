@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import static principal.Man_pel.llstAddRemoveActor;
 
 import utilities.Clock;
 import utilities.ConnectionManager;
@@ -39,7 +42,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
     java.util.Date fechaDate;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    private static Connection con = ConnectionManager.getInstance().getConnection();
+    private static Connection transCon = ConnectionManager.getInstance().getConnection();
     private static DefaultTableModel tbm = null;
     static LinkedList llstAddRemovePelicula = null;
 
@@ -52,6 +55,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
     public static int codCli = 0;
     int rowIdData = 0;
     int lastInsertedId = 0;
+    double itbis = 0;
     String confirmStringToDelete = null;
     String tableName = "tbtercero";
     String idColname = "codter";
@@ -80,14 +84,19 @@ public class Tra_ren extends javax.swing.JInternalFrame {
 
             @Override
             public void tableChanged(TableModelEvent tme) {
-                lblInfo.setText("Ctd" + tblPelicula.getRowCount());
+                lblInfo.setText("Ctd " + tblPelicula.getRowCount());
                 //System.out.println(">> "+tme  );
-                double totalPrecio = 0;
+                double subTotalPrecio = 0;
                 for (int i = 0; i < tblPelicula.getRowCount(); i++) {
-                    totalPrecio += Double.parseDouble((String) tblPelicula.getValueAt(i, 5));
+                    subTotalPrecio += Double.parseDouble((String) tblPelicula.getValueAt(i, 5));
                 }
-                double roundOff = Math.round(totalPrecio * 100) / 100D;
-                lblTotal.setText("" + roundOff);
+
+                lblSubTotal.setText("" + roundOff(subTotalPrecio));
+                itbis = (subTotalPrecio * 18) / 100;
+
+                lblItbis.setText("" + roundOff(itbis));
+
+                lblTotal.setText("" + roundOff(itbis + subTotalPrecio));
 
                 ///// add remove codpel numcopia
                 addRemovePeliculaToLinkedlist();
@@ -146,6 +155,11 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         t1.start();
     }
 
+    double roundOff(double num) {
+        double roundOffSubtotal = Math.round(num * 100) / 100D;
+        return roundOffSubtotal;
+    }
+
     //  txtBusqueda.setText("Busqueda /f3");
     ///////////////////////clear all
     private void clearNew() {
@@ -156,7 +170,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         lblCliName.setText("////////////////");
         cmbDuracion.setSelectedIndex(0);
         lblDuracion.setText("[//]");
-        lblTotal.setText("0.00");
+        lblSubTotal.setText("0.00");
         codCli = 0;
         rowIdData = 0;
         lastInsertedId = 0;
@@ -201,11 +215,16 @@ public class Tra_ren extends javax.swing.JInternalFrame {
 
     }
 
+    private void callReport() {
+
+        System.out.println("report");
+    }
+
     public static void AddRowToModel(int dias, int codpel, int numcopia) {
         System.out.println("boom added>>>" + Tra_ren.dias + " " + codpel + " " + numcopia);
         String sqlCallProcedure = "CALL proc_pel_precio(" + dias + "," + codpel + "," + numcopia + ")";
         try {
-            Statement sta = con.createStatement(); // ......................ANLE A.....
+            Statement sta = transCon.createStatement(); // ......................ANLE A.....
             ResultSet rs = sta.executeQuery(sqlCallProcedure);
             while (rs.next()) {
                 tbm.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)});
@@ -256,9 +275,9 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         boolean success = false;
         try {
             //to add on the top
-            con.setAutoCommit(false);
+            transCon.setAutoCommit(false);
             String sql = query;
-            Statement sta = con.createStatement();
+            Statement sta = transCon.createStatement();
             int s = sta.executeUpdate(sql);
             if (s == 1) {
                 success = true;
@@ -279,7 +298,8 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                 success = false;
             }
         } catch (SQLException ex) {
-            System.err.println(">" + ex);
+            System.err.println("excep >>" + ex);
+            success = false;
         }
         return success;
     }
@@ -289,9 +309,9 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         boolean success = false;
         try {
             //to add on the top
-            con.setAutoCommit(false);
+            transCon.setAutoCommit(false);
             String sql = query;
-            Statement sta = con.createStatement();
+            Statement sta = transCon.createStatement();
             int s = sta.executeUpdate(sql);
             if (s == 1) {
                 success = true;
@@ -305,8 +325,11 @@ public class Tra_ren extends javax.swing.JInternalFrame {
     }
 
     private void facturar() {
+
+        boolean todoBien = true;
+
         System.out.println("Facturacion");
-        if (Principal.userCode == null) {
+        if (Principal.userCode == 0) {
             System.out.println("Please Select  a user");
         }
         if (codCli == 0) {
@@ -315,11 +338,73 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         } else {
             if (tblPelicula.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(this, "No se puede facturar sin Pelicula");
-            }else{
-            /////////////pass///////////////////////
-                
-                
-            
+            } else {
+
+                /////////////pass///////////////////////
+                String sqlQueryInsertRenta = "INSERT INTO `rentapelicula`.`tbrenta` (`codren`, `ncf`, `fecren`, `codcli`, `codusu`, `codpag`, `subtotal`, `itbis`, `total`) VALUES (NULL, '" + lblNcf.getText().trim() + "', NOW(), '" + codCli + "', '" + Principal.userCode + "', '1', '" + lblSubTotal.getText().trim() + "', '" + lblItbis.getText().trim() + "', '" + lblTotal.getText().trim() + "');";
+
+                System.out.println("sqlQueryInsertRenta >> :" + sqlQueryInsertRenta);
+
+                if (!insertLeaderTransaction(sqlQueryInsertRenta)) {
+                    todoBien = false;
+                    System.out.println("false sqlQueryInsertRenta: " + sqlQueryInsertRenta);
+                }
+                /**/
+                if (todoBien) {
+                    //codpelicula
+                    int cp = 0;
+                    //numcopia
+                    int nc = 0;
+
+                    for (int i = 0; i < tblPelicula.getRowCount(); i++) {
+
+                        cp = Integer.parseInt((String) tblPelicula.getValueAt(i, 0));
+                        nc = Integer.parseInt((String) tblPelicula.getValueAt(i, 2));
+
+                        String sqlQueryInsertRentaDetalle = "INSERT INTO `rentapelicula`.`tb_detalle_renta` (`coddetren`, `codren`, `codpel`, `numcopia`, `preciopel`,`durren`, `preciototal`) VALUES (NULL, '" + lastInsertedId + "', '" + cp + "', '" + nc + "', '" + tblPelicula.getValueAt(i, 4) + "','" + tblPelicula.getValueAt(i, 3) + "', '" + tblPelicula.getValueAt(i, 5) + "');";
+                        String sqlQueryUpdateEstadoPelicula = "UPDATE `rentapelicula`.`tbpelicula_copia` SET `codestado` = '2' WHERE `tbpelicula_copia`.`codpel` = '" + cp + "' AND  `tbpelicula_copia`.`numcopia` = '" + nc + "';";
+
+                        System.out.println(" sqlQueryInsertRentaDetalle >> " + sqlQueryInsertRentaDetalle);
+
+                        
+                        if (!setTransaction(sqlQueryInsertRentaDetalle)) {
+                            todoBien = false;
+                            System.out.println("false sqlQueryInsertRenta: " + sqlQueryInsertRentaDetalle);
+                        } else if (!setTransaction(sqlQueryUpdateEstadoPelicula)) {
+                            todoBien = false;
+                            System.out.println("false sqlQueryUpdateEstadoPelicula: " + sqlQueryUpdateEstadoPelicula);
+                        }
+
+                        /**/
+                    }
+
+//if all the transactions are ok commit
+                    if (todoBien) {
+                        ///Update estado pelicula
+                        try {
+                            transCon.commit();
+                            System.out.println("commit");
+                            JOptionPane.showMessageDialog(this, "Guardado exitosamente");
+                            clearNew();
+
+                            callReport();
+
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Tra_ren.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    } else {
+                        try {
+                            transCon.rollback();
+                            System.out.println("roll back ");
+
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Tra_ren.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
+                }
+
             }
         }
     }
@@ -357,12 +442,16 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        lblTotal = new javax.swing.JLabel();
+        lblSubTotal = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        lblTotal1 = new javax.swing.JLabel();
+        lblItbis = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
         lblDateTime = new javax.swing.JLabel();
+        lblNcf = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_2796(58)_24.png"))); // NOI18N
         jMenuItem1.setText("Eliminar Pelicula");
@@ -601,33 +690,39 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Precio"));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("TOTAL : $RD ");
+        jLabel3.setText("SubTotal :");
+
+        lblSubTotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblSubTotal.setText("0.00");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel7.setText("ITBIS 18% :");
+
+        lblItbis.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblItbis.setText("0.00");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel8.setText("Total :");
 
         lblTotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblTotal.setText("0.00");
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel7.setText("ITBIS :");
-
-        lblTotal1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblTotal1.setText("18%");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTotal1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(192, Short.MAX_VALUE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblItbis, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(205, 205, 205))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -635,12 +730,16 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(lblTotal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(lblTotal1))
-                .addGap(29, 29, 29))
+                    .addComponent(lblItbis))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(lblTotal))
+                .addGap(6, 6, 6))
         );
 
         jLabel4.setText("Usuario :");
@@ -650,6 +749,10 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         lblDateTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblDateTime.setText("[]");
         lblDateTime.setToolTipText("");
+
+        lblNcf.setText("A0100100102");
+
+        jLabel9.setText("NCF :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -666,15 +769,19 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                             .addComponent(lblDateTime, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel4)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel4))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblUsuario)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblNcf)
+                                    .addComponent(lblUsuario))))
                         .addGap(31, 31, 31))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                        .addGap(39, 39, 39)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35))))
+                        .addContainerGap(40, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -688,15 +795,22 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(lblUsuario)))
+                            .addComponent(lblUsuario))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblNcf)
+                            .addComponent(jLabel9)))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40))))
         );
 
         pack();
@@ -864,6 +978,8 @@ public class Tra_ren extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -877,8 +993,10 @@ public class Tra_ren extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblDateTime;
     private javax.swing.JLabel lblDuracion;
     private javax.swing.JLabel lblInfo;
+    private javax.swing.JLabel lblItbis;
+    private javax.swing.JLabel lblNcf;
+    private javax.swing.JLabel lblSubTotal;
     private javax.swing.JLabel lblTotal;
-    private javax.swing.JLabel lblTotal1;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTable tblPelicula;
     // End of variables declaration//GEN-END:variables

@@ -35,7 +35,7 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     public static String userName = null;
-    public static String userCode = null;
+    public static int userCode = 0;
 
     /*CONSTRUCTOR*/
     public Principal() {
@@ -86,7 +86,7 @@ public class Principal extends javax.swing.JFrame {
         lblUsername.setText((String) userdata.get(2));
 
         userName = (String) userdata.get(2);
-        userCode = (String) userdata.get(1);
+        userCode = Integer.parseInt((String) userdata.get(1));
 
         if (userdata.get(4).equals("Administrador")) {
             jmAdmin.setVisible(true);
@@ -205,6 +205,7 @@ public class Principal extends javax.swing.JFrame {
         lblUsername.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_d83d(18)_24.png"))); // NOI18N
         lblUsername.setText("USUARIO:TEST");
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/hand196.png"))); // NOI18N
         jButton1.setText("P.DUCT");
         jButton1.setPreferredSize(new java.awt.Dimension(65, 23));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -221,7 +222,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/movie47.png"))); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/playbutton17.png"))); // NOI18N
         jButton3.setText("PELICULA");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
