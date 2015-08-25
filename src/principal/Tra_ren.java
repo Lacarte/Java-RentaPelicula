@@ -18,8 +18,10 @@ import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
 import static principal.Man_pel.llstAddRemoveActor;
 
+import report.Renta;
 import utilities.Clock;
 import utilities.ConnectionManager;
 import utilities.DBSql;
@@ -215,9 +217,20 @@ public class Tra_ren extends javax.swing.JInternalFrame {
 
     }
 
-    private void callReport() {
+    private void callReport(int idRenta) {
 
         System.out.println("report");
+
+        Renta rc = new Renta();
+        try {
+            rc.generarReporte(idRenta);
+            System.out.println("lastIdRepor" + idRenta);
+        } catch (JRException ex) {
+            Logger.getLogger(Tra_ren.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Tra_ren.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public static void AddRowToModel(int dias, int codpel, int numcopia) {
@@ -366,7 +379,6 @@ public class Tra_ren extends javax.swing.JInternalFrame {
 
                         System.out.println(" sqlQueryInsertRentaDetalle >> " + sqlQueryInsertRentaDetalle);
 
-                        
                         if (!setTransaction(sqlQueryInsertRentaDetalle)) {
                             todoBien = false;
                             System.out.println("false sqlQueryInsertRenta: " + sqlQueryInsertRentaDetalle);
@@ -384,11 +396,10 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                         try {
                             transCon.commit();
                             System.out.println("commit");
-                            JOptionPane.showMessageDialog(this, "Guardado exitosamente");
+                            JOptionPane.showMessageDialog(this, "Facturado exitosamente");
+
+                            callReport(lastInsertedId);
                             clearNew();
-
-                            callReport();
-
                         } catch (SQLException ex) {
                             Logger.getLogger(Tra_ren.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -648,7 +659,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblDuracion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -801,16 +812,17 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                             .addComponent(lblNcf)
                             .addComponent(jLabel9)))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40))))
+                        .addGap(40, 40, 40))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         pack();
