@@ -37,7 +37,7 @@ import utilities.ObjPeliculaCopelNumcopia;
  *
  * @author LCRT
  */
-public class Tra_ren extends javax.swing.JInternalFrame {
+public class Tra_dev extends javax.swing.JInternalFrame {
 
     String fecha = "01/01/1990";
     java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd/MM/yyyy");
@@ -66,10 +66,10 @@ public class Tra_ren extends javax.swing.JInternalFrame {
     /**
      * Creates new form man_peliculas
      */
-    public Tra_ren() {
+    public Tra_dev() {
         initComponents();
         sql = new DBSql();
-        clock(lblDateTime);
+       // clock(lblDateTime);
 
         tbm = (DefaultTableModel) tblPelicula.getModel();
         llstAddRemovePelicula = new LinkedList();
@@ -81,7 +81,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
 
         //greyOutCombobox(cmbDuracion, false);
         greyOutTable(tblPelicula, false);
-        lblUsuario.setText(Principal.userName);
+      //  lblUsuario.setText(Principal.userName);
         tblPelicula.getModel().addTableModelListener(new TableModelListener() {
 
             @Override
@@ -93,12 +93,12 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                     subTotalPrecio += Double.parseDouble((String) tblPelicula.getValueAt(i, 5));
                 }
 
-                lblSubTotal.setText("" + roundOff(subTotalPrecio));
+             //   lblSubTotal.setText("" + roundOff(subTotalPrecio));
                 itbis = (subTotalPrecio * 18) / 100;
 
-                lblItbis.setText("" + roundOff(itbis));
+             //   lblItbis.setText("" + roundOff(itbis));
 
-                lblTotal.setText("" + roundOff(itbis + subTotalPrecio));
+               // lblTotal.setText("" + roundOff(itbis + subTotalPrecio));
 
                 ///// add remove codpel numcopia
                 addRemovePeliculaToLinkedlist();
@@ -128,7 +128,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                         break;
                     case KeyEvent.VK_F4:
                         System.out.println("nuevo");
-                        btnNuevo.doClick();
+                  //      btnNuevo.doClick();
                         break;
                     case KeyEvent.VK_F5:
                         System.out.println("Guardar");
@@ -172,7 +172,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         lblCliName.setText("////////////////");
         cmbDuracion.setSelectedIndex(0);
         lblDuracion.setText("[//]");
-        lblSubTotal.setText("0.00");
+      //  lblSubTotal.setText("0.00");
         codCli = 0;
         rowIdData = 0;
         lastInsertedId = 0;
@@ -226,15 +226,15 @@ public class Tra_ren extends javax.swing.JInternalFrame {
             rc.generarReporte(idRenta);
             System.out.println("lastIdRepor" + idRenta);
         } catch (JRException ex) {
-            Logger.getLogger(Tra_ren.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Tra_dev.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(Tra_ren.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Tra_dev.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
     public static void AddRowToModel(int dias, int codpel, int numcopia) {
-        System.out.println("boom added>>>" + Tra_ren.dias + " " + codpel + " " + numcopia);
+        System.out.println("boom added>>>" + Tra_dev.dias + " " + codpel + " " + numcopia);
         String sqlCallProcedure = "CALL proc_pel_precio(" + dias + "," + codpel + "," + numcopia + ")";
         try {
             Statement sta = transCon.createStatement(); // ......................ANLE A.....
@@ -354,7 +354,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
             } else {
 
                 /////////////pass///////////////////////
-                String sqlQueryInsertRenta = "INSERT INTO `rentapelicula`.`tbrenta` (`codren`, `ncf`, `fecren`, `codcli`, `codusu`, `codpag`, `subtotal`, `itbis`, `total`) VALUES (NULL, '" + lblNcf.getText().trim() + "', NOW(), '" + codCli + "', '" + Principal.userCode + "', '1', '" + lblSubTotal.getText().trim() + "', '" + lblItbis.getText().trim() + "', '" + lblTotal.getText().trim() + "');";
+                String sqlQueryInsertRenta = "INSERT INTO `rentapelicula`.`tbrenta` (`codren`, `ncf`, `fecren`, `codcli`, `codusu`, `codpag`, `subtotal`, `itbis`, `total`) VALUES (NULL, '" + lblCliCedula.getText().trim() + "', NOW(), '" + codCli + "', '" + Principal.userCode + "', '1', '" + lblCliCedula.getText().trim() + "', '" + lblCliCedula.getText().trim() + "', '" + lblCliCode.getText().trim() + "');";
 
                 System.out.println("sqlQueryInsertRenta >> :" + sqlQueryInsertRenta);
 
@@ -401,7 +401,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                             callReport(lastInsertedId);
                             clearNew();
                         } catch (SQLException ex) {
-                            Logger.getLogger(Tra_ren.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(Tra_dev.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
                     } else {
@@ -410,7 +410,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                             System.out.println("roll back ");
 
                         } catch (SQLException ex) {
-                            Logger.getLogger(Tra_ren.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(Tra_dev.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
 
@@ -433,7 +433,6 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         btnFacturar = new javax.swing.JButton();
-        btnNuevo = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblCliCode = new javax.swing.JLabel();
@@ -451,18 +450,6 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         cmbDuracion = new javax.swing.JComboBox();
         lblDuracion = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        lblSubTotal = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        lblItbis = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        lblTotal = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        lblUsuario = new javax.swing.JLabel();
-        lblDateTime = new javax.swing.JLabel();
-        lblNcf = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_2796(58)_24.png"))); // NOI18N
         jMenuItem1.setText("Eliminar Pelicula");
@@ -500,18 +487,10 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         jPanel1.setFocusCycleRoot(true);
 
         btnFacturar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/save8.png"))); // NOI18N
-        btnFacturar.setText("Facturar /f5");
+        btnFacturar.setText("Devolver /f5");
         btnFacturar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFacturarActionPerformed(evt);
-            }
-        });
-
-        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/limpiar.png"))); // NOI18N
-        btnNuevo.setText("NUEVO  /f4");
-        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoActionPerformed(evt);
             }
         });
 
@@ -520,16 +499,13 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(75, Short.MAX_VALUE)
-                .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addContainerGap(256, Short.MAX_VALUE)
                 .addComponent(btnFacturar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(67, 67, 67))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnFacturar, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
-            .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Del Cliente"));
@@ -660,15 +636,15 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(352, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblDuracion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBuscarPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(242, 242, 242))
+                .addGap(279, 279, 279)
+                .addComponent(btnBuscarPelicula)
+                .addContainerGap())
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(5, 5, 5)
@@ -684,8 +660,8 @@ public class Tra_ren extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBuscarPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscarPelicula)
+                    .addComponent(cmbDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDuracion)
                     .addComponent(jLabel6))
                 .addGap(0, 149, Short.MAX_VALUE))
@@ -693,77 +669,10 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(lblInfo)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(19, Short.MAX_VALUE)))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Precio"));
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("SubTotal :");
-
-        lblSubTotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblSubTotal.setText("0.00");
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel7.setText("ITBIS 18% :");
-
-        lblItbis.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblItbis.setText("0.00");
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel8.setText("Total :");
-
-        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblTotal.setText("0.00");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblItbis, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(205, 205, 205))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(lblItbis))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(lblTotal))
-                .addGap(6, 6, 6))
-        );
-
-        jLabel4.setText("Usuario :");
-
-        lblUsuario.setText("lblUsuario");
-
-        lblDateTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblDateTime.setText("[]");
-        lblDateTime.setToolTipText("");
-
-        lblNcf.setText("A0100100102");
-
-        jLabel9.setText("NCF :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -775,22 +684,11 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblDateTime, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblNcf)
-                                    .addComponent(lblUsuario))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 485, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
                         .addGap(31, 31, 31))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
+                        .addGap(523, 523, 523)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(40, Short.MAX_VALUE))))
         );
@@ -799,30 +697,13 @@ public class Tra_ren extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblDateTime)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(lblUsuario))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblNcf)
-                            .addComponent(jLabel9)))
+                    .addComponent(jLabel5)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                .addGap(59, 59, 59)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40))
         );
 
         pack();
@@ -837,17 +718,6 @@ public class Tra_ren extends javax.swing.JInternalFrame {
             this.dispose();
         }
     }//GEN-LAST:event_formInternalFrameClosing
-
-    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        // TODO add your handling code here:
-        String ObjButtons[] = {"Si", "No"};
-        int PromptResult = JOptionPane.showOptionDialog(this, "Desea Limpiar Todo? ", "Confirmacion...?", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, ObjButtons, ObjButtons[0]);
-
-        if (PromptResult == JOptionPane.YES_OPTION) {
-            clearNew();
-        }
-
-    }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnFacturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturarActionPerformed
         // TODO add your handling code here:
@@ -979,37 +849,24 @@ public class Tra_ren extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarPelicula;
     private javax.swing.JButton btnFacturar;
-    private javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox cmbDuracion;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu jpopDeletePelicula;
     public static javax.swing.JLabel lblCliCedula;
     public static javax.swing.JLabel lblCliCode;
     public static javax.swing.JLabel lblCliName;
-    private javax.swing.JLabel lblDateTime;
     private javax.swing.JLabel lblDuracion;
     private javax.swing.JLabel lblInfo;
-    private javax.swing.JLabel lblItbis;
-    private javax.swing.JLabel lblNcf;
-    private javax.swing.JLabel lblSubTotal;
-    private javax.swing.JLabel lblTotal;
-    private javax.swing.JLabel lblUsuario;
     private javax.swing.JTable tblPelicula;
     // End of variables declaration//GEN-END:variables
 

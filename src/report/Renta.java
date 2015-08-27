@@ -5,15 +5,24 @@
  */
 package report;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.design.JRDesignQuery;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -68,7 +77,14 @@ public class Renta {
 
         try {
 
-           // InputStream is = ReportServlet.class.getResourceAsStream("D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\y.jrxml");
+            // other wau to load file   
+            try {
+                InputStream Inputstream = new FileInputStream(new File("D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\renta.jrxml"));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Renta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            // InputStream is = ReportServlet.class.getResourceAsStream("D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\y.jrxml");
             JasperDesign jspd = JRXmlLoader.load("D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\renta.jrxml");
             String sqlQuery = "SELECT pel.titpel AS 'TITULO',pel.durpel AS 'DURACION',gen.desgen AS 'GENERO',pel.anopel AS 'AÑOS',detren.preciopel AS 'PRECIO',detren.durren AS 'DIAS',detren.preciototal AS 'PRECIOTOTAL',DATE_FORMAT(ren.fecren + INTERVAL detren.durren DAY,'%d/%m/%Y') AS 'FECHA DEVOLUCION',ren.codren AS 'Nro Factura',ren.ncf as 'NCF',CONCAT(ter.nomter,' ',per.apeper) AS 'Nombre Cliente',usu.nomusu AS 'USUARIO' FROM tbrenta ren INNER JOIN tb_detalle_renta detren ON detren.codren=ren.codren\n"
                     + "INNER JOIN tbpelicula_copia pelcop ON detren.codpel=pelcop.codpel AND detren.numcopia=pelcop.numcopia\n"
@@ -86,9 +102,35 @@ public class Renta {
 
             JasperPrint mostrarReporte = JasperFillManager.fillReport(reporteJasper, null, con);
 
-            JasperViewer ver = new JasperViewer(mostrarReporte, false); //false to prevent the main program to close
-            ver.setTitle("Mr movies Factura");
-            ver.setVisible(true);
+                //JasperViewer ver = new JasperViewer(mostrarReporte, false); //false to prevent the main program to close
+            //ver.setTitle("Mr movies Factura");
+            //ver.setVisible(true);
+            //if you dont want  to see the viewer
+            //comment the 3 lines above
+            ////////////print
+            //to export it as pdf
+            try {
+                OutputStream outputstream = new FileOutputStream(new File("C:\\Users\\LCRT\\Desktop\\report.pdf"));
+                JasperExportManager.exportReportToPdfStream(mostrarReporte, outputstream);
+              
+                //close the stream
+                try {
+                    outputstream.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Renta.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Renta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                JasperPrintManager.printReport(mostrarReporte, false); //to print it 
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
 
         } catch (JRException ex) {
             Logger.getLogger(Renta.class.getName()).log(Level.SEVERE, null, ex);
