@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="08171bba-5046-4c6c-874a-b40883a86f9d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT COUNT(*) AS ctd_pelicula FROM tbpelicula;]]>
+	</queryString>
+	<field name="ctd_pelicula" class="java.lang.Long"/>
+	<summary>
+		<band height="450" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="391" height="450" uuid="321661ca-1771-4e72-908d-bde0f3df709e"/>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="391" height="40" forecolor="#FFFFFF" backcolor="#3399FF" uuid="470aec51-c513-4203-948d-6a3d66e0b0de"/>
+					<box>
+						<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="24" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Inventario Pelicula]]></text>
+				</staticText>
+				<subreport>
+					<reportElement x="0" y="40" width="391" height="20" uuid="64daabb3-f9ac-4d7c-b79c-24f559c87de1"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalPelicula.jasper"]]></subreportExpression>
+				</subreport>
+			</frame>
+		</band>
+	</summary>
+</jasperReport>

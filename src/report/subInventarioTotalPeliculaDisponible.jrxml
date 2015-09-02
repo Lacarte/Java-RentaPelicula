@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Inventario_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="3a1c7ce6-f9a6-4741-9270-cb96d9ce7fd8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT COUNT(*) AS ctd_pel_dispo  FROM tbpelicula pel
+INNER JOIN tbpelicula_copia pelcop ON pel.codpel=pelcop.codpel
+INNER JOIN tb_estado_pelicula estpel ON estpel.codestpel=pelcop.codestado
+WHERE estpel.desest='disponible']]>
+	</queryString>
+	<field name="ctd_pel_dispo" class="java.lang.Long"/>
+	<title>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="237" y="0" width="318" height="20" uuid="f259c431-6a34-46bb-80bf-11c40d57b318"/>
+				<textFieldExpression><![CDATA[":  "+$F{ctd_pel_dispo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="211" height="20" uuid="8f04a4cb-f13a-45cf-9c87-fe298b780d7a"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PELICULA DISPONIBLE]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

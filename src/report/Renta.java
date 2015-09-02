@@ -12,8 +12,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -102,35 +107,58 @@ public class Renta {
 
             JasperPrint mostrarReporte = JasperFillManager.fillReport(reporteJasper, null, con);
 
-                //JasperViewer ver = new JasperViewer(mostrarReporte, false); //false to prevent the main program to close
+            //JasperViewer ver = new JasperViewer(mostrarReporte, false); //false to prevent the main program to close
             //ver.setTitle("Mr movies Factura");
             //ver.setVisible(true);
             //if you dont want  to see the viewer
             //comment the 3 lines above
             ////////////print
             //to export it as pdf
+            String pdfReportPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+            pdfReportPath = pdfReportPath.split("build")[0];
+            System.out.println("<<>>" + pdfReportPath);
+
+            String decodedPath;
             try {
-                OutputStream outputstream = new FileOutputStream(new File("C:\\Users\\LCRT\\Desktop\\report.pdf"));
+                pdfReportPath = URLDecoder.decode(pdfReportPath, "UTF-8");
+                System.out.println("> " + pdfReportPath);
+            } catch (UnsupportedEncodingException ex) {
+                JOptionPane.showMessageDialog(null, "decodedPath >>" + ex);
+            }
+
+            Date date = new Date();
+            Format formatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+            String dateTimeName = formatter.format(date);
+
+            
+            try {
+
+                //cuidado con src while build jar
+                OutputStream outputstream = new FileOutputStream(new File(pdfReportPath + "/src/pdf/"+dateTimeName+".pdf"));
+
                 JasperExportManager.exportReportToPdfStream(mostrarReporte, outputstream);
-              
+
                 //close the stream
                 try {
                     outputstream.close();
                 } catch (IOException ex) {
                     Logger.getLogger(Renta.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                
+
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Renta.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+            //print it
+        /*    
             try {
                 JasperPrintManager.printReport(mostrarReporte, false); //to print it 
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
+                */
+                
 
         } catch (JRException ex) {
             Logger.getLogger(Renta.class.getName()).log(Level.SEVERE, null, ex);
