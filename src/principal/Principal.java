@@ -1,26 +1,16 @@
 package principal;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import static java.awt.Frame.MAXIMIZED_BOTH;
-import java.awt.KeyEventDispatcher;
-import java.awt.Window;
-import java.awt.event.KeyEvent;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import static javax.swing.UIManager.getLookAndFeel;
-import javax.swing.UnsupportedLookAndFeelException;
 import utilities.Clock;
-import utilities.ConnectionManager;
+import utilities.MakeLink;
 import utilities.Marquee;
 
 /*
@@ -41,6 +31,8 @@ public class Principal extends javax.swing.JFrame {
     public static int userCode = 0;
     Marquee mrq = new Marquee("///>                        Sistema de Renta de Pelicula ( Mr Movies V1.0)                ///> ");
 
+    MakeLink mk = new MakeLink();
+
     /*CONSTRUCTOR*/
     public Principal() {
 
@@ -48,7 +40,7 @@ public class Principal extends javax.swing.JFrame {
         jmAdmin.setVisible(true);
         clock(lblDateTime);
         //lblInfoSystem.add(mrq);
-        
+
         //re setup the look and feel NimbusLookAndFeel after using the transpa rency in the  login
         try {
             //Set the required look and feel
@@ -140,6 +132,8 @@ public class Principal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        gifanim = new javax.swing.JLabel();
+        jXHyperlink1 = new org.jdesktop.swingx.JXHyperlink();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -152,6 +146,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem20 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem24 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem22 = new javax.swing.JMenuItem();
@@ -196,7 +191,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 526, Short.MAX_VALUE)
+            .addGap(0, 529, Short.MAX_VALUE)
         );
 
         lblDateTime.setBackground(new java.awt.Color(153, 153, 153));
@@ -205,14 +200,15 @@ public class Principal extends javax.swing.JFrame {
         lblDateTime.setText("00:00:00");
         lblDateTime.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
-        lblInfoSystem.setText("///>                        Sistema de Renta de Pelicula ( Mr Movies V1.0)");
+        lblInfoSystem.setText("|     Sistema de Renta de Pelicula ( Mr Movies V1.0)");
 
         lblUsername.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblUsername.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_d83d(18)_24.png"))); // NOI18N
         lblUsername.setText("USUARIO:TEST");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/hand196.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/timer20.png"))); // NOI18N
         jButton1.setText("P.DUCT");
+        jButton1.setBorderPainted(false);
         jButton1.setPreferredSize(new java.awt.Dimension(65, 23));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,25 +218,36 @@ public class Principal extends javax.swing.JFrame {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/money136.png"))); // NOI18N
         jButton2.setText("RENTA");
+        jButton2.setBorderPainted(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/playbutton17.png"))); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/movie43.png"))); // NOI18N
         jButton3.setText("PELICULA");
+        jButton3.setBorderPainted(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/money136.png"))); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/left-arrow.png"))); // NOI18N
         jButton4.setText("DEVOL.");
+        jButton4.setBorderPainted(false);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
+            }
+        });
+
+        jXHyperlink1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/logo.png"))); // NOI18N
+        jXHyperlink1.setText("LCRTDEV");
+        jXHyperlink1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jXHyperlink1ActionPerformed(evt);
             }
         });
 
@@ -253,7 +260,11 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                    .addComponent(gifanim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -264,13 +275,17 @@ public class Principal extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(93, 93, 93)
+                .addGap(75, 75, 75)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(248, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(gifanim, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(21, 21, 21)
@@ -334,7 +349,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_e005(47)_48.png"))); // NOI18N
-        jMenu2.setText("Transaciones");
+        jMenu2.setText("Transacciones");
 
         jMenuItem4.setText("Renta");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
@@ -344,6 +359,9 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem4);
 
+        jMenuItem24.setText("Devolucion");
+        jMenu2.add(jMenuItem24);
+
         jMenuItem14.setText("No entregado/Vigencia");
         jMenu2.add(jMenuItem14);
 
@@ -352,7 +370,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_e70a(43)_48.png"))); // NOI18N
         jMenu3.setText("Consulta/Reportes");
 
-        jMenuItem22.setText("Gen>>");
+        jMenuItem22.setText("Reporte General Pelicula");
         jMenu3.add(jMenuItem22);
 
         jMenuItem23.setText("Clientes ");
@@ -510,23 +528,24 @@ public class Principal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(lblDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblInfoSystem, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jDesktopPane1))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(117, 117, 117)
+                .addComponent(lblDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblInfoSystem, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56)
+                .addComponent(lblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblInfoSystem, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDateTime)
+                    .addComponent(lblInfoSystem)
                     .addComponent(lblUsername))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -740,13 +759,25 @@ public class Principal extends javax.swing.JFrame {
         String ObjButtons[] = {"Si", "No"};
         int PromptResult = JOptionPane.showOptionDialog(this, "Desea Cambiar de Sesion?", "Cerrar?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, ObjButtons, ObjButtons[1]);
         if (PromptResult == JOptionPane.YES_OPTION) {
-            // ConnectionManager.getInstance().close();
+       
+/*            
+// ConnectionManager.getInstance().close();
             // System.exit(0);
             JdCerrarSesion jdsesion = new JdCerrarSesion(this, true);
             jdsesion.setModal(true);
             jdsesion.setLocationRelativeTo(this);
             jdsesion.setVisible(true);
-
+*/
+            
+        CerrarSesion cs = new CerrarSesion();
+        this.jDesktopPane1.removeAll();
+        this.jDesktopPane1.repaint();
+        this.jDesktopPane1.add(cs);
+        //to center the jinternalframe
+        centerJIF(cs);
+        cs.show();
+            
+            
         }
 
     }//GEN-LAST:event_jMenuItem9ActionPerformed
@@ -821,11 +852,25 @@ public class Principal extends javax.swing.JFrame {
         this.jDesktopPane1.add(mp);
         centerJIF(mp);
         mp.show();
+
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jXHyperlink1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXHyperlink1ActionPerformed
+        // TODO add your handling code here:
+        About ab = new About();
+        this.jDesktopPane1.removeAll();
+        this.jDesktopPane1.repaint();
+        this.jDesktopPane1.add(ab);
+        centerJIF(ab);
+        ab.show();
+
+
+    }//GEN-LAST:event_jXHyperlink1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -873,6 +918,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel gifanim;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -902,6 +948,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem22;
     private javax.swing.JMenuItem jMenuItem23;
+    private javax.swing.JMenuItem jMenuItem24;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
@@ -915,6 +962,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
+    private org.jdesktop.swingx.JXHyperlink jXHyperlink1;
     private javax.swing.JMenu jmAdmin;
     private javax.swing.JLabel lblDateTime;
     private javax.swing.JLabel lblInfoSystem;
