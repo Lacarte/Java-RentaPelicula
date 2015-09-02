@@ -4,22 +4,24 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<queryString>
-		<![CDATA[SELECT COUNT(*) AS ctd_pelicula FROM tbpelicula;
-]]>
+		<![CDATA[SELECT COUNT(*) AS ctv_pel_rent FROM tbpelicula pel
+INNER JOIN tbpelicula_copia pelcop ON pel.codpel=pelcop.codpel
+INNER JOIN tb_estado_pelicula estpel ON estpel.codestpel=pelcop.codestado
+WHERE estpel.desest='Rentada']]>
 	</queryString>
-	<field name="ctd_pelicula" class="java.lang.Long"/>
+	<field name="ctv_pel_rent" class="java.lang.Long"/>
 	<title>
 		<band height="22" splitType="Stretch">
 			<textField>
 				<reportElement x="237" y="0" width="318" height="20" uuid="f259c431-6a34-46bb-80bf-11c40d57b318"/>
-				<textFieldExpression><![CDATA[":  "+$F{ctd_pelicula}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[":  "+$F{ctv_pel_rent}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="0" width="211" height="20" uuid="8f04a4cb-f13a-45cf-9c87-fe298b780d7a"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[TOTAL PELCULA]]></text>
+				<text><![CDATA[PELICULA RENTADA]]></text>
 			</staticText>
 		</band>
 	</title>
