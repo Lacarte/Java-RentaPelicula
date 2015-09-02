@@ -31,6 +31,7 @@ public class CerrarSesion extends javax.swing.JInternalFrame {
         userdata = new LinkedList();
         txtUsuario.setDocument(new LimitTextfield(24));
         txtPassword.setDocument(new LimitTextfield(24));
+        txtPassword.setText("password*****");
         txtUsuario.setText("USUARIO");
 
     }

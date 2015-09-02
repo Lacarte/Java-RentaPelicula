@@ -33,7 +33,7 @@ public class LoginInit extends javax.swing.JFrame implements Runnable {
         txtUsuario.setDocument(new LimitTextfield(24));
         txtPassword.setDocument(new LimitTextfield(24));
         txtUsuario.setText("USUARIO");
-          txtPassword.setText("123455666");
+        txtPassword.setText("123455666");
     }
 
     /**

@@ -322,8 +322,6 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
 
         lblInfo.setText("jLabel2");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/preloadGif/1.gif"))); // NOI18N
-
         jProgressBar1.setBackground(new java.awt.Color(255, 255, 255));
         jProgressBar1.setForeground(new java.awt.Color(0, 102, 255));
         jProgressBar1.setBorderPainted(false);
@@ -384,6 +382,7 @@ public class JdTodaLasPeliculasRenta extends javax.swing.JDialog {
                 .addComponent(lblInfo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)

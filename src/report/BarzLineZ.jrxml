@@ -72,7 +72,9 @@ GROUP BY  fecha ORDER BY fecha]]>
 				<reportElement x="0" y="201" width="398" height="299" backcolor="#CCCCCC" uuid="c57c519d-70c4-4469-acc1-8aa4068e77f4"/>
 				<timeSeriesChart>
 					<chart evaluationTime="Report">
-						<reportElement x="0" y="0" width="398" height="299" uuid="6dc2193b-ece8-4990-a217-1cad6c8e788f"/>
+						<reportElement x="0" y="0" width="398" height="299" uuid="6dc2193b-ece8-4990-a217-1cad6c8e788f">
+							<property name="net.sf.jasperreports.chart.range.axis.integer.unit" value="true"/>
+						</reportElement>
 						<chartTitle/>
 						<chartSubtitle/>
 						<chartLegend/>
@@ -87,7 +89,7 @@ GROUP BY  fecha ORDER BY fecha]]>
 						<timeSeries>
 							<seriesExpression><![CDATA["10 denye dat liv lwe"]]></seriesExpression>
 							<timePeriodExpression><![CDATA[(new SimpleDateFormat("dd/MM/yyyy")).parse($F{fecha})]]></timePeriodExpression>
-							<valueExpression><![CDATA[$F{ctd}]]></valueExpression>
+							<valueExpression><![CDATA[$F{ctd}.intValue()]]></valueExpression>
 						</timeSeries>
 					</timeSeriesDataset>
 					<timeSeriesPlot>
