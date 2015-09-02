@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="08171bba-5046-4c6c-874a-b40883a86f9d">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT COUNT(*) AS ctd_pelicula FROM tbpelicula;]]>
+		<![CDATA[SELECT COUNT(*) AS ctd_pelicula FROM tbpelicula;
+]]>
 	</queryString>
 	<field name="ctd_pelicula" class="java.lang.Long"/>
 	<summary>
 		<band height="450" splitType="Stretch">
 			<frame>
-				<reportElement x="0" y="0" width="391" height="450" uuid="321661ca-1771-4e72-908d-bde0f3df709e"/>
+				<reportElement x="0" y="0" width="403" height="450" uuid="321661ca-1771-4e72-908d-bde0f3df709e"/>
+				<box leftPadding="4" rightPadding="4">
+					<rightPen lineWidth="0.75" lineStyle="Dotted"/>
+				</box>
 				<staticText>
 					<reportElement mode="Opaque" x="0" y="0" width="391" height="40" forecolor="#FFFFFF" backcolor="#3399FF" uuid="470aec51-c513-4203-948d-6a3d66e0b0de"/>
 					<box>
@@ -25,9 +29,29 @@
 					<text><![CDATA[Inventario Pelicula]]></text>
 				</staticText>
 				<subreport>
-					<reportElement x="0" y="87" width="391" height="20" uuid="64daabb3-f9ac-4d7c-b79c-24f559c87de1"/>
+					<reportElement x="63" y="55" width="328" height="20" uuid="64daabb3-f9ac-4d7c-b79c-24f559c87de1"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalPelicula.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement mode="Opaque" x="63" y="75" width="328" height="19" backcolor="#CCCCCC" uuid="0299f460-f089-49a7-917c-e8258f65c906"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalCopia.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement x="63" y="94" width="328" height="21" uuid="bf6af06d-5d2b-4dc8-aee0-8c1c79b32455"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalPeliculaDisponible.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement mode="Opaque" x="63" y="115" width="328" height="20" backcolor="#CCCCCC" uuid="6cb7b58d-5d39-4816-8eaf-61c85d0dcf21"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalPeliculaRentada.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement x="63" y="135" width="328" height="20" uuid="084baab7-eab4-4176-855a-5e928fe5fbae"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalPeliculaDanada.jasper"]]></subreportExpression>
 				</subreport>
 			</frame>
 		</band>

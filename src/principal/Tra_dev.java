@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
 import static principal.Man_pel.llstAddRemoveActor;
 
-import report.Renta;
+import report.ClassRenta;
 import utilities.Clock;
 import utilities.ConnectionManager;
 import utilities.DBSql;
@@ -221,7 +221,7 @@ public class Tra_dev extends javax.swing.JInternalFrame {
 
         System.out.println("report");
 
-        Renta rc = new Renta();
+        ClassRenta rc = new ClassRenta();
         try {
             rc.generarReporte(idRenta);
             System.out.println("lastIdRepor" + idRenta);

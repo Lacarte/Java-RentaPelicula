@@ -7,8 +7,7 @@
 		<![CDATA[SELECT COUNT(*) AS ctd_pel_danada FROM tbpelicula pel
 INNER JOIN tbpelicula_copia pelcop ON pel.codpel=pelcop.codpel
 INNER JOIN tb_estado_pelicula estpel ON estpel.codestpel=pelcop.codestado
-WHERE estpel.desest='Dañada'
-]]>
+WHERE estpel.desest='Dañada']]>
 	</queryString>
 	<field name="ctd_pel_danada" class="java.lang.Long"/>
 	<title>
@@ -20,7 +19,7 @@ WHERE estpel.desest='Dañada'
 			<staticText>
 				<reportElement x="0" y="0" width="211" height="20" uuid="8f04a4cb-f13a-45cf-9c87-fe298b780d7a"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[PELICULA DAÑADA]]></text>
 			</staticText>

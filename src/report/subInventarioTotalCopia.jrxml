@@ -17,7 +17,7 @@ INNER JOIN tbpelicula_copia pelcop ON pel.codpel=pelcop.codpel;]]>
 			<staticText>
 				<reportElement x="0" y="0" width="211" height="20" uuid="8f04a4cb-f13a-45cf-9c87-fe298b780d7a"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[TOTAL COPIA]]></text>
 			</staticText>
