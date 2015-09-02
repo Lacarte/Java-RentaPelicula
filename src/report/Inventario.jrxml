@@ -25,7 +25,7 @@
 					<text><![CDATA[Inventario Pelicula]]></text>
 				</staticText>
 				<subreport>
-					<reportElement x="0" y="40" width="391" height="20" uuid="64daabb3-f9ac-4d7c-b79c-24f559c87de1"/>
+					<reportElement x="0" y="87" width="391" height="20" uuid="64daabb3-f9ac-4d7c-b79c-24f559c87de1"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalPelicula.jasper"]]></subreportExpression>
 				</subreport>
