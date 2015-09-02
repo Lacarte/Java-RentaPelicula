@@ -52,27 +52,26 @@ public class ClassInventario {
 
     /////////////with param
     public void generarReporte() throws JRException, net.sf.jasperreports.engine.JRException, SQLException {
-
         try {
 
-            // other wau to load file   
+  /*          // other wau to load file   
             try {
-                InputStream Inputstream = new FileInputStream(new File("D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\renta.jrxml"));
+                InputStream Inputstream = new FileInputStream(new File("D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\Inventario.jrxml"));
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ClassInventario.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+*/
             // InputStream is = ReportServlet.class.getResourceAsStream("D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\y.jrxml");
-            JasperDesign jspd = JRXmlLoader.load("D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\renta.jrxml");
+            JasperDesign jspd = JRXmlLoader.load("D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\Inventario.jrxml");
           
             JasperReport reporteJasper = JasperCompileManager.compileReport(jspd);
 
             
             JasperPrint mostrarReporte = JasperFillManager.fillReport(reporteJasper, null, con);
 
-            //JasperViewer ver = new JasperViewer(mostrarReporte, false); //false to prevent the main program to close
-            //ver.setTitle("Mr movies Factura");
-            //ver.setVisible(true);
+                JasperViewer ver = new JasperViewer(mostrarReporte, false); //false to prevent the main program to close
+            ver.setTitle("Mr movies Inventario");
+            ver.setVisible(true);
             //if you dont want  to see the viewer
             //comment the 3 lines above
             ////////////print

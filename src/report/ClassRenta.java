@@ -107,9 +107,9 @@ public class ClassRenta {
 
             JasperPrint mostrarReporte = JasperFillManager.fillReport(reporteJasper, null, con);
 
-            //JasperViewer ver = new JasperViewer(mostrarReporte, false); //false to prevent the main program to close
-            //ver.setTitle("Mr movies Factura");
-            //ver.setVisible(true);
+            JasperViewer ver = new JasperViewer(mostrarReporte, false); //false to prevent the main program to close
+            ver.setTitle("Mr movies Factura");
+            ver.setVisible(true);
             //if you dont want  to see the viewer
             //comment the 3 lines above
             ////////////print

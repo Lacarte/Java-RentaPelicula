@@ -3,12 +3,17 @@ package principal;
 import java.awt.Dimension;
 import java.awt.Font;
 import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import net.sf.jasperreports.engine.JRException;
+import report.ClassInventario;
 import utilities.Clock;
 import utilities.MakeLink;
 import utilities.Marquee;
@@ -371,6 +376,11 @@ public class Principal extends javax.swing.JFrame {
         jMenu3.setText("Consulta/Reportes");
 
         jMenuItem22.setText("Reporte General Pelicula");
+        jMenuItem22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem22ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem22);
 
         jMenuItem23.setText("Clientes ");
@@ -871,6 +881,20 @@ public class Principal extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jXHyperlink1ActionPerformed
+
+    private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
+        try {
+            // TODO add your handling code here:
+            
+            ClassInventario inv=new ClassInventario();
+            inv.generarReporte();
+        } catch (JRException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jMenuItem22ActionPerformed
 
     /**
      * @param args the command line arguments
