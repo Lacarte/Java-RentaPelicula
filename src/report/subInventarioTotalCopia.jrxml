@@ -12,12 +12,15 @@ INNER JOIN tbpelicula_copia pelcop ON pel.codpel=pelcop.codpel;]]>
 		<band height="22" splitType="Stretch">
 			<textField>
 				<reportElement x="237" y="0" width="318" height="20" uuid="f259c431-6a34-46bb-80bf-11c40d57b318"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[":  "+$F{ctd_pelicula_copia}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="0" width="211" height="20" uuid="8f04a4cb-f13a-45cf-9c87-fe298b780d7a"/>
-				<textElement>
-					<font size="10" isBold="false"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
 				</textElement>
 				<text><![CDATA[TOTAL COPIA]]></text>
 			</staticText>
