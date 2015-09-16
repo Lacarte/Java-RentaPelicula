@@ -128,6 +128,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                         System.out.println("Buscar /f3");
                         // txtBusqueda.setText(null);
                         // txtBusqueda.requestFocus();
+                        btnBuscarCliente.doClick();
                         break;
                     case KeyEvent.VK_F4:
                         System.out.println("nuevo");
@@ -380,7 +381,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                         cp = Integer.parseInt((String) tblPelicula.getValueAt(i, 0));
                         nc = Integer.parseInt((String) tblPelicula.getValueAt(i, 2));
 
-                        String sqlQueryInsertRentaDetalle = "INSERT INTO `rentapelicula`.`tb_detalle_renta` (`coddetren`, `codren`, `codpel`, `numcopia`, `preciopel`,`durren`, `preciototal`) VALUES (NULL, '" + lastInsertedId + "', '" + cp + "', '" + nc + "', '" + tblPelicula.getValueAt(i, 4) + "','" + tblPelicula.getValueAt(i, 3) + "', '" + tblPelicula.getValueAt(i, 5) + "');";
+                        String sqlQueryInsertRentaDetalle = "INSERT INTO `rentapelicula`.`tb_detalle_renta` (`coddetren`, `codren`, `codpel`, `numcopia`, `preciopel`,`durren`, `preciototal`,`entregada`) VALUES (NULL, '" + lastInsertedId + "', '" + cp + "', '" + nc + "', '" + tblPelicula.getValueAt(i, 4) + "','" + tblPelicula.getValueAt(i, 3) + "', '" + tblPelicula.getValueAt(i, 5) + "', '0');";
                         String sqlQueryUpdateEstadoPelicula = "UPDATE `rentapelicula`.`tbpelicula_copia` SET `codestado` = '2' WHERE `tbpelicula_copia`.`codpel` = '" + cp + "' AND  `tbpelicula_copia`.`numcopia` = '" + nc + "';";
 
                         System.out.println(" sqlQueryInsertRentaDetalle >> " + sqlQueryInsertRentaDetalle);
@@ -446,7 +447,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblCliCode = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnBuscarCliente = new javax.swing.JButton();
         lblCliName = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -549,10 +550,10 @@ public class Tra_ren extends javax.swing.JInternalFrame {
 
         lblCliCode.setText("////////////////");
 
-        jButton1.setText("Buscar Cliente");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarCliente.setText("Buscar Cliente");
+        btnBuscarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBuscarClienteActionPerformed(evt);
             }
         });
 
@@ -580,7 +581,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                     .addComponent(lblCliName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblCliCedula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(4, 4, 4)
-                .addComponent(jButton1))
+                .addComponent(btnBuscarCliente))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -597,7 +598,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(lblCliCedula)
-                    .addComponent(jButton1))
+                    .addComponent(btnBuscarCliente))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -807,7 +808,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(31, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -829,7 +830,7 @@ public class Tra_ren extends javax.swing.JInternalFrame {
                             .addComponent(lblNcf)
                             .addComponent(jLabel9)))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -974,14 +975,14 @@ public class Tra_ren extends javax.swing.JInternalFrame {
         addRemovePeliculaToLinkedlist();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
         // TODO add your handling code here:
 
         JdTodoLosClientesRenta todoclirenta = new JdTodoLosClientesRenta(null, closable);
         todoclirenta.setModal(true);
         todoclirenta.setLocationRelativeTo(this);
         todoclirenta.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnBuscarClienteActionPerformed
 
     private void btnBuscarPeliculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPeliculaActionPerformed
         // TODO add your handling code here:
@@ -994,11 +995,11 @@ public class Tra_ren extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscarCliente;
     private javax.swing.JButton btnBuscarPelicula;
     private javax.swing.JButton btnFacturar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox cmbDuracion;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

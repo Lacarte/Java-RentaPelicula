@@ -15,9 +15,12 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import net.sf.jasperreports.engine.JRException;
 import static principal.Man_pel.llstAddRemoveActor;
 
@@ -27,6 +30,7 @@ import utilities.ConnectionManager;
 import utilities.DBSql;
 import utilities.EmailValidator;
 import utilities.ObjPeliculaCopelNumcopia;
+import utilities.ResultsetTable;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -69,41 +73,41 @@ public class Tra_dev extends javax.swing.JInternalFrame {
     public Tra_dev() {
         initComponents();
         sql = new DBSql();
-       // clock(lblDateTime);
+        btnBusca.setVisible(false);
+        // clock(lblDateTime);
 
-        tbm = (DefaultTableModel) tblPelicula.getModel();
+        tbm = (DefaultTableModel) tblDevolucion.getModel();
         llstAddRemovePelicula = new LinkedList();
 
         // txtNom.setDocument(new LimitTextfield(32));
         //  txtNom.requestFocus();
-        populateFillDiasDuracion();
         // tblPelicula.sete
-
         //greyOutCombobox(cmbDuracion, false);
-        greyOutTable(tblPelicula, false);
-      //  lblUsuario.setText(Principal.userName);
-        tblPelicula.getModel().addTableModelListener(new TableModelListener() {
+        selectedTable(tblDevolucion, false);
+        //  lblUsuario.setText(Principal.userName);
+        tblDevolucion.getModel().addTableModelListener(new TableModelListener() {
 
             @Override
             public void tableChanged(TableModelEvent tme) {
-                lblInfo.setText("Ctd " + tblPelicula.getRowCount());
+                lblInfo.setText("Ctd " + tblDevolucion.getRowCount());
                 //System.out.println(">> "+tme  );
                 double subTotalPrecio = 0;
-                for (int i = 0; i < tblPelicula.getRowCount(); i++) {
-                    subTotalPrecio += Double.parseDouble((String) tblPelicula.getValueAt(i, 5));
+                for (int i = 0; i < tblDevolucion.getRowCount(); i++) {
+                    subTotalPrecio += Double.parseDouble((String) tblDevolucion.getValueAt(i, 5));
                 }
 
-             //   lblSubTotal.setText("" + roundOff(subTotalPrecio));
+                //   lblSubTotal.setText("" + roundOff(subTotalPrecio));
                 itbis = (subTotalPrecio * 18) / 100;
 
-             //   lblItbis.setText("" + roundOff(itbis));
-
-               // lblTotal.setText("" + roundOff(itbis + subTotalPrecio));
-
+                //   lblItbis.setText("" + roundOff(itbis));
+                // lblTotal.setText("" + roundOff(itbis + subTotalPrecio));
                 ///// add remove codpel numcopia
                 addRemovePeliculaToLinkedlist();
             }
         });
+
+        tglbtnSelTod.setEnabled(false);
+        btnDevolver.setEnabled(false);
 
     }
 
@@ -128,11 +132,11 @@ public class Tra_dev extends javax.swing.JInternalFrame {
                         break;
                     case KeyEvent.VK_F4:
                         System.out.println("nuevo");
-                  //      btnNuevo.doClick();
+                        //      btnNuevo.doClick();
                         break;
                     case KeyEvent.VK_F5:
                         System.out.println("Guardar");
-                        btnFacturar.doClick();
+                        btnDevolver.doClick();
                         break;
                     case KeyEvent.VK_F6:
                         System.out.println("Eliminar");
@@ -170,9 +174,8 @@ public class Tra_dev extends javax.swing.JInternalFrame {
         lblCliCedula.setText("////////////////");
         lblCliCode.setText("////////////////");
         lblCliName.setText("////////////////");
-        cmbDuracion.setSelectedIndex(0);
-        lblDuracion.setText("[//]");
-      //  lblSubTotal.setText("0.00");
+
+        //  lblSubTotal.setText("0.00");
         codCli = 0;
         rowIdData = 0;
         lastInsertedId = 0;
@@ -181,18 +184,30 @@ public class Tra_dev extends javax.swing.JInternalFrame {
     }
 
     void hideColTable() {
+        /* */
+        tblDevolucion.getColumnModel().getColumn(8).setMinWidth(0);
+        tblDevolucion.getColumnModel().getColumn(8).setMaxWidth(0);
+        tblDevolucion.getColumnModel().getColumn(8).setWidth(0);
 
-        tblPelicula.getColumnModel().getColumn(7).setMinWidth(0);
-        tblPelicula.getColumnModel().getColumn(7).setMaxWidth(0);
-        tblPelicula.getColumnModel().getColumn(7).setWidth(0);
+        tblDevolucion.getColumnModel().getColumn(9).setMinWidth(0);
+        tblDevolucion.getColumnModel().getColumn(9).setMaxWidth(0);
+        tblDevolucion.getColumnModel().getColumn(9).setWidth(0);
 
-        tblPelicula.getColumnModel().getColumn(8).setMinWidth(0);
-        tblPelicula.getColumnModel().getColumn(8).setMaxWidth(0);
-        tblPelicula.getColumnModel().getColumn(8).setWidth(0);
+        tblDevolucion.getColumnModel().getColumn(10).setMinWidth(0);
+        tblDevolucion.getColumnModel().getColumn(10).setMaxWidth(0);
+        tblDevolucion.getColumnModel().getColumn(10).setWidth(0);
 
-        tblPelicula.getColumnModel().getColumn(9).setMinWidth(0);
-        tblPelicula.getColumnModel().getColumn(9).setMaxWidth(0);
-        tblPelicula.getColumnModel().getColumn(9).setWidth(0);
+        tblDevolucion.getColumnModel().getColumn(11).setMinWidth(0);
+        tblDevolucion.getColumnModel().getColumn(11).setMaxWidth(0);
+        tblDevolucion.getColumnModel().getColumn(11).setWidth(0);
+
+        tblDevolucion.getColumnModel().getColumn(12).setMinWidth(0);
+        tblDevolucion.getColumnModel().getColumn(12).setMaxWidth(0);
+        tblDevolucion.getColumnModel().getColumn(12).setWidth(0);
+
+        tblDevolucion.getColumnModel().getColumn(13).setMinWidth(0);
+        tblDevolucion.getColumnModel().getColumn(13).setMaxWidth(0);
+        tblDevolucion.getColumnModel().getColumn(13).setWidth(0);
 
     }
 
@@ -201,20 +216,59 @@ public class Tra_dev extends javax.swing.JInternalFrame {
         cmb.setEnabled(state);
     }
 
-    void greyOutTable(JTable tbl, boolean state) {
+    void selectedTable(JTable tbl, boolean state) {
         tbl.clearSelection();
         if (state) {
-            tbl.setBackground(new java.awt.Color(255, 255, 255));
+            tbl.setBackground(new java.awt.Color(51, 153, 255));
             tbl.setEnabled(state);
         } else {
-            tbl.setBackground(new java.awt.Color(204, 204, 204));
-            tbl.setEnabled(state);
+            tbl.setBackground(new java.awt.Color(255, 255, 255));
+            //tbl.setEnabled(state);
         }
         //tbl.setBorder(new EtchedBorder(EtchedBorder.RAISED));
         tbl.setShowHorizontalLines(true);
         tbl.setShowVerticalLines(true);
         tbl.setGridColor(new java.awt.Color(153, 153, 153));
 
+    }
+
+    private void populateDevolucion(String codcli) {
+
+        String sqlQuery = "SELECT *,DATEDIFF(NOW(),vtb2.DiaVencimiento ) AS 'DIAS RETRAZADOS'  FROM (\n"
+                + "SELECT * FROM \n"
+                + "(\n"
+                + "SELECT ren.codren AS CODFAC,CONCAT(per.apeper,' ',ter.nomter) As NOMBRE ,pel.titpel AS TITULO,detren.numcopia AS 'NUMCOPIA',ren.fecren AS `FECHA RENTA`,detren.durren AS DIAS ,(ren.fecren + INTERVAL detren.durren DAY) AS DiaVencimiento ,now() As HOY,ren.codcli,per.cedper,ter.dirter,ter.telter,detren.codpel,estpel.desest FROM tbrenta ren INNER JOIN\n"
+                + "tb_detalle_renta detren ON ren.codren=detren.codren\n"
+                + "INNER JOIN tbtercero ter ON ren.codcli=ter.codter\n"
+                + "INNER JOIN tbpersona per ON ter.codter=per.codper\n"
+                + "INNER JOIN tbpelicula pel ON pel.codpel=detren.codpel\n"
+                + "INNER JOIN tbpelicula_copia pelcop ON detren.numcopia=pelcop.numcopia AND detren.codpel=pelcop.codpel\n"
+                + "INNER JOIN tb_estado_pelicula estpel ON pelcop.codestado=estpel.codestpel\n"
+                + "WHERE detren.entregada=0\n"
+                + ") as vtb1\n"
+                + ") AS vtb2 WHERE vtb2.codcli=" + codcli + " ORDER BY  `DIAS RETRAZADOS` desc";
+
+        ResultSet rs = sql.displaytb(tableName, sqlQuery);
+        ResultsetTable rst = new ResultsetTable();
+        tblDevolucion.remove(this);
+        try {
+            tblDevolucion.setModel(rst.rstomodel(rs));
+            lblInfo.setText("Ctd : " + tblDevolucion.getRowCount());
+            hideColTable();
+
+            if (tblDevolucion.getRowCount() <= 0) {
+                tglbtnSelTod.setEnabled(false);
+                btnDevolver.setEnabled(false);
+            } else {
+
+                tglbtnSelTod.setEnabled(true);
+                btnDevolver.setEnabled(true);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Tra_dev.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void callReport(int idRenta) {
@@ -250,31 +304,21 @@ public class Tra_dev extends javax.swing.JInternalFrame {
 
     public void addRemovePeliculaToLinkedlist() {
         llstAddRemovePelicula.clear();
-        for (int i = 0; i < tblPelicula.getRowCount(); i++) {
+        for (int i = 0; i < tblDevolucion.getRowCount(); i++) {
             llstAddRemovePelicula.add(new ObjPeliculaCopelNumcopia(Integer.parseInt((String) tbm.getValueAt(i, 0)), Integer.parseInt((String) tbm.getValueAt(i, 2))));
         }
 
     }
 
-    public void populateFillDiasDuracion() {
-        cmbDuracion.removeAllItems();
-        cmbDuracion.addItem(new String("//////////////////////////"));
-        int maxDuracion = 30;
-        for (int i = 1; i <= maxDuracion; i++) {
-
-            cmbDuracion.addItem(new Integer(i));
-        }
-    }
-
     public void getSelectRowIdData() {
         try {
-            int selectedRow = tblPelicula.getSelectedRow();
-            int idData = Integer.parseInt((tblPelicula.getModel().getValueAt(selectedRow, 0).toString()));
+            int selectedRow = tblDevolucion.getSelectedRow();
+            int idData = Integer.parseInt((tblDevolucion.getModel().getValueAt(selectedRow, 0).toString()));
             rowIdData = idData;
-            String chk = tblPelicula.getModel().getValueAt(selectedRow, 5).toString();
+            String chk = tblDevolucion.getModel().getValueAt(selectedRow, 5).toString();
             confirmStringToDelete = "";
-            for (int i = 0; i < tblPelicula.getColumnCount(); i++) {
-                String strData = (tblPelicula.getModel().getValueAt(selectedRow, i).toString()) + " ";
+            for (int i = 0; i < tblDevolucion.getColumnCount(); i++) {
+                String strData = (tblDevolucion.getModel().getValueAt(selectedRow, i).toString()) + " ";
                 //System.out.println(""+strData);
                 confirmStringToDelete += strData;
             }
@@ -337,87 +381,57 @@ public class Tra_dev extends javax.swing.JInternalFrame {
         return success;
     }
 
-    private void facturar() {
+    private void devolver() {
 
         boolean todoBien = true;
 
-        System.out.println("Facturacion");
-        if (Principal.userCode == 0) {
-            System.out.println("Please Select  a user");
-        }
-        if (codCli == 0) {
-            JOptionPane.showMessageDialog(this, "Por favor Selecione un Cliente");
+        if (tglbtnSelTod.isSelected()) {
+            for (int i = 0; i < tblDevolucion.getRowCount(); i++) {
+                System.out.println("fac" + tblDevolucion.getValueAt(i, 0) + " codpel " + tblDevolucion.getValueAt(i, 12) + " numcopia " + tblDevolucion.getValueAt(i, 3));
+               
+                String sqlQueryUpdateEntregada = "UPDATE `tb_detalle_renta` SET `entregada`='1' WHERE (`codren`='"+tblDevolucion.getValueAt(i, 0)+"' AND  `codpel`='" + tblDevolucion.getValueAt(i, 12) + "' AND `numcopia`='" + tblDevolucion.getValueAt(i, 3) + "')";
+                String sqlQueryUpdateEstado = "UPDATE `tbpelicula_copia` SET `codestado`='1' WHERE (`codpel`='" + tblDevolucion.getValueAt(i, 12) + "' AND `numcopia`='" + tblDevolucion.getValueAt(i, 3) + "')";
 
-        } else {
-            if (tblPelicula.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(this, "No se puede facturar sin Pelicula");
-            } else {
-
-                /////////////pass///////////////////////
-                String sqlQueryInsertRenta = "INSERT INTO `rentapelicula`.`tbrenta` (`codren`, `ncf`, `fecren`, `codcli`, `codusu`, `codpag`, `subtotal`, `itbis`, `total`) VALUES (NULL, '" + lblCliCedula.getText().trim() + "', NOW(), '" + codCli + "', '" + Principal.userCode + "', '1', '" + lblCliCedula.getText().trim() + "', '" + lblCliCedula.getText().trim() + "', '" + lblCliCode.getText().trim() + "');";
-
-                System.out.println("sqlQueryInsertRenta >> :" + sqlQueryInsertRenta);
-
-                if (!insertLeaderTransaction(sqlQueryInsertRenta)) {
+                if (!setTransaction(sqlQueryUpdateEntregada)) {
                     todoBien = false;
-                    System.out.println("false sqlQueryInsertRenta: " + sqlQueryInsertRenta);
+                    System.out.println("<<>>" + sqlQueryUpdateEntregada);
+
                 }
-                /**/
-                if (todoBien) {
-                    //codpelicula
-                    int cp = 0;
-                    //numcopia
-                    int nc = 0;
 
-                    for (int i = 0; i < tblPelicula.getRowCount(); i++) {
-
-                        cp = Integer.parseInt((String) tblPelicula.getValueAt(i, 0));
-                        nc = Integer.parseInt((String) tblPelicula.getValueAt(i, 2));
-
-                        String sqlQueryInsertRentaDetalle = "INSERT INTO `rentapelicula`.`tb_detalle_renta` (`coddetren`, `codren`, `codpel`, `numcopia`, `preciopel`,`durren`, `preciototal`) VALUES (NULL, '" + lastInsertedId + "', '" + cp + "', '" + nc + "', '" + tblPelicula.getValueAt(i, 4) + "','" + tblPelicula.getValueAt(i, 3) + "', '" + tblPelicula.getValueAt(i, 5) + "');";
-                        String sqlQueryUpdateEstadoPelicula = "UPDATE `rentapelicula`.`tbpelicula_copia` SET `codestado` = '2' WHERE `tbpelicula_copia`.`codpel` = '" + cp + "' AND  `tbpelicula_copia`.`numcopia` = '" + nc + "';";
-
-                        System.out.println(" sqlQueryInsertRentaDetalle >> " + sqlQueryInsertRentaDetalle);
-
-                        if (!setTransaction(sqlQueryInsertRentaDetalle)) {
-                            todoBien = false;
-                            System.out.println("false sqlQueryInsertRenta: " + sqlQueryInsertRentaDetalle);
-                        } else if (!setTransaction(sqlQueryUpdateEstadoPelicula)) {
-                            todoBien = false;
-                            System.out.println("false sqlQueryUpdateEstadoPelicula: " + sqlQueryUpdateEstadoPelicula);
-                        }
-
-                        /**/
-                    }
-
-//if all the transactions are ok commit
-                    if (todoBien) {
-                        ///Update estado pelicula
-                        try {
-                            transCon.commit();
-                            System.out.println("commit");
-                            JOptionPane.showMessageDialog(this, "Facturado exitosamente");
-
-                            callReport(lastInsertedId);
-                            clearNew();
-                        } catch (SQLException ex) {
-                            Logger.getLogger(Tra_dev.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-
-                    } else {
-                        try {
-                            transCon.rollback();
-                            System.out.println("roll back ");
-
-                        } catch (SQLException ex) {
-                            Logger.getLogger(Tra_dev.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
+                if (!setTransaction(sqlQueryUpdateEstado)) {
+                    todoBien = false;
+                    System.out.println("<<>>" + sqlQueryUpdateEstado);
                 }
 
             }
+
+            //if all the transactions are ok commit
+            if (todoBien) {
+                ///Update estado pelicula
+                try {
+                    transCon.commit();
+                    System.out.println("commit");
+
+                    populateDevolucion(lblCliCode.getText());
+                    JOptionPane.showMessageDialog(this, "Devolucion exitosa");
+                    clearNew();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Tra_dev.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else {
+                try {
+                    transCon.rollback();
+                    System.out.println("roll back ");
+                    JOptionPane.showMessageDialog(this, "occure Un error");
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(Tra_dev.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
         }
+
     }
 
     /**
@@ -432,7 +446,6 @@ public class Tra_dev extends javax.swing.JInternalFrame {
         jpopDeletePelicula = new javax.swing.JPopupMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        btnFacturar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblCliCode = new javax.swing.JLabel();
@@ -444,12 +457,12 @@ public class Tra_dev extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblPelicula = new javax.swing.JTable();
+        tblDevolucion = new javax.swing.JTable();
         lblInfo = new javax.swing.JLabel();
-        btnBuscarPelicula = new javax.swing.JButton();
-        cmbDuracion = new javax.swing.JComboBox();
-        lblDuracion = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        lblInfo2 = new javax.swing.JLabel();
+        tglbtnSelTod = new javax.swing.JToggleButton();
+        btnDevolver = new javax.swing.JButton();
+        btnBusca = new javax.swing.JButton();
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_2796(58)_24.png"))); // NOI18N
         jMenuItem1.setText("Eliminar Pelicula");
@@ -463,7 +476,7 @@ public class Tra_dev extends javax.swing.JInternalFrame {
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconifiable(true);
-        setTitle("Renta");
+        setTitle("Devolucion");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
                 formInternalFrameActivated(evt);
@@ -486,26 +499,15 @@ public class Tra_dev extends javax.swing.JInternalFrame {
 
         jPanel1.setFocusCycleRoot(true);
 
-        btnFacturar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/save8.png"))); // NOI18N
-        btnFacturar.setText("Devolver /f5");
-        btnFacturar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFacturarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(256, Short.MAX_VALUE)
-                .addComponent(btnFacturar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67))
+            .addGap(0, 465, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnFacturar, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Del Cliente"));
@@ -568,146 +570,140 @@ public class Tra_dev extends javax.swing.JInternalFrame {
         );
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel5.setText("Renta");
+        jLabel5.setText("Devolucion");
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Pelicula"));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Info Renta"));
 
-        tblPelicula.setBackground(new java.awt.Color(204, 204, 204));
-        tblPelicula.setModel(new javax.swing.table.DefaultTableModel(
+        tblDevolucion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CODPEL", "TITULO PELICULA", "Nro COPIA", "DIAS", "PRECIOXDIA", "PRECIO", "FECHA DEVOLUCION"
+                "CODREN", "CODPEL", "TITULO PELICULA", "Nro COPIA", "DIAS", "FECHA DEVOLUCION"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                true, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tblPelicula.setGridColor(new java.awt.Color(153, 153, 153));
-        tblPelicula.getTableHeader().setReorderingAllowed(false);
-        tblPelicula.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblDevolucion.setGridColor(new java.awt.Color(153, 153, 153));
+        tblDevolucion.getTableHeader().setReorderingAllowed(false);
+        tblDevolucion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblPeliculaMouseClicked(evt);
+                tblDevolucionMouseClicked(evt);
             }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                tblPeliculaMouseReleased(evt);
+                tblDevolucionMouseReleased(evt);
             }
         });
-        jScrollPane1.setViewportView(tblPelicula);
+        jScrollPane1.setViewportView(tblDevolucion);
 
         lblInfo.setText("[]");
 
-        btnBuscarPelicula.setText("Buscar Pelicula");
-        btnBuscarPelicula.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarPeliculaActionPerformed(evt);
-            }
-        });
+        lblInfo2.setText("\\\\");
 
-        cmbDuracion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbDuracion.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbDuracionItemStateChanged(evt);
-            }
-        });
-        cmbDuracion.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                cmbDuracionFocusLost(evt);
-            }
-        });
-        cmbDuracion.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cmbDuracionMouseClicked(evt);
-            }
-        });
+            tglbtnSelTod.setText("SELECCIONAR TODAS");
+            tglbtnSelTod.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    tglbtnSelTodActionPerformed(evt);
+                }
+            });
 
-        lblDuracion.setText("[//]");
-
-        jLabel6.setText("Dias(duracion)");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblDuracion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(279, 279, 279)
-                .addComponent(btnBuscarPelicula)
-                .addContainerGap())
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+            jPanel3.setLayout(jPanel3Layout);
+            jPanel3Layout.setHorizontalGroup(
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(5, 5, 5)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jScrollPane1)
-                            .addGap(5, 5, 5))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
                             .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addContainerGap(815, Short.MAX_VALUE)))))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBuscarPelicula)
-                    .addComponent(cmbDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDuracion)
-                    .addComponent(jLabel6))
-                .addGap(0, 149, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(lblInfo2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tglbtnSelTod, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1101, Short.MAX_VALUE))
+                    .addGap(5, 5, 5))
+            );
+            jPanel3Layout.setVerticalGroup(
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(lblInfo)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblInfo)
+                        .addComponent(lblInfo2)
+                        .addComponent(tglbtnSelTod))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addContainerGap())
+            );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            btnDevolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/save8.png"))); // NOI18N
+            btnDevolver.setText("Devolver /f5");
+            btnDevolver.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    btnDevolverActionPerformed(evt);
+                }
+            });
+
+            btnBusca.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    btnBuscaActionPerformed(evt);
+                }
+            });
+
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+            getContentPane().setLayout(layout);
+            layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5))
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(21, 21, 21)
+                            .addComponent(btnBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDevolver, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(25, 25, 25))
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(533, 533, 533)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE))
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(11, 11, 11)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 485, Short.MAX_VALUE)
-                        .addComponent(jLabel5)
-                        .addGap(31, 31, 31))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(523, 523, 523)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(40, Short.MAX_VALUE))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
-        );
+                        .addComponent(jLabel5))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGap(3, 3, 3)
+                            .addComponent(btnDevolver, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(44, 44, 44)
+                            .addComponent(btnBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            );
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+            pack();
+        }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
@@ -719,16 +715,16 @@ public class Tra_dev extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_formInternalFrameClosing
 
-    private void btnFacturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturarActionPerformed
+    private void btnDevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverActionPerformed
         // TODO add your handling code here:
 
         String ObjButtons[] = {"Si", "No"};
-        int PromptResult = JOptionPane.showOptionDialog(this, "Desea Facturar? ", "Confirmacion...?", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, ObjButtons, ObjButtons[0]);
+        int PromptResult = JOptionPane.showOptionDialog(this, "Desea Devolver? ", "Confirmacion...?", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, ObjButtons, ObjButtons[0]);
 
         if (PromptResult == JOptionPane.YES_OPTION) {
-            facturar();
+            devolver();
         }
-    }//GEN-LAST:event_btnFacturarActionPerformed
+    }//GEN-LAST:event_btnDevolverActionPerformed
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
         // TODO add your handling code here:
@@ -743,13 +739,13 @@ public class Tra_dev extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_formInternalFrameDeactivated
 
-    private void tblPeliculaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPeliculaMouseClicked
+    private void tblDevolucionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDevolucionMouseClicked
         // TODO add your handling code here:
 
 
-    }//GEN-LAST:event_tblPeliculaMouseClicked
+    }//GEN-LAST:event_tblDevolucionMouseClicked
 
-    private void tblPeliculaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPeliculaMouseReleased
+    private void tblDevolucionMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDevolucionMouseReleased
         // TODO add your handling code here:
 
         ///polulate subtitulo
@@ -758,7 +754,7 @@ public class Tra_dev extends javax.swing.JInternalFrame {
         //PopUp
         if (evt.isPopupTrigger()) {
 
-            if (tblPelicula.getRowCount() > 0 && tblPelicula.getSelectedRow() != -1) {
+            if (tblDevolucion.getRowCount() > 0 && tblDevolucion.getSelectedRow() != -1) {
                 jpopDeletePelicula.show(evt.getComponent(), evt.getX(), evt.getY());
             }
 
@@ -772,57 +768,12 @@ public class Tra_dev extends javax.swing.JInternalFrame {
             // tblPelicula.re(tblPelicula.getSelectedRow());
         }
 
-    }//GEN-LAST:event_tblPeliculaMouseReleased
-
-    private void cmbDuracionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbDuracionMouseClicked
-        // TODO add your handling code here:
-        if (evt.getClickCount() >= 2) {
-            greyOutCombobox(cmbDuracion, true);
-        }
-    }//GEN-LAST:event_cmbDuracionMouseClicked
-
-    private void cmbDuracionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmbDuracionFocusLost
-        // TODO add your handling code here:
-        greyOutCombobox(cmbDuracion, false);
-        // System.out.println("lost focus");
-    }//GEN-LAST:event_cmbDuracionFocusLost
-
-    private void cmbDuracionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbDuracionItemStateChanged
-        // TODO add your handling code here:
-        System.out.println("itemchanged");
-        greyOutCombobox(cmbDuracion, false);
-
-        if (cmbDuracion.getSelectedIndex() == 0) {
-            dias = 0;
-            greyOutTable(tblPelicula, false);
-            lblDuracion.setText("[//]");
-            btnBuscarPelicula.setEnabled(false);
-
-        } else {
-
-            greyOutTable(tblPelicula, true);
-            //  System.out.println(">>x" + cmbDuracion.getItemAt(cmbDuracion.getSelectedIndex()));
-            lblDuracion.setText("" + cmbDuracion.getItemAt(cmbDuracion.getSelectedIndex()));
-            btnBuscarPelicula.setEnabled(true);
-            // dias=(int) cmbDuracion.getItemAt(cmbDuracion.getSelectedIndex());
-            //System.out.println(">>" + cmbDuracion.getItemAt(cmbDuracion.getSelectedIndex()));
-            if (cmbDuracion.getSelectedItem() == null) {
-                //  System.out.println("li null");
-                dias = 0;
-            } else {
-                dias = (int) cmbDuracion.getSelectedItem();
-                //  System.out.println("li pa null");
-            }
-
-        }
-
-
-    }//GEN-LAST:event_cmbDuracionItemStateChanged
+    }//GEN-LAST:event_tblDevolucionMouseReleased
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel tm = (DefaultTableModel) (tblPelicula.getModel());
-        tm.removeRow(tblPelicula.getSelectedRow());
+        DefaultTableModel tm = (DefaultTableModel) (tblDevolucion.getModel());
+        tm.removeRow(tblDevolucion.getSelectedRow());
 
         addRemovePeliculaToLinkedlist();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -830,32 +781,36 @@ public class Tra_dev extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
 
-        JdTodoLosClientesRenta todoclirenta = new JdTodoLosClientesRenta(null, closable);
-        todoclirenta.setModal(true);
-        todoclirenta.setLocationRelativeTo(this);
-        todoclirenta.setVisible(true);
+        JdTodoLosClientesDevolucion todocliDevolucion = new JdTodoLosClientesDevolucion(null, closable);
+        todocliDevolucion.setModal(true);
+        todocliDevolucion.setLocationRelativeTo(this);
+        todocliDevolucion.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void btnBuscarPeliculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPeliculaActionPerformed
+    private void btnBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscaActionPerformed
         // TODO add your handling code here:
-        JdTodaLasPeliculasRenta pel = new JdTodaLasPeliculasRenta(null, closable);
-        pel.setModal(true);
-        pel.setLocationRelativeTo(this);
-        pel.setVisible(true);
+        populateDevolucion(lblCliCode.getText());
+    }//GEN-LAST:event_btnBuscaActionPerformed
 
-    }//GEN-LAST:event_btnBuscarPeliculaActionPerformed
+    private void tglbtnSelTodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglbtnSelTodActionPerformed
+
+        if (tglbtnSelTod.isSelected()) {
+            selectedTable(tblDevolucion, true);
+        } else {
+            selectedTable(tblDevolucion, false);
+
+        }
+    }//GEN-LAST:event_tglbtnSelTodActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscarPelicula;
-    private javax.swing.JButton btnFacturar;
-    private javax.swing.JComboBox cmbDuracion;
+    public static javax.swing.JButton btnBusca;
+    private javax.swing.JButton btnDevolver;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -865,9 +820,10 @@ public class Tra_dev extends javax.swing.JInternalFrame {
     public static javax.swing.JLabel lblCliCedula;
     public static javax.swing.JLabel lblCliCode;
     public static javax.swing.JLabel lblCliName;
-    private javax.swing.JLabel lblDuracion;
     private javax.swing.JLabel lblInfo;
-    private javax.swing.JTable tblPelicula;
+    private javax.swing.JLabel lblInfo2;
+    private javax.swing.JTable tblDevolucion;
+    private javax.swing.JToggleButton tglbtnSelTod;
     // End of variables declaration//GEN-END:variables
 
 }

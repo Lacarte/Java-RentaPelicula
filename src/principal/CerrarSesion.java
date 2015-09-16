@@ -67,6 +67,7 @@ public class CerrarSesion extends javax.swing.JInternalFrame {
             }
         });
 
+        setClosable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnIngresar.setText("CAMBIAR/c");

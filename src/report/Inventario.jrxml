@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="08171bba-5046-4c6c-874a-b40883a86f9d">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="548"/>
-	<property name="ireport.y" value="288"/>
+	<property name="ireport.x" value="370"/>
+	<property name="ireport.y" value="144"/>
 	<subDataset name="DatasetTimeSeries" uuid="0e37ff93-cf64-4f8d-8d3b-33c18292b1b8">
 		<queryString language="SQL">
 			<![CDATA[SELECT DATE_FORMAT(ren.fecren,'%d/%m/%Y') AS fecha,COUNT(*) AS ctd FROM tbrenta ren
@@ -38,38 +38,38 @@ LIMIT 10]]>
 	<summary>
 		<band height="450" splitType="Stretch">
 			<frame>
-				<reportElement x="0" y="82" width="403" height="368" uuid="321661ca-1771-4e72-908d-bde0f3df709e"/>
+				<reportElement x="0" y="137" width="403" height="313" uuid="321661ca-1771-4e72-908d-bde0f3df709e"/>
 				<box leftPadding="4" rightPadding="4">
 					<rightPen lineWidth="0.75" lineStyle="Dotted"/>
 				</box>
 				<subreport>
-					<reportElement x="28" y="0" width="363" height="20" isPrintWhenDetailOverflows="true" uuid="64daabb3-f9ac-4d7c-b79c-24f559c87de1"/>
+					<reportElement x="12" y="17" width="363" height="20" isPrintWhenDetailOverflows="true" uuid="64daabb3-f9ac-4d7c-b79c-24f559c87de1"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalPelicula.jasper"]]></subreportExpression>
 				</subreport>
 				<subreport>
-					<reportElement mode="Opaque" x="28" y="20" width="363" height="19" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="0299f460-f089-49a7-917c-e8258f65c906"/>
+					<reportElement mode="Opaque" x="12" y="37" width="363" height="19" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="0299f460-f089-49a7-917c-e8258f65c906"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalCopia.jasper"]]></subreportExpression>
 				</subreport>
 				<subreport>
-					<reportElement x="28" y="39" width="363" height="21" isPrintWhenDetailOverflows="true" uuid="bf6af06d-5d2b-4dc8-aee0-8c1c79b32455"/>
+					<reportElement x="12" y="56" width="363" height="21" isPrintWhenDetailOverflows="true" uuid="bf6af06d-5d2b-4dc8-aee0-8c1c79b32455"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalPeliculaDisponible.jasper"]]></subreportExpression>
 				</subreport>
 				<subreport>
-					<reportElement mode="Opaque" x="28" y="60" width="363" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="6cb7b58d-5d39-4816-8eaf-61c85d0dcf21"/>
+					<reportElement mode="Opaque" x="12" y="77" width="363" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="6cb7b58d-5d39-4816-8eaf-61c85d0dcf21"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalPeliculaRentada.jasper"]]></subreportExpression>
 				</subreport>
 				<subreport>
-					<reportElement x="28" y="80" width="363" height="20" isPrintWhenDetailOverflows="true" uuid="084baab7-eab4-4176-855a-5e928fe5fbae"/>
+					<reportElement x="12" y="97" width="363" height="20" isPrintWhenDetailOverflows="true" uuid="084baab7-eab4-4176-855a-5e928fe5fbae"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subInventarioTotalPeliculaDanada.jasper"]]></subreportExpression>
 				</subreport>
 				<timeSeriesChart>
 					<chart isShowLegend="true" evaluationTime="Report" renderType="draw" theme="aegean">
-						<reportElement x="0" y="104" width="391" height="248" uuid="b072028d-d351-41d0-9054-c68f8e684267">
+						<reportElement x="0" y="120" width="360" height="193" uuid="b072028d-d351-41d0-9054-c68f8e684267">
 							<property name="net.sf.jasperreports.chart.range.axis.integer.unit" value="true"/>
 						</reportElement>
 						<box>
@@ -111,7 +111,7 @@ LIMIT 10]]>
 			</frame>
 			<pie3DChart>
 				<chart isShowLegend="true" evaluationTime="Report" renderType="draw" theme="aegean">
-					<reportElement mode="Transparent" x="403" y="82" width="399" height="349" isPrintWhenDetailOverflows="true" uuid="ed160d21-5f6b-4ca9-9a50-db9daae28422"/>
+					<reportElement mode="Transparent" x="403" y="137" width="399" height="313" isPrintWhenDetailOverflows="true" uuid="ed160d21-5f6b-4ca9-9a50-db9daae28422"/>
 					<box>
 						<pen lineWidth="0.5" lineColor="#FFFFFF"/>
 						<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
@@ -142,42 +142,34 @@ LIMIT 10]]>
 				</pie3DPlot>
 			</pie3DChart>
 			<staticText>
-				<reportElement x="137" y="0" width="471" height="13" uuid="d2672ae8-78aa-454a-ba28-9545407b207c"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Mr  Movies]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="0" y="44" width="802" height="19" forecolor="#FFFFFF" backcolor="#3399FF" uuid="470aec51-c513-4203-948d-6a3d66e0b0de"/>
-				<box>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Inventario Pelicula]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="137" y="13" width="471" height="13" uuid="2cd9454f-ef30-41ed-a721-c26ed1226b1c"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Farolito]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="137" y="26" width="471" height="13" uuid="ea3b8c65-98c7-47ea-92fc-d75a4f3443bf"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Tel.:8093099342]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="403" y="101" width="399" height="20" uuid="3ae2cddf-c664-467d-8353-2cd1c4007506"/>
+				<reportElement x="403" y="137" width="399" height="20" uuid="3ae2cddf-c664-467d-8353-2cd1c4007506"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[10 PELICULAS MAS RENTADAS]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="0" y="24" width="100" height="20" uuid="440fb6de-80bc-4f98-b4a1-c1d2d64f1e83"/>
+				<reportElement x="0" y="75" width="100" height="20" uuid="440fb6de-80bc-4f98-b4a1-c1d2d64f1e83"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="103" width="272" height="23" backcolor="#3399FF" uuid="a9788605-5e4f-45c2-a2f2-b98e8b91307b"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<staticText>
+					<reportElement x="12" y="0" width="249" height="23" forecolor="#FFFFFF" uuid="e3d7072d-25a8-4ea1-92e7-d865e4041850"/>
+					<textElement verticalAlignment="Middle">
+						<font size="16" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Inventario(Reporte General)]]></text>
+				</staticText>
+			</frame>
+			<image scaleImage="FillFrame">
+				<reportElement x="174" y="0" width="417" height="75" uuid="7fbefbf7-717c-4fc6-a2b3-2efaca050fc6"/>
+				<imageExpression><![CDATA["D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\assets\\report-header.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</summary>
 </jasperReport>

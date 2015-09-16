@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="61dabb5c-7b8e-47d8-9144-4b6d46b174b2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\report\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM( 
+SELECT *,DATEDIFF(NOW(),vtb2.DiaVencimiento ) AS 'DIAS RETRAZADOS'  FROM (
+SELECT * FROM 
+(
+SELECT ren.codren AS Numren,CONCAT(per.apeper,' ',ter.nomter) As NOMBRE ,pel.titpel AS TITULO,detren.numcopia AS 'NUMCOPIA',ren.fecren AS `FECHA RENTA`,detren.durren AS DIAS ,(ren.fecren + INTERVAL detren.durren DAY) AS DiaVencimiento ,now() As HOY,ren.codcli,per.cedper,ter.dirter,ter.telter,detren.codpel,estpel.desest FROM tbrenta ren INNER JOIN
+tb_detalle_renta detren ON ren.codren=detren.codren
+INNER JOIN tbtercero ter ON ren.codcli=ter.codter
+INNER JOIN tbpersona per ON ter.codter=per.codper
+INNER JOIN tbpelicula pel ON pel.codpel=detren.codpel
+INNER JOIN tbpelicula_copia pelcop ON detren.numcopia=pelcop.numcopia AND detren.codpel=pelcop.codpel
+INNER JOIN tb_estado_pelicula estpel ON pelcop.codestado=estpel.codestpel
+WHERE detren.entregada=0
+) as vtb1
+WHERE  vtb1.DiaVencimiento < NOW()  
+) AS vtb2 ORDER BY  `DIAS RETRAZADOS` desc) vtb3 WHERE `DIAS RETRAZADOS`>0
+GROUP BY vtb3.codcli;]]>
+	</queryString>
+	<field name="Numren" class="java.lang.Integer"/>
+	<field name="NOMBRE" class="java.lang.String"/>
+	<field name="TITULO" class="java.lang.String"/>
+	<field name="NUMCOPIA" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FECHA RENTA" class="java.sql.Timestamp"/>
+	<field name="DIAS" class="java.lang.Integer"/>
+	<field name="DiaVencimiento" class="java.sql.Timestamp"/>
+	<field name="HOY" class="java.sql.Timestamp"/>
+	<field name="codcli" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cedper" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dirter" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="telter" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codpel" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="desest" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DIAS RETRAZADOS" class="java.lang.Integer"/>
+	<title>
+		<band height="148" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="94" width="272" height="23" backcolor="#3399FF" uuid="152167c4-fe78-4e9b-b097-ce8f5bc4df2b"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<staticText>
+					<reportElement x="0" y="0" width="249" height="23" forecolor="#FFFFFF" uuid="40e1a28a-ec60-41b4-b6aa-d7c118807751"/>
+					<textElement verticalAlignment="Middle">
+						<font size="16" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ Peliculas Retrazadas]]></text>
+				</staticText>
+			</frame>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="127" width="100" height="20" uuid="1a2fd3ab-b5d6-42b6-b005-d62903734551"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="0" width="555" height="81" uuid="defa553a-8c7e-4253-bfb4-46eb5ae0408a"/>
+				<imageExpression><![CDATA["D:\\[LCRTDEV]\\[JAVA]\\NetBeansProjects\\RentaPelicula\\src\\assets\\report-header.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="122" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="30" backcolor="#99CCFF" uuid="320e1a36-3bf8-485b-800d-1071caa49a7f"/>
+				<box>
+					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#6699FF"/>
+				</box>
+				<textField>
+					<reportElement x="15" y="5" width="434" height="20" forecolor="#FFFFFF" uuid="e871b422-83e4-442e-b914-4f110a4c8f0e"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Nombre : " + $F{NOMBRE} +", Codigo : [ "+$F{codcli}+" ]"]]></textFieldExpression>
+				</textField>
+			</frame>
+			<subreport>
+				<reportElement x="0" y="40" width="555" height="82" uuid="f04b508b-6144-4cee-b0f1-b3a6b85648ca"/>
+				<subreportParameter name="codcliente">
+					<subreportParameterExpression><![CDATA[$F{codcli}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "peliculaRetrazada_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50">
+			<textField>
+				<reportElement x="455" y="10" width="100" height="20" uuid="02b3b281-f076-4cc3-83fb-0adafea7aa55"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["CLIENTE : [ " + $V{REPORT_COUNT}+" ]"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="30" width="100" height="20" uuid="e0526748-2543-4daa-806d-369133ddf9ab"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["PAGINA [ " + $V{PAGE_NUMBER}+" ]"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -14,6 +14,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import net.sf.jasperreports.engine.JRException;
 import report.ClassInventario;
+import report.ClassPeliculaRentada;
+import report.ClassPeliculaRetrazada;
 import utilities.Clock;
 import utilities.MakeLink;
 import utilities.Marquee;
@@ -92,10 +94,13 @@ public class Principal extends javax.swing.JFrame {
 
         if (userdata.get(4).equals("Administrador")) {
             jmAdmin.setVisible(true);
+            lblRoot.setVisible(true);
             System.out.println("Admin log");
         } else {
             System.out.println("other log");
             jmAdmin.setVisible(false);
+                        lblRoot.setVisible(false);
+
         }
 
     }
@@ -137,8 +142,11 @@ public class Principal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        gifanim = new javax.swing.JLabel();
+        reporteGeneral = new javax.swing.JLabel();
         jXHyperlink1 = new org.jdesktop.swingx.JXHyperlink();
+        jSeparator6 = new javax.swing.JSeparator();
+        jSeparator7 = new javax.swing.JSeparator();
+        lblRoot = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -154,8 +162,13 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem24 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        jMenuItem27 = new javax.swing.JMenuItem();
+        jMenuItem26 = new javax.swing.JMenuItem();
+        jMenuItem28 = new javax.swing.JMenuItem();
+        separator = new javax.swing.JMenuItem();
         jMenuItem22 = new javax.swing.JMenuItem();
         jMenuItem23 = new javax.swing.JMenuItem();
+        jMenuItem25 = new javax.swing.JMenuItem();
         jmAdmin = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
@@ -211,8 +224,9 @@ public class Principal extends javax.swing.JFrame {
         lblUsername.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_d83d(18)_24.png"))); // NOI18N
         lblUsername.setText("USUARIO:TEST");
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/timer20.png"))); // NOI18N
-        jButton1.setText("P.DUCT");
+        jButton1.setText("P.RETR.");
         jButton1.setBorderPainted(false);
         jButton1.setPreferredSize(new java.awt.Dimension(65, 23));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -221,6 +235,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/money136.png"))); // NOI18N
         jButton2.setText("RENTA");
         jButton2.setBorderPainted(false);
@@ -230,6 +245,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/movie43.png"))); // NOI18N
         jButton3.setText("PELICULA");
         jButton3.setBorderPainted(false);
@@ -239,6 +255,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/left-arrow.png"))); // NOI18N
         jButton4.setText("DEVOL.");
         jButton4.setBorderPainted(false);
@@ -248,8 +265,26 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jXHyperlink1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/logo.png"))); // NOI18N
+        reporteGeneral.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        reporteGeneral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/rg.png"))); // NOI18N
+        reporteGeneral.setToolTipText("");
+        reporteGeneral.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        reporteGeneral.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        reporteGeneral.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reporteGeneralMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                mouseEnter(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                reporteGeneralMouseExited(evt);
+            }
+        });
+
         jXHyperlink1.setText("LCRTDEV");
+        jXHyperlink1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jXHyperlink1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jXHyperlink1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jXHyperlink1ActionPerformed(evt);
@@ -265,38 +300,45 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-                    .addComponent(gifanim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+                    .addComponent(reporteGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-                    .addContainerGap()))
+            .addComponent(jSeparator6, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jSeparator7, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(gifanim, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addComponent(reporteGeneral)
+                .addGap(29, 29, 29)
+                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
                 .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(21, 21, 21)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(463, Short.MAX_VALUE)))
+                .addGap(23, 23, 23))
         );
+
+        lblRoot.setBackground(new java.awt.Color(153, 153, 153));
+        lblRoot.setText("[ ]");
+        lblRoot.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblRootMouseClicked(evt);
+            }
+        });
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_2692(65)_48.png"))); // NOI18N
         jMenu1.setText("Mantenimiento");
@@ -375,6 +417,28 @@ public class Principal extends javax.swing.JFrame {
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/system-icons/Entypo_e70a(43)_48.png"))); // NOI18N
         jMenu3.setText("Consulta/Reportes");
 
+        jMenuItem27.setText("Pelicula");
+        jMenu3.add(jMenuItem27);
+
+        jMenuItem26.setText("Cliente");
+        jMenu3.add(jMenuItem26);
+
+        jMenuItem28.setText("Usuario");
+        jMenuItem28.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem28ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem28);
+
+        separator.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        separator.setText("[ general ]");
+        separator.setContentAreaFilled(false);
+        separator.setEnabled(false);
+        separator.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        separator.setOpaque(true);
+        jMenu3.add(separator);
+
         jMenuItem22.setText("Reporte General Pelicula");
         jMenuItem22.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -383,8 +447,21 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem22);
 
-        jMenuItem23.setText("Clientes ");
+        jMenuItem23.setText("Peliculas Rentadas");
+        jMenuItem23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem23ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem23);
+
+        jMenuItem25.setText("Peliculas Retrazadas");
+        jMenuItem25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem25ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem25);
 
         jMenuBar1.add(jMenu3);
 
@@ -546,17 +623,21 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(lblDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblInfoSystem, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
-                .addComponent(lblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(lblRoot, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDateTime)
-                    .addComponent(lblInfoSystem)
-                    .addComponent(lblUsername))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblDateTime)
+                        .addComponent(lblInfoSystem)
+                        .addComponent(lblUsername))
+                    .addComponent(lblRoot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jDesktopPane1)
@@ -769,25 +850,23 @@ public class Principal extends javax.swing.JFrame {
         String ObjButtons[] = {"Si", "No"};
         int PromptResult = JOptionPane.showOptionDialog(this, "Desea Cambiar de Sesion?", "Cerrar?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, ObjButtons, ObjButtons[1]);
         if (PromptResult == JOptionPane.YES_OPTION) {
-       
-/*            
-// ConnectionManager.getInstance().close();
-            // System.exit(0);
-            JdCerrarSesion jdsesion = new JdCerrarSesion(this, true);
-            jdsesion.setModal(true);
-            jdsesion.setLocationRelativeTo(this);
-            jdsesion.setVisible(true);
-*/
-            
-        CerrarSesion cs = new CerrarSesion();
-        this.jDesktopPane1.removeAll();
-        this.jDesktopPane1.repaint();
-        this.jDesktopPane1.add(cs);
-        //to center the jinternalframe
-        centerJIF(cs);
-        cs.show();
-            
-            
+
+            /*            
+             // ConnectionManager.getInstance().close();
+             // System.exit(0);
+             JdCerrarSesion jdsesion = new JdCerrarSesion(this, true);
+             jdsesion.setModal(true);
+             jdsesion.setLocationRelativeTo(this);
+             jdsesion.setVisible(true);
+             */
+            CerrarSesion cs = new CerrarSesion();
+            this.jDesktopPane1.removeAll();
+            this.jDesktopPane1.repaint();
+            this.jDesktopPane1.add(cs);
+            //to center the jinternalframe
+            centerJIF(cs);
+            cs.show();
+
         }
 
     }//GEN-LAST:event_jMenuItem9ActionPerformed
@@ -832,13 +911,13 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         // TODO add your handling code here:
-        Tra_ren ren = new Tra_ren();
+        Visual_pelicula_retrazada ret = new Visual_pelicula_retrazada();
         this.jDesktopPane1.removeAll();
         this.jDesktopPane1.repaint();
-        this.jDesktopPane1.add(ren);
+        this.jDesktopPane1.add(ret);
         //to center the jinternalframe
-        centerJIF(ren);
-        ren.show();
+        centerJIF(ret);
+        ret.show();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -868,6 +947,14 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+
+        Tra_dev dev = new Tra_dev();
+        this.jDesktopPane1.removeAll();
+        this.jDesktopPane1.repaint();
+        this.jDesktopPane1.add(dev);
+        centerJIF(dev);
+        dev.show();
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jXHyperlink1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXHyperlink1ActionPerformed
@@ -885,16 +972,92 @@ public class Principal extends javax.swing.JFrame {
     private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
         try {
             // TODO add your handling code here:
-            
-            ClassInventario inv=new ClassInventario();
+
+            ClassInventario inv = new ClassInventario();
             inv.generarReporte();
         } catch (JRException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_jMenuItem22ActionPerformed
+
+    private void reporteGeneralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reporteGeneralMouseClicked
+        // TODO add your handling code here:
+
+        try {
+            // TODO add your handling code here:
+
+            ClassInventario inv = new ClassInventario();
+            inv.generarReporte();
+        } catch (JRException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_reporteGeneralMouseClicked
+
+    private void mouseEnter(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseEnter
+        // TODO add your handling code here:
+
+        reporteGeneral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/rg_Over.png")));
+
+    }//GEN-LAST:event_mouseEnter
+
+    private void reporteGeneralMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reporteGeneralMouseExited
+        // TODO add your handling code here:
+        reporteGeneral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/rg.png")));
+
+    }//GEN-LAST:event_reporteGeneralMouseExited
+
+    private void lblRootMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRootMouseClicked
+        // TODO add your handling code here:
+
+        RootSql sqlrun = new RootSql();
+        this.jDesktopPane1.removeAll();
+        this.jDesktopPane1.repaint();
+        this.jDesktopPane1.add(sqlrun);
+        //to center the jinternalframe
+        centerJIF(sqlrun);
+        sqlrun.show();
+
+    }//GEN-LAST:event_lblRootMouseClicked
+
+    private void jMenuItem23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem23ActionPerformed
+        // TODO add your handling code here:
+        
+          
+           ClassPeliculaRentada   pr=new ClassPeliculaRentada();
+            try {
+                pr.generarReporte();
+            } catch (JRException ex) {
+                Logger.getLogger(JdVerTodasPeliculasRentadas.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(JdVerTodasPeliculasRentadas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+    }//GEN-LAST:event_jMenuItem23ActionPerformed
+
+    private void jMenuItem25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem25ActionPerformed
+        // TODO add your handling code here:
+        
+        
+             ClassPeliculaRetrazada pr=new ClassPeliculaRetrazada();
+            try {
+                pr.generarReporte();
+            } catch (JRException ex) {
+                Logger.getLogger(JdVerTodasPeliculasRentadas.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(JdVerTodasPeliculasRentadas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+    }//GEN-LAST:event_jMenuItem25ActionPerformed
+
+    private void jMenuItem28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem28ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem28ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -942,7 +1105,6 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel gifanim;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -973,6 +1135,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem22;
     private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem24;
+    private javax.swing.JMenuItem jMenuItem25;
+    private javax.swing.JMenuItem jMenuItem26;
+    private javax.swing.JMenuItem jMenuItem27;
+    private javax.swing.JMenuItem jMenuItem28;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
@@ -986,11 +1152,16 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
     private org.jdesktop.swingx.JXHyperlink jXHyperlink1;
     private javax.swing.JMenu jmAdmin;
     private javax.swing.JLabel lblDateTime;
     private javax.swing.JLabel lblInfoSystem;
+    private javax.swing.JLabel lblRoot;
     private javax.swing.JLabel lblUsername;
+    private javax.swing.JLabel reporteGeneral;
+    private javax.swing.JMenuItem separator;
     // End of variables declaration//GEN-END:variables
 
     private String getLookAndFeelClassName(String nimbus) {

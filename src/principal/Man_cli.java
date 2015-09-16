@@ -314,6 +314,11 @@ public class Man_cli extends javax.swing.JInternalFrame {
         return success;
     }
 
+    
+    
+    
+    
+    
     //transaction/////////////////
     boolean setTransaction(String query
     ) {

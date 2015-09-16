@@ -583,6 +583,34 @@ public class DBSql {
         return max;
     }
 
+      
+    public ResultSet displaytb(String specificQuery) {
+
+        String sql = specificQuery;
+    
+        ResultSet rs = null;
+        PreparedStatement ps;
+
+        try {
+
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+    //while (rs.next()) {    
+            //int id=rs.getInt(1);      
+            //String desc=rs.getString(2);
+            //System.out.println(id+" "+desc); 
+            //}
+            //conn.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+
+        }
+
+        return rs;
+    }
+    
+    
     public ResultSet displaytb(String tblname, String specificQuery) {
 
         String sql = "SELECT * FROM " + tblname + " ORDER BY " + tblname + ".id DESC";
@@ -611,6 +639,10 @@ public class DBSql {
         return rs;
     }
 
+    
+  
+
+    
     public ResultSet displaytbWithIdColname(String tblname, String idcolname) {
 
         String sql = "SELECT * FROM " + tblname + " ORDER BY " + idcolname + " DESC";
@@ -872,5 +904,38 @@ public class DBSql {
         System.out.println(llst.get(1));
 
     }
+
+
+
+    
+    
+    
+    public String oneValue(String sql) {
+        String oneValue = null;
+
+        ResultSet rs = null;
+        PreparedStatement ps;
+
+        try {
+
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                System.out.println(">>>>>X"+rs.getObject(1));
+                oneValue = ""+ rs.getObject(1);
+            }
+
+            //conn.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+
+        }
+
+        return oneValue;
+    }
+    
+
+
 
 }

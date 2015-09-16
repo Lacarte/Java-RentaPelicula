@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="peliculaRentadas_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="06c8f035-8176-4ac7-ad3b-c20e5cb9039b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="styleRetrazadas" mode="Opaque" forecolor="#000000" hAlign="Left" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{DIAS RETRAZADOS}>0]]></conditionExpression>
+			<style backcolor="#FF3333"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="codcliente" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *,DATEDIFF(NOW(),vtb2.DiaVencimiento ) AS 'DIAS RETRAZADOS'  FROM (
+SELECT * FROM 
+(
+SELECT ren.codren AS NUMREN,CONCAT(per.apeper,' ',ter.nomter) As NOMBRE ,pel.titpel AS TITULO,detren.numcopia AS 'NUMCOPIA',ren.fecren AS `FECHA RENTA`,detren.durren AS DIAS ,(ren.fecren + INTERVAL detren.durren DAY) AS DiaVencimiento ,now() As HOY,ren.codcli,per.cedper,ter.dirter,ter.telter,detren.codpel,estpel.desest FROM tbrenta ren INNER JOIN
+tb_detalle_renta detren ON ren.codren=detren.codren
+INNER JOIN tbtercero ter ON ren.codcli=ter.codter
+INNER JOIN tbpersona per ON ter.codter=per.codper
+INNER JOIN tbpelicula pel ON pel.codpel=detren.codpel
+INNER JOIN tbpelicula_copia pelcop ON detren.numcopia=pelcop.numcopia AND detren.codpel=pelcop.codpel
+INNER JOIN tb_estado_pelicula estpel ON pelcop.codestado=estpel.codestpel
+WHERE detren.entregada=0
+) as vtb1
+) AS vtb2 WHERE vtb2.codcli=$P{codcliente} ORDER BY  `DIAS RETRAZADOS` desc;]]>
+	</queryString>
+	<field name="NUMREN" class="java.lang.Integer"/>
+	<field name="NOMBRE" class="java.lang.String"/>
+	<field name="TITULO" class="java.lang.String"/>
+	<field name="NUMCOPIA" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FECHA RENTA" class="java.sql.Timestamp"/>
+	<field name="DIAS" class="java.lang.Integer"/>
+	<field name="DiaVencimiento" class="java.sql.Timestamp"/>
+	<field name="HOY" class="java.sql.Timestamp"/>
+	<field name="codcli" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cedper" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dirter" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="telter" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codpel" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="desest" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DIAS RETRAZADOS" class="java.lang.Long"/>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="10" y="0" width="45" height="20" backcolor="#CCCCCC" uuid="c4596952-fa96-451a-8699-2fa45d148ec1"/>
+				<box leftPadding="0">
+					<rightPen lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NroREN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="55" y="0" width="103" height="20" backcolor="#CCCCCC" uuid="9a56b467-393a-4429-ba81-ae068b9bad7d"/>
+				<box leftPadding="0">
+					<rightPen lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[TITULO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="158" y="0" width="46" height="20" backcolor="#CCCCCC" uuid="ce05f58e-26b6-43b8-b705-eeed35378572"/>
+				<box leftPadding="0">
+					<rightPen lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NroCopia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="204" y="0" width="69" height="20" backcolor="#CCCCCC" uuid="bcd3824c-9623-449c-8e88-2e910745b194"/>
+				<box leftPadding="0">
+					<rightPen lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Fecha Renta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="273" y="0" width="37" height="20" backcolor="#CCCCCC" uuid="9a09be07-08c5-4333-a051-e58037ccd3fd"/>
+				<box leftPadding="0">
+					<rightPen lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Dias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="310" y="0" width="79" height="20" backcolor="#CCCCCC" uuid="45259650-4715-45e1-871f-fa2e179521c5"/>
+				<box leftPadding="0">
+					<rightPen lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[DiaVencimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="389" y="0" width="59" height="20" backcolor="#CCCCCC" uuid="f9a912b7-ab7f-429e-b40d-43e1694eba3e"/>
+				<box leftPadding="0">
+					<rightPen lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Hoy]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="448" y="0" width="107" height="20" backcolor="#CCCCCC" uuid="1db09cf0-ab80-4219-9d51-ac5d2100ad79"/>
+				<box leftPadding="2"/>
+				<text><![CDATA[Dias Retrazados]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="45" height="20" uuid="2a7d143a-1661-4a6c-a817-cdd1ed7ab353"/>
+				<box leftPadding="2">
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{NUMREN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="55" y="0" width="103" height="20" isPrintWhenDetailOverflows="true" uuid="b660a284-da19-4bb9-88b5-b4d1995ca0ab"/>
+				<box leftPadding="2">
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{TITULO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="158" y="0" width="46" height="20" uuid="6d2bae08-d871-4b52-9399-6b2903eb2a0a"/>
+				<box leftPadding="2">
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{NUMCOPIA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="204" y="0" width="59" height="20" uuid="3106e16d-20ea-49d6-9db3-5fab0dd63d0d"/>
+				<box leftPadding="2">
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{FECHA RENTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="273" y="0" width="37" height="20" uuid="b641e57d-f2a1-4dfe-812d-607bf4c45a90"/>
+				<box leftPadding="2">
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{DIAS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="310" y="0" width="79" height="20" uuid="9782ba51-56ce-4ad8-9f14-a8e66f8bce7e"/>
+				<box leftPadding="2">
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{DiaVencimiento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="389" y="0" width="59" height="20" uuid="bf7e6f52-9b80-4840-a172-77c56ae6afea"/>
+				<box leftPadding="2">
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{HOY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="styleRetrazadas" x="448" y="0" width="107" height="20" uuid="c12b1e00-d259-4b2a-92f7-eab163ef6d4b"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{DIAS RETRAZADOS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="403" y="6" width="139" height="20" uuid="06cfbaeb-aa23-402e-8836-94dc5fabb286"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="0.5" lineStyle="Dotted"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Cantidad de Pelicula : [ "+$V{REPORT_COUNT}+" ]"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
